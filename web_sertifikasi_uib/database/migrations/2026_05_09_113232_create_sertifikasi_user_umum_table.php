@@ -25,9 +25,9 @@ return new class extends Migration
           ->default('terdaftar');
 
     $table->enum('status_pembayaran', [
-        'belum lunas',
-        'lunas',
-        'dispensasi'
+          'belum lunas',
+          'lunas',
+          'dispensasi'
     ])->default('belum lunas');
 
     $table->text('keterangan')->nullable();

@@ -27,6 +27,14 @@ return new class extends Migration
     $table->enum('status', ['daftar', 'hadir', 'tidak_hadir'])
           ->default('daftar');
 
+    $table->enum('status_pembayaran', [
+          'belum lunas',
+          'lunas',
+          'dispensasi'
+    ])->default('belum lunas');
+
+    $table->text('keterangan')->nullable();
+
     $table->timestamps();
 
     $table->primary(['nidn', 'seminar_id']);
