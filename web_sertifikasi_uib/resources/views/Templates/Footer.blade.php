@@ -1,1 +1,3 @@
-<!-- gw (Jonny) nanti bikin template -->
+<footer>
+   
+</footer>
