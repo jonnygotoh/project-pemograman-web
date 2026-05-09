@@ -26,6 +26,14 @@ return new class extends Migration
 
     $table->enum('status', ['terdaftar', 'lulus', 'tidak_lulus'])
           ->default('terdaftar');
+    
+    $table->enum('status_pembayaran', [
+    'belum lunas',
+    'lunas',
+    'dispensasi'
+    ])->default('belum lunas');
+
+    $table->text('keterangan')->nullable();
 
     $table->timestamps();
 
