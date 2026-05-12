@@ -16,10 +16,6 @@
     @include('Templates.header')
 <!-- membuat halaman yang tidak perlu di ubah -->
 
-    <title>
-        @yield('title')
-    </title>
-
 <nav class="navbar">
 
     <div class="navbar-left">
