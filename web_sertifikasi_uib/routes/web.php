@@ -1,22 +1,26 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MahasiswaController;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
-Route::get('/Mahasiswa', [MahasiswaController::class, 'mahasiswa'])
-    ->name('mahasiswa');
+Route::get('/mahasiswa', [MahasiswaController::class, 'mahasiswa'])
+    ->name('listmahasiswa');
 
-Route::get('/Dosen', [MahasiswaController::class, 'dosen'])
-    ->name('dosen');
+// Route::get('/dosen', [DosenController::class, 'dosen'])
+//     ->name('listdosen');
 
-Route::get('/Admin', [MahasiswaController::class, 'admin'])
-    ->name('admin');
+// Route::get('/admin', [AdminController::class, 'admin'])
+//     ->name('listadmin');
 
-Route::get('/Sertifikasi', [MahasiswaController::class, 'sertifikasi'])
-    ->name('sertifikasi');
+// Route::get('/umum', [UmumController::class, 'umum'])
+//     ->name('listumum');
 
-Route::get('/Seminar', [MahasiswaController::class, 'seminar'])
-    ->name('seminar');
+// Route::get('/sertifikasi', [MahasiswaController::class, 'sertifikasi'])
+//     ->name('listsertifikasi');
+
+// Route::get('/seminar', [MahasiswaController::class, 'seminar'])
+//     ->name('listseminar');
