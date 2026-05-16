@@ -19,8 +19,8 @@
 
         <section>
             <h3>Hubungi Kami</h3>
-            <div class="contact-item"><i data-lucide="mail"></i><div><b>Email</b><span>pusatsertifikasi@uib.ac.id</span></div></div>
-            <div class="contact-item"><i data-lucide="map-pin"></i><div><b>Alamat</b><span>Jl. Gajah Mada, Baloi – Sei Ladi, Batam 29442, Indonesia</span></div></div>
+            <div class="contact-item"><i data-lucide="mail"></i><div><b>Email :</b><span> pusatsertifikasi@uib.ac.id</span></div></div>
+            <div class="contact-item"><i data-lucide="map-pin"></i><div><b>Alamat :</b><span> Jl. Gajah Mada, Baloi – Sei Ladi, Batam 29442, Indonesia</span></div></div>
         </section>
     </div>
     <div class="copyright">Copyright © 2026 Universitas Internasional Batam</div>
