@@ -16,64 +16,35 @@
     @include('Templates.header')
 <!-- membuat halaman yang tidak perlu di ubah -->
 
-<nav class="navbar">
+    <main>
+        @yield('content')
+        <div class="hero-left">
 
-    <div class="navbar-left">
-
-        <img
-            src="{{ asset('images/logo-uib.png') }}"
-            alt="UIB"
-            class="logo"
-        >
-
-        <div class="logo-text">
+            <h1>
+                Selamat Datang
+            </h1>
 
             <h2>
-                UNIVERSITAS <br>
-                INTERNASIONAL <br>
-                BATAM
+                Universitas Internasional Batam
             </h2>
+
+            <p>
+                Universitas dengan standar mutu internasional
+                yang menghasilkan lulusan, ilmu pengetahuan,
+                teknologi dan seni yang mampu memenuhi
+                perubahan dinamika global.
+            </p>
 
         </div>
 
-    </div>
+        <div class="hero-right">
 
-    <ul class="navbar-menu">
+            <img
+                src="{{ asset('images/education.png') }}"
+                alt="Hero"
+            >
 
-        <li>
-            <a href="#">
-                Beranda
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                Sertifikasi
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                Seminar
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                Berita
-            </a>
-        </li>
-
-    </ul>
-
-    <button class="login-btn">
-        Masuk
-    </button>
-
-</nav>
-
-    <main>
-        @yield('content')
+        </div>
     </main>
 
     @include('Templates.footer')
