@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('templates.main')
 @section('title', $event['title'])
 
 @section('content')

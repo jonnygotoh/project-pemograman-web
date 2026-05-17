@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('templates.main')
 @section('title', 'Profile')
 
 @section('content')

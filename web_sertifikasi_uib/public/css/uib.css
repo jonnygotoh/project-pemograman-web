@@ -85,12 +85,6 @@ textarea {
     transition: .25s;
 }
 
-.nav-menu a.active {
-    background: white;
-    color: var(--navy);
-    box-shadow: 0 6px 18px rgba(255, 255, 255, .18)
-}
-
 .login-pill {
     background: linear-gradient(135deg, #213cff, #7044f6);
     color: white !important;
@@ -1059,6 +1053,11 @@ th {
 .modal-card .form-control {
     width: 100%;
     height: 60px
+}
+
+ .nav-menu a.active {
+    background: white;
+    color: var(--navy);
 }
 
 @media(max-width:900px) {

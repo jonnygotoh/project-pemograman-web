@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('templates.main')
 @section('title', $title ?? 'Login')
 
 @section('content')
@@ -36,5 +36,5 @@
 @endsection
 
 @section('footer')
-@include('partials.footer')
+@include('templates.footer')
 @endsection

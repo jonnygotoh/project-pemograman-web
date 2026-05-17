@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('templates.main')
 @section('title', 'Upload Bukti Transfer')
 
 @section('content')
