@@ -35,6 +35,4 @@
 </section>
 @endsection
 
-@section('footer')
-@include('templates.footer')
-@endsection
+
