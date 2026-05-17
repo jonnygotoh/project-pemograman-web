@@ -676,6 +676,14 @@ th {
     line-height: 1.8
 }
 
+.footer-section1 {
+  margin-left: 60px;
+}
+
+.footer-section2 {
+  margin-right: 60px;
+}
+
 .map-box iframe {
     width: 100%;
     height: 170px;
@@ -1140,7 +1148,8 @@ th {
     }
 
     .footer {
-        padding: 36px 24px
+        padding: 36px 24px;
+        margin: 0 60px 0 60px;
     }
 
     .upload-page,

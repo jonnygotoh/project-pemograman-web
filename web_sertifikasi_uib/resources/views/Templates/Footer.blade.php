@@ -1,7 +1,6 @@
 <footer>
        <div class="footer-grid">
-        <section>
-            <div class="footer-brand">
+       <section class="footer-section1">            <div class="footer-brand">
                 <img src="{{ asset('images/logo-uib.png') }}" alt="UIB">
                 <span>UNIVERSITAS<br>INTERNASIONAL<br>BATAM</span>
             </div>
@@ -17,7 +16,7 @@
             </div>
         </section>
 
-        <section>
+        <section class="footer-section2">
             <h3>Hubungi Kami</h3>
             <div class="contact-item"><i data-lucide="mail"></i><div><b>Email :</b><span> pusatsertifikasi@uib.ac.id</span></div></div>
             <div class="contact-item"><i data-lucide="map-pin"></i><div><b>Alamat :</b><span> Jl. Gajah Mada, Baloi – Sei Ladi, Batam 29442, Indonesia</span></div></div>
