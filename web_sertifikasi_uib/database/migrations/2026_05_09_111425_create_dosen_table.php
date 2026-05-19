@@ -17,6 +17,7 @@ return new class extends Migration
     $table->char('nidn', 10)->unique();
     $table->string('nama', 100);
     $table->string('email', 100)->unique();
+    $table->string('password');
     $table->string('no_hp', 20)->nullable();
     $table->string('jurusan', 100);
 
