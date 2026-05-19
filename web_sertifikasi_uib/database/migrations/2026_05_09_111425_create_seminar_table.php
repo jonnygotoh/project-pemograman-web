@@ -15,12 +15,11 @@ return new class extends Migration
     $table->id();
 
     $table->string('nama', 150);
+    $table->string('periode', 100);
     $table->date('tanggal');
     $table->string('waktu', 50);
-    $table->string('tempat', 150);
 
     $table->enum('tipe', ['free', 'paid'])->default('free');
-    $table->integer('harga')->default(0);
 
     $table->timestamps();
     });

@@ -16,7 +16,8 @@ return new class extends Migration
 
     $table->string('nama', 150);
     $table->string('batch', 50)->nullable();
-    $table->date('ujian');
+    $table->string('periode');
+    $table->date('waktu');
 
     $table->integer('biaya_mahasiswa')->default(0);
     $table->integer('biaya_dosen')->default(0);
