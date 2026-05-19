@@ -1,4 +1,4 @@
-<footer>
+<footer class="footer">
        <div class="footer-grid">
        <section class="footer-section1">            <div class="footer-brand">
                 <img src="{{ asset('images/logo-uib.png') }}" alt="UIB">

@@ -4,7 +4,7 @@
 @section('content')
 <section class="login-page">
     <h1>{{ $title ?? 'Masuk Umum' }}</h1>
-    <div class="title-line"></div>
+    
 
     <form class="login-card" method="POST" action="{{ $action ?? route('login.process') }}">
         @csrf
