@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
 
-Route::get('/', [MahasiswaController::class, 'home'])->name('home');
+Route::get('/', [MainController::class, 'home'])->name('home');
 
-Route::get('/mahasiswa', [MahasiswaController::class, 'mahasiswa'])
+Route::get('/mahasiswa', [MainController::class, 'mahasiswa'])
     ->name('listmahasiswa');
 
 Route::get('login', [AuthController::class, 'login'])
