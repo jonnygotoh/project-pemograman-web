@@ -31,8 +31,8 @@ $rows = $rows ?? [];
             <tbody>
                 @foreach($rows as $row)
                     <tr>
-                        @foreach($row as $cell)
-                            <td>{!! $cell !!}</td>
+                        @foreach($columns as $col)
+                            <td>{{ data_get($row, $col) }}</td>
                         @endforeach
                     </tr>
                 @endforeach

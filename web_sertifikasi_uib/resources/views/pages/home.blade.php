@@ -43,6 +43,8 @@
     <div id="sertifikasi-table" class="view-panel hidden">
         @include('pages.partials.table', [
             'pageTitle' => 'Sertifikasi',
+            'type' => 'sertifikasi',
+            'columns' => ['nama', 'batch', 'periode', 'waktu', 'biaya'],
             'rows' => $certificationRows
         ])
     </div>
@@ -71,6 +73,8 @@
     <div id="seminar-table" class="view-panel hidden">
         @include('pages.partials.table', [
             'pageTitle' => 'Seminar',
+            'type' => 'seminar',
+            'columns' => ['nama', 'periode', 'tanggal', 'waktu', 'tipe'],
             'rows' => $seminarRows
         ])
     </div>

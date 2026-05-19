@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Seminar;
+use App\Models\Sertifikasi;
+
 class MainController extends Controller
 {
     public function home()
@@ -27,16 +30,12 @@ class MainController extends Controller
 
     private function seminarRows()
     {
-        return [
-            ['Webinar AI', '07 - 12 Mei', '12 Mei', '18:00', 'Online', 'Free', '10', '<a href="#">Daftar</a>']
-        ];
+        return Seminar::all();
     }
 
     private function certificationRows()
     {
-        return [
-            ['TOEIC Test', '07 - 12 Mei', '23 Mei', '09:00', 'Rp 500.000', '24', '<a href="#">Daftar</a>']
-        ];
+        return Sertifikasi::all();
     }
 
     private function demoCalendarDays($type)
