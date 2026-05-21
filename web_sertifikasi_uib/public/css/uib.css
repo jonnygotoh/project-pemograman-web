@@ -284,8 +284,7 @@ textarea {
 .registered-card,
 .upload-card,
 .detail-card,
-.poster-card,
-.news-card {
+.poster-card {
     background: white;
     border: 1px solid var(--line);
     border-radius: 14px;
@@ -1044,8 +1043,7 @@ th {
         grid-template-columns: 1fr
     }
 
-    .choice-grid,
-    .news-grid {
+    .choice-grid{
         grid-template-columns: 1fr
     }
 

@@ -24,7 +24,6 @@ class MainController extends Controller
             'certificationRows' => $this->certificationRows(),
             'seminarCalendar' => $this->demoCalendarDays('seminar'),
             'certificationCalendar' => $this->demoCalendarDays('sertifikasi'),
-            'news' => $this->news(),
         ];
     }
 
@@ -61,17 +60,5 @@ class MainController extends Controller
         }
 
         return $days;
-    }
-
-    private function news()
-    {
-        return [
-            [
-                'image' => asset('images/news.png'),
-                'date' => '16 Mei 2026',
-                'title' => 'Info Seminar Terbaru',
-                'summary' => 'Pendaftaran seminar sudah dibuka.'
-            ]
-        ];
     }
 }
