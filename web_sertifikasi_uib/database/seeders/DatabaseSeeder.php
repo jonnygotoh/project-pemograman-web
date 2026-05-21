@@ -15,32 +15,38 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Seeder Dosen
-        Dosen::create([
-            'nidn' => '1234567890',
-            'nama' => 'Andi',
-            'email' => 'andi@gmail.com',
-            'password' => '1234',
-            'no_hp' => '08111111111',
-            'jurusan' => 'TI',
-        ]);
+        Dosen::updateOrCreate(
+            ['nidn' => '1234567890'],
+            [
+                'nama' => 'Andi',
+                'email' => 'andi@gmail.com',
+                'password' => '1234',
+                'no_hp' => '08111111111',
+                'jurusan' => 'TI',
+            ]
+        );
 
         // Seeder Mahasiswa
-        Mahasiswa::create([
-            'npm' => '2532001',
-            'nama' => 'Andhika',
-            'email' => 'Andhika@gmail.com',
-            'password' => '1234',
-            'no_hp' => '08123456789',
-            'prodi' => 'TI',
-        ]);
+        Mahasiswa::updateOrCreate(
+            ['npm' => '2532001'],
+            [
+                'nama' => 'Andhika',
+                'email' => 'Andhika@gmail.com',
+                'password' => '1234',
+                'no_hp' => '08123456789',
+                'prodi' => 'TI',
+            ]
+        );
 
         // Seeder UserUmum
-        UserUmum::create([
-            'nama' => 'Siti',
-            'email' => 'siti@gmail.com',
-            'password' => '1234',
-            'no_hp' => '08222222222',
-            'alamat' => 'Batam',
-        ]);
+        UserUmum::updateOrCreate(
+            ['email' => 'siti@gmail.com'],
+            [
+                'nama' => 'Siti',
+                'password' => '1234',
+                'no_hp' => '08222222222',
+                'alamat' => 'Batam',
+            ]
+        );
     }
 }
