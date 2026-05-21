@@ -23,14 +23,12 @@
             <a class="js-scroll-link active" href="#home">Beranda</a>
             <a class="js-scroll-link" href="#sertifikasi">Sertifikasi</a>
             <a class="js-scroll-link" href="#seminar">Seminar</a>
-            <a class="js-scroll-link" href="#berita">Berita</a>
 
         @else
 
             <a href="{{ route('home') }}#home">Beranda</a>
             <a href="{{ route('home') }}#sertifikasi">Sertifikasi</a>
             <a href="{{ route('home') }}#seminar">Seminar</a>
-            <a href="{{ route('home') }}#berita">Berita</a>
 
         @endif
 

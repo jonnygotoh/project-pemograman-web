@@ -44,7 +44,7 @@
         @include('pages.partials.table', [
             'pageTitle' => 'Sertifikasi',
             'type' => 'sertifikasi',
-            'columns' => ['nama', 'batch', 'periode', 'waktu', 'biaya'],
+            'columns' => ['Nama', 'Batch', 'Periode', 'Waktu', 'Biaya'],
             'rows' => $certificationRows
         ])
     </div>
@@ -79,28 +79,4 @@
         ])
     </div>
 </section>
-
-{{-- BERITA --}}
-<section id="berita" class="section news-section">
-
-    <div class="section-heading">
-        <span>Berita</span>
-        <h2>Berita & Informasi</h2>
-    </div>
-
-    <div class="news-grid">
-        @foreach($news as $item)
-            <article class="news-card">
-                <img src="{{ $item['image'] }}">
-                <div>
-                    <small>{{ $item['date'] }}</small>
-                    <h3>{{ $item['title'] }}</h3>
-                    <p>{{ $item['summary'] }}</p>
-                </div>
-            </article>
-        @endforeach
-    </div>
-
-</section>
-
 @endsection
