@@ -1,4 +1,7 @@
 @php
+    $month = $month ?? now()->month;
+    $year = $year ?? now()->year;
+
     $prevMonth = $month == 1 ? 12 : $month - 1;
     $prevYear = $month == 1 ? $year - 1 : $year;
 
@@ -10,29 +13,20 @@
 
     <div class="calendar-head">
 
-        <a href="{{ route('home', [
-            'type' => $type,
-            'month' => $prevMonth,
-            'year' => $prevYear
-        ]) }}">
+        <button type="button"
+            onclick="changeMonth('{{ $type }}', {{ $prevMonth }}, {{ $prevYear }})">
             <i data-lucide="chevron-left"></i>
-        </a>
+        </button>
 
         <h2>
-            {{ \Carbon\Carbon::create($year, $month)->format('F Y') }}
+            {{ \Carbon\Carbon::create($year, $month, 1)->format('F Y') }}
         </h2>
 
-        <div>
+        <button type="button"
+            onclick="changeMonth('{{ $type }}', {{ $nextMonth }}, {{ $nextYear }})">
+            <i data-lucide="chevron-right"></i>
+        </button>
 
-            <a href="{{ route('home', [
-                'type' => $type,
-                'month' => $nextMonth,
-                'year' => $nextYear
-            ]) }}">
-                <i data-lucide="chevron-right"></i>
-            </a>
-
-        </div>
     </div>
 
     <div class="calendar-grid">
@@ -54,4 +48,5 @@
         @endforeach
 
     </div>
+
 </div>

@@ -9,6 +9,8 @@ Route::get('/', [MainController::class, 'home'])->name('home');
 Route::get('/mahasiswa', [MainController::class, 'mahasiswa'])
     ->name('listmahasiswa');
 
+Route::get('/calendar/{type}', [MainController::class, 'calendar']);
+
 Route::get('login', [AuthController::class, 'login'])
     ->name('login.choose');
 

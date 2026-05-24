@@ -82,6 +82,31 @@ function switchView(type, view) {
         ?.classList.add('active');
 }
 
+async function changeMonth(type, month, year) {
+
+    try {
+
+        const response = await fetch(
+            `/calendar/${type}?month=${month}&year=${year}`
+        );
+
+        const html = await response.text();
+
+        const el = document.getElementById(`${type}-calendar`);
+
+        if (!el) return;
+
+        el.innerHTML = html;
+
+        // re-init icons
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+    } catch (error) {
+        console.error('Gagal load calendar:', error);
+    }
+}
 
 // DROPDOWN
 function toggleDropdown(id) {

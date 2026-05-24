@@ -14,7 +14,24 @@ class MainController extends Controller
         $month = $request->month ?? 5;
         $year = $request->year ?? 2026;
 
-        return view('pages.home', $this->landingData($month, $year));
+        $data = $this->landingData($month, $year);
+
+        return view('pages.home', $data);
+    }
+
+   public function calendar(Request $request, $type)
+    {
+        $month = $request->month ?? now()->month;
+        $year = $request->year ?? now()->year;
+
+        $calendarDays = $this->generateCalendar($month, $year, $type);
+
+        return view('pages.partials.calendar', [
+            'type' => $type,
+            'month' => $month,
+            'year' => $year,
+            'calendarDays' => $calendarDays
+        ]);
     }
 
     public function mahasiswa()
@@ -25,16 +42,13 @@ class MainController extends Controller
     private function landingData($month, $year)
     {
         return [
-        'month' => $month,
-        'year' => $year,
-
-        'seminarRows' => $this->seminarRows(),
-        'certificationRows' => $this->certificationRows(),
-
-        'seminarCalendar' => $this->generateCalendar($month, $year, 'seminar'),
-
-        'certificationCalendar' => $this->generateCalendar($month, $year, 'sertifikasi'),
-    ];
+            'month' => $month,
+            'year' => $year,
+            'seminarRows' => $this->seminarRows(),
+            'certificationRows' => $this->certificationRows(),
+            'seminarCalendar' => $this->generateCalendar($month, $year, 'seminar'),
+            'certificationCalendar' => $this->generateCalendar($month, $year, 'sertifikasi'),
+        ];
     }
 
     private function seminarRows()
