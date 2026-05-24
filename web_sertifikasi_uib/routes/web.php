@@ -14,29 +14,27 @@ Route::get('/calendar/{type}', [MainController::class, 'calendar']);
 Route::get('login', [AuthController::class, 'login'])
     ->name('login.choose');
 
-Route::get('login/mahasiswa', fn () => view('auth.login', [
-    'title' => 'Masuk Mahasiswa',
-    'identityPlaceholder' => 'NPM',
-    'type' => 'student',
-    'note' => 'Login mahasiswa'
-]))->name('login.student');
+Route::get('login/mahasiswa', [AuthController::class, 'showLoginForm'])
+    ->defaults('type', 'student')
+    ->name('login.student');
 
-Route::get('login/dosen', fn () => view('auth.login', [
-    'title' => 'Masuk Dosen',
-    'identityPlaceholder' => 'NIDN / Email',
-    'type' => 'lecturer',
-    'note' => 'Login dosen'
-]))->name('login.lecturer');
+Route::get('login/dosen', [AuthController::class, 'showLoginForm'])
+    ->defaults('type', 'lecturer')
+    ->name('login.lecturer');
 
-Route::get('login/umum', fn () => view('auth.login', [
-    'title' => 'Masuk Umum',
-    'identityPlaceholder' => 'Email',
-    'type' => 'public',
-]))->name('login.public');
+Route::get('login/umum', [AuthController::class, 'showLoginForm'])
+    ->defaults('type', 'public')
+    ->name('login.public');
 
-Route::post('login/process', fn () => back())->name('login.process');
+Route::post('login/process', [AuthController::class, 'authenticate'])
+    ->name('login.process');
 
-Route::get('/logout', fn () => redirect('/'))->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
+
+Route::get('/profile', [AuthController::class, 'profile'])
+    ->name('profile');
 
 Route::view('/upload-payment', 'pages.upload-payment')
     ->name('upload.payment');
+

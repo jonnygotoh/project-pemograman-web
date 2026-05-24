@@ -58,6 +58,7 @@
     <div class="section-heading">
         <span>Seminar</span>
         <h2>Daftar Seminar</h2>
+
     </div>
 
     <div class="view-toggle">
@@ -78,7 +79,7 @@
         @include('pages.partials.table', [
             'pageTitle' => 'Seminar',
             'type' => 'seminar',
-            'columns' => ['nama', 'periode', 'tanggal', 'waktu', 'tipe'],
+            'columns' => ['Nama', 'Periode', 'Tanggal', 'Waktu', 'Tipe'],
             'rows' => $seminarRows
         ])
     </div>

@@ -4,7 +4,7 @@
 @section('content')
 <section class="profile-page">
     <div class="profile-card">
-        <div class="avatar-box"><img src="{{ asset('images/avatar-placeholder.png') }}" alt="Avatar"></div>
+        <div class="avatar-box"><img src="{{ asset('images/avatar.png') }}" alt="Avatar"></div>
 
         <div class="profile-info">
             @foreach($profile as $item)

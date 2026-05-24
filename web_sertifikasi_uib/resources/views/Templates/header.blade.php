@@ -32,7 +32,11 @@
 
         @endif
 
-        @auth
+        @php
+            $currentUser = auth()->check() ? auth()->user() : session('auth_user');
+        @endphp
+
+        @if($currentUser)
             <div class="account-wrap">
                 <button class="account-btn" onclick="toggleDropdown('accountMenu')">
                     <i data-lucide="user"></i> Akun
@@ -40,7 +44,7 @@
 
                 <div id="accountMenu" class="account-dropdown">
                     <div class="account-name">
-                        {{ auth()->user()->name ?? 'User' }}
+                        {{ is_array($currentUser) ? $currentUser['name'] : ($currentUser->name ?? 'User') }}
                     </div>
                     <a href="{{ route('profile') }}">Profile</a>
                     <a href="{{ route('logout') }}">Logout</a>
@@ -48,7 +52,7 @@
             </div>
         @else
             <a class="login-pill" href="{{ route('login.choose') }}">Masuk</a>
-        @endauth
+        @endif
 
     </nav>
 

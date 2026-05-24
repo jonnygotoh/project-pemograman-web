@@ -22,7 +22,7 @@
             <p><i data-lucide="clock"></i> <b>Waktu:</b> {{ $event['time'] }}</p>
             <p><i data-lucide="map-pin"></i> <b>Tempat:</b> {{ $event['place'] }}</p>
 
-            <button class="btn-primary" onclick="{{ auth()->check() ? 'openConfirmRegister()' : 'openLoginRequired()' }}">
+            <button class="btn-primary" onclick="{{ auth()->check() || session()->has('auth_user') ? 'openConfirmRegister()' : 'openLoginRequired()' }}">
                 DAFTAR SEKARANG <i data-lucide="arrow-right"></i>
             </button>
         </div>

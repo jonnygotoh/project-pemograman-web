@@ -9,9 +9,17 @@
     <form class="login-card" method="POST" action="{{ $action ?? route('login.process') }}">
         @csrf
 
+        <input type="hidden" name="type" value="{{ $type ?? 'public' }}">
+
+        @if($errors->any())
+            <div class="form-error">
+                {{ $errors->first() }}
+            </div>
+        @endif
+
         <div class="input-icon">
             <i data-lucide="user"></i>
-            <input name="identity" type="text" placeholder="{{ $identityPlaceholder ?? 'Email' }}" required>
+            <input name="identity" type="text" value="{{ old('identity') }}" placeholder="{{ $identityPlaceholder ?? 'Email' }}" required>
         </div>
 
         <div class="input-icon">
