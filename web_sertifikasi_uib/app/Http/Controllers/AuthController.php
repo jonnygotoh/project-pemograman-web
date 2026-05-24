@@ -78,14 +78,10 @@ class AuthController extends Controller
 
         $user = $query->first();
 
-        if (
-            !$user ||
-            !($request->password === $user->password ||
-            Hash::check($request->password, $user->password))
-        ) {
-            return back()->withErrors([
-                'identity' => 'Login gagal'
-            ]);
+        if (!$user || !$this->checkPassword($request->password, $user->password)) {
+            return back()
+                ->withErrors(['identity' => 'Login gagal'])
+                ->withInput();
         }
 
         session([
@@ -137,5 +133,23 @@ class AuthController extends Controller
         session()->forget('auth_user');
 
         return redirect()->route('home');
+    }
+
+    private function checkPassword(string $input, string $stored): bool
+    {
+        if ($input === $stored) {
+            return true;
+        }
+
+        if ($this->isBcryptHash($stored)) {
+            return Hash::check($input, $stored);
+        }
+
+        return false;
+    }
+
+    private function isBcryptHash(string $value): bool
+    {
+        return preg_match('/^\$2[aby]\$\d{2}\$[\.\/A-Za-z0-9]{53}$/', $value) === 1;
     }
 }
