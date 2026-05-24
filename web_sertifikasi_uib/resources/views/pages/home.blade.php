@@ -35,7 +35,9 @@
 
     <div id="sertifikasi-calendar" class="view-panel">
         @include('pages.partials.calendar', [
-            'monthTitle' => 'May 2026',
+            'type' => 'sertifikasi',
+            'month' => $month,
+            'year' => $year,
             'calendarDays' => $certificationCalendar
         ])
     </div>
@@ -65,7 +67,9 @@
 
     <div id="seminar-calendar" class="view-panel">
         @include('pages.partials.calendar', [
-            'monthTitle' => 'May 2026',
+            'type' => 'seminar',
+            'month' => $month,
+            'year' => $year,
             'calendarDays' => $seminarCalendar
         ])
     </div>
