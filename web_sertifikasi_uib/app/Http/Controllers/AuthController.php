@@ -134,7 +134,7 @@ public function profile()
 
     private function checkPassword(string $input, string $stored): bool
     {
-        return Hash::check($input, $stored) || $input === $stored;
+        return $input === $stored || Hash::check($input, $stored);
     }
 
     private function buildProfile(array $authUser): array
