@@ -17,14 +17,15 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 92px
+    scroll-padding-top: 4.125rem;
+    font-size: 16px;
 }
 
 body {
     margin: 0;
     font-family: Inter, Segoe UI, Arial, sans-serif;
     color: var(--navy);
-    background: #fff
+    background: #fff;
 }
 
 a {
@@ -40,8 +41,11 @@ textarea {
 }
 
 .navbar {
-    height: 92px;
-    padding: 0 82px;
+    width: min(100%, 83.75rem);
+    max-width: 83.75rem;
+    margin: 0 auto;
+    min-height: 4.125rem;
+    padding: 0 2.375rem;
     background: linear-gradient(95deg, var(--navy2), var(--navy));
     display: flex;
     align-items: center;
@@ -49,38 +53,38 @@ textarea {
     color: white;
     position: sticky;
     top: 0;
-    z-index: 40
+    z-index: 40;
 }
 
 .brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 0.75rem;
     font-weight: 800;
     line-height: 1.05;
-    color: white
+    color: white;
 }
 
 .brand img,
 .footer-brand img {
-    width: 52px;
-    height: 52px;
+    width: 2.625rem;
+    height: 2.625rem;
     object-fit: contain;
     background: white;
-    border-radius: 8px
+    border-radius: 0.5rem;
 }
 
 .nav-menu {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 1.125rem;
     font-weight: 700;
-    font-size: 14px
+    font-size: 0.8125rem;
 }
 
 .nav-menu a {
-    padding: 16px 34px;
-    border-radius: 18px;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.875rem;
     font-weight: 900;
     transition: .25s;
 }
@@ -88,7 +92,7 @@ textarea {
 .login-pill {
     background: linear-gradient(135deg, #213cff, #7044f6);
     color: white !important;
-    padding: 14px 34px !important
+    padding: 0.625rem 1.25rem !important;
 }
 
 .mobile-menu-btn {
@@ -121,14 +125,14 @@ textarea {
     display: none;
     position: absolute;
     right: 0;
-    top: 44px;
+    top: 2.75rem;
     background: white;
     color: var(--navy);
-    width: 220px;
-    border-radius: 14px;
+    width: 13.75rem;
+    border-radius: 0.875rem;
     box-shadow: var(--shadow);
-    padding: 14px;
-    z-index: 10
+    padding: 0.875rem;
+    z-index: 10;
 }
 
 .account-dropdown.show {
@@ -144,60 +148,84 @@ textarea {
     font-weight: 800
 }
 
+main {
+    width: min(100%, 83.75rem);
+    max-width: 83.75rem;
+    margin: 0 auto;
+}
+
 .section {
-    min-height: 680px;
-    padding: 76px 88px
+    min-height: 42.5rem;
+    padding: 4rem 3rem;
+    width: 100%;
+    max-width: 83.75rem;
+    margin: 0 auto;
+}
+
+.section[id]::before {
+    height: 4.125rem;
+    margin-top: -4.125rem;
+    visibility: hidden;
 }
 
 .hero-section {
     position: relative;
-    min-height: 70vh;
-    padding: 120px 90px;
-    overflow: hidden;
+    min-height: calc(40vh - 3.5rem);
+    padding: 4rem 2.5rem calc(3rem + 40px);
+     overflow: hidden;
     background-image: url('../images/background.png');
     background-size: cover;
     background-position: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    /* gap: 1rem; */
+    width: 100%;
+    max-width: 83.75rem;
+    margin: 0 auto;
 }
 
+.hero-text {
+    z-index: 1;
+    max-width: 28rem;
+}
+
+
 .hero-image {
-    position: absolute;
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 1;
-    z-index: 1; 
-    user-select: none;
-    -webkit-user-drag: none;
+    position: relative;
+    overflow: visible;
 }
 
 .hero-image img {
     width: 100%;
-    max-width: 1250px;
-    height: auto;
-    object-fit: contain;
+    max-width: 600px;
+
+    transform: scale(1.8) translateX(-170px);
+    transform-origin: center;
+
     display: block;
 }
 
 .hero-section h1 {
-    font-size: 78px;
-    line-height: 1;
-    margin: 0 0 18px;
-    font-weight: 900;
+    font-size: clamp(2.1rem, 5vw, 3.8rem);
+    line-height: 1.1;
+    margin: 0 0 1rem;
+    font-weight: 850;
     color: var(--navy);
 }
 
 .hero-section h2 {
-    font-size: 34px;
-    margin: 0 0 22px;
+    font-size: clamp(1.625rem, 3.5vw, 2.125rem);
+    margin: 0 0 1.375rem;
     font-weight: 800;
 }
 
 .hero-section p {
-    max-width: 520px;
+    max-width: 32.5rem;
     line-height: 1.9;
     color: #677096;
     font-weight: 600;
-    font-size: 18px;
+    font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
 }
 
 .btn-primary,
@@ -238,6 +266,33 @@ textarea {
 
 .data-section {
     background: #ffffff
+}
+
+.section-heading {
+    max-width: 740px;
+    margin-bottom: 28px;
+}
+
+.section-heading span {
+    display: inline-block;
+    color: var(--primary);
+    font-weight: 900;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12px;
+}
+
+.section-heading h2 {
+    margin: 0;
+    font-size: 38px;
+}
+
+.section-heading p {
+    margin: 16px 0 0;
+    max-width: 620px;
+    line-height: 1.8;
+    color: var(--muted);
 }
 
 .view-toggle {
@@ -583,16 +638,19 @@ th {
 }
 
 .footer {
+    width: min(100%, 1240px);
+    max-width: 1240px;
+    margin: 0 auto;
     background: linear-gradient(100deg, var(--navy2), var(--navy));
     color: white;
     border-radius: 22px 22px 0 0;
-    padding: 42px 72px 22px
+    padding: 28px 36px 20px;
 }
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 1.1fr 1.2fr 1fr;
-    gap: 42px
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px;
 }
 
 .footer-brand {
@@ -608,12 +666,9 @@ th {
     line-height: 1.8
 }
 
-.footer-section1 {
-  margin-left: 60px;
-}
-
+.footer-section1,
 .footer-section2 {
-  margin-right: 60px;
+    margin: 0;
 }
 
 .map-box iframe {
@@ -1028,7 +1083,8 @@ th {
 
     .nav-menu a {
         display: block;
-        text-align: center
+        text-align: center;
+        padding: 12px 0;
     }
 
     .section {
@@ -1043,12 +1099,40 @@ th {
         grid-template-columns: 1fr
     }
 
-    .choice-grid{
-        grid-template-columns: 1fr
+    .hero-text {
+        max-width: 100%;
+    }
+
+    .hero-image {
+        max-width: 100%;
+        margin: 32px auto 0;
+    }
+
+    .hero-image img {
+        max-width: 100%;
+    }
+
+    .hero-section {
+        padding: 48px 18px 36px;
+        min-height: auto;
+        gap: 28px;
     }
 
     .hero-section h1 {
-        font-size: 44px
+        font-size: 42px
+    }
+
+    .hero-section h2 {
+        font-size: 26px
+    }
+
+    .hero-section p {
+        font-size: 16px;
+        max-width: 100%;
+    }
+
+    .choice-grid{
+        grid-template-columns: 1fr
     }
 
     .detail-hero h1 {
@@ -1060,11 +1144,11 @@ th {
     }
 
     .calendar-grid {
-        min-width: 880px
+        min-width: 100%;
     }
 
     .calendar-card {
-        overflow: auto
+        overflow-x: auto
     }
 
     .table-title {
@@ -1081,6 +1165,16 @@ th {
     .footer {
         padding: 36px 24px;
         margin: 0 ;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .footer-section1,
+    .footer-section2 {
+        margin: 0;
     }
 
     .upload-page,
