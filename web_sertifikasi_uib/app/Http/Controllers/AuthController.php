@@ -96,35 +96,67 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 
-    public function profile()
+public function profile()
     {
+        // 1. Cek Sesi Login
         if (!session()->has('auth_user')) {
             return redirect()->route('login.choose');
         }
 
         $authUser = session('auth_user');
+        $role = $authUser['role'];
+        $id = $authUser['id'];
 
+        // 2. Ambil data lengkap user dari database sesuai modelnya
+        $config = $this->types[$role] ?? null;
+        if (!$config) {
+            return redirect()->route('login.choose');
+        }
+        $user = $config['model']::find($id);
+
+        // 3. Ubah status role menjadi Bahasa Indonesia agar rapi di tampilan
+        $statusLabel = 'Umum';
+        if ($role === 'student') $statusLabel = 'Mahasiswa';
+        if ($role === 'lecturer') $statusLabel = 'Dosen';
+
+        // 4. Susun 6 data array sesuai urutan figma (Kiri dulu baru Kanan)
+        // Kolom Kiri: Nama, NPM, Email | Kolom Kanan: Prodi, No.HP, Status
         $profile = [
             [
                 'icon' => 'user',
                 'label' => 'Nama',
-                'value' => $authUser['name']
+                'value' => $user->nama ?? $user->name ?? '-'
+            ],
+            [
+                'icon' => 'id-card', // <--- Ubah jadi id-card
+                'label' => $role === 'lecturer' ? 'NIDN' : ($role === 'student' ? 'NPM' : 'ID'),
+                'value' => $user->npm ?? $user->nidn ?? '-'
             ],
             [
                 'icon' => 'mail',
                 'label' => 'Email',
-                'value' => $authUser['email']
+                'value' => $user->email ?? '-'
             ],
             [
-                'icon' => 'user-check',
-                'label' => 'Role',
-                'value' => ucfirst($authUser['role'])
+                'icon' => 'graduation-cap',
+                'label' => 'Prodi',
+                'value' => $user->prodi ?? '-'
+            ],
+            [
+                'icon' => 'phone',
+                'label' => 'No. HP',
+                'value' => $user->no_hp ?? '-'
+            ],
+            [
+                'icon' => 'user-round-check',
+                'label' => 'Status',
+                'value' => $statusLabel
             ],
         ];
 
         return view('pages.profile', [
             'profile' => $profile,
-            'registered' => [],
+            'registered' => [], // Nanti bisa diisi data seminar kelompok kalian
         ]);
     }
 

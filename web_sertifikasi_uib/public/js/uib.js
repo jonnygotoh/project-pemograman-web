@@ -112,3 +112,27 @@ async function changeMonth(type, month, year) {
 function toggleDropdown(id) {
     document.getElementById(id)?.classList.toggle('show');
 }
+
+// SWITCH PROFILE TAB
+function switchProfileTab(tab) {
+    // 1. Ambil elemen panel tabel
+    const seminarPanel = document.getElementById('profile-seminar-panel');
+    const sertifikasiPanel = document.getElementById('profile-sertifikasi-panel');
+
+    if (!seminarPanel || !sertifikasiPanel) return;
+
+    // 2. Sembunyikan atau tampilkan panel berdasarkan parameter 'tab'
+    seminarPanel.classList.toggle('hidden', tab !== 'seminar');
+    sertifikasiPanel.classList.toggle('hidden', tab !== 'sertifikasi');
+
+    // 3. Atur tombol mana yang sedang 'active' (berwarna)
+    const tabsContainer = document.querySelector('.registered-card .tabs');
+    if (tabsContainer) {
+        const buttons = tabsContainer.querySelectorAll('button');
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        // Tombol index [0] untuk seminar, [1] untuk sertifikasi
+        if (tab === 'seminar' && buttons[0]) buttons[0].classList.add('active');
+        if (tab === 'sertifikasi' && buttons[1]) buttons[1].classList.add('active');
+    }
+}
