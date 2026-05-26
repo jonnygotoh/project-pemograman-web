@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', [MainController::class, 'home'])->name('home');
 
@@ -38,3 +39,24 @@ Route::get('/profile', [AuthController::class, 'profile'])
 Route::view('/upload-payment', 'pages.upload-payment')
     ->name('upload.payment');
 
+Route::get('/admin', [AuthController::class, 'showLoginAdmin'])->name('login.admin');
+Route::post('/admin', [AuthController::class, 'loginAdmin'])->name('login.admin.process');
+
+Route::get('/logout/admin', [AuthController::class, 'logoutAdmin'])->name('logout.admin');
+
+// ADMIN DASHBOARD (sementara tanpa middleware dulu)
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+// Route::prefix('admin')->middleware('admin')->group(function () {
+
+//     Route::get('/dashboard', [AdminController::class, 'dashboard']);
+
+//     // SEMINAR
+//     Route::post('/seminar/store', [AdminController::class, 'seminarStore']);
+//     Route::post('/seminar/update/{id}', [AdminController::class, 'seminarUpdate']);
+//     Route::get('/seminar/delete/{id}', [AdminController::class, 'seminarDelete']);
+
+//     // SERTIFIKASI
+//     Route::post('/sertifikasi/store', [AdminController::class, 'sertifikasiStore']);
+//     Route::post('/sertifikasi/update/{id}', [AdminController::class, 'sertifikasiUpdate']);
+//     Route::get('/sertifikasi/delete/{id}', [AdminController::class, 'sertifikasiDelete']);
+// });

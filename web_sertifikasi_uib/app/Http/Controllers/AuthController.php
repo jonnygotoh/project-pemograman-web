@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use App\Models\UserUmum;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -95,8 +96,38 @@ class AuthController extends Controller
 
         return redirect()->route('home');
     }
+    
+    public function showLoginAdmin()
+    {
+        return view('auth.adminlogin');
+    }
 
-public function profile()
+    public function loginAdmin(Request $request)
+    {
+        $admin = Admin::where('username', $request->username)
+            ->where('password', $request->password)
+            ->first();
+
+        if (!$admin) {
+            return back()->with('error', 'Login gagal');
+        }
+
+        session([
+            'admin_id' => $admin->id,
+            'admin_name' => $admin->nama
+        ]);
+
+        return redirect('/admin/dashboard');
+    }
+    public function logoutAdmin()
+    {
+        session()->forget('admin_id');
+        session()->forget('admin_name');
+
+        return redirect('/login/admin');
+    }
+
+    public function profile()
     {
         // 1. Cek Sesi Login
         if (!session()->has('auth_user')) {
