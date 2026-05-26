@@ -118,7 +118,7 @@ class AuthController extends Controller
             [
                 'icon' => 'user-check',
                 'label' => 'Role',
-                'value' => $authUser['role']
+                'value' => ucfirst($authUser['role'])
             ],
         ];
 
