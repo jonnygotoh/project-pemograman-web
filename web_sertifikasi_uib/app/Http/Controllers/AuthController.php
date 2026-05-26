@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     private array $types = [
-        'student' => [
+        'Student' => [
             'label' => 'Mahasiswa',
             'model' => Mahasiswa::class,
             'identity' => ['npm', 'email'],
@@ -19,7 +19,7 @@ class AuthController extends Controller
             'note' => 'Login mahasiswa',
         ],
 
-        'lecturer' => [
+        'Lecturer' => [
             'label' => 'Dosen',
             'model' => Dosen::class,
             'identity' => ['nidn', 'email'],
@@ -27,7 +27,7 @@ class AuthController extends Controller
             'note' => 'Login dosen',
         ],
 
-        'public' => [
+        'Public' => [
             'label' => 'Umum',
             'model' => UserUmum::class,
             'identity' => ['email'],

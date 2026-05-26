@@ -44,11 +44,12 @@
 
                 <div id="accountMenu" class="account-dropdown">
                     <div class="account-name">
-                        {{ is_array($currentUser) ? $currentUser['name'] : ($currentUser->name ?? 'User') }}
-                    </div>
-                    <a href="{{ route('profile') }}">Profile</a>
-                    <a href="{{ route('logout') }}">Logout</a>
+                     <a href="{{ route('profile') }}">
+                     {{ is_array($currentUser) ? $currentUser['name'] : ($currentUser->name ?? 'User') }}
+                     </a>
                 </div>
+                     
+                    <a href="{{ route('logout') }}">Logout</a>
             </div>
         @else
             <a class="login-pill" href="{{ route('login.choose') }}">Masuk</a>

@@ -144,8 +144,7 @@ textarea {
     display: flex;
     gap: 10px;
     align-items: center;
-    padding: 10px;
-    font-weight: 800
+    font-weight: 800;
 }
 
 main {
