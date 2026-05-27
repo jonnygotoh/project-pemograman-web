@@ -23,7 +23,7 @@
     <div class="section-heading js-reveal">
         <span class="delay-1">Sertifikasi</span>
         <h2 class="delay-2">Daftar Sertifikasi</h2>
-        <p class="delay-3">Informasi jadwal, biaya, and pendaftaran sertifikasi.</p>
+        <div class="heading-line"></div>
     </div>
 
     <div class="view-toggle">
@@ -54,6 +54,7 @@
     <div class="section-heading js-reveal">
         <span class="delay-1">Seminar</span>
         <h2 class="delay-2">Daftar Seminar</h2>
+        <div class="heading-line"></div>
     </div>
 
     <div class="view-toggle">
