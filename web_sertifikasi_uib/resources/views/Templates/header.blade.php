@@ -2,11 +2,10 @@
     $isLanding = $isLanding ?? false;
 @endphp
 
-<header class="navbar">
+<header class="navbar no-select">
 
     <a href="{{ $isLanding ? '#home' : route('home') }}"
        class="brand {{ $isLanding ? 'js-scroll-link' : '' }}">
-
         <img src="{{ asset('images/logo-uib.png') }}" alt="UIB">
         <span>UNIVERSITAS<br>INTERNASIONAL<br>BATAM</span>
     </a>
@@ -26,9 +25,9 @@
 
         @else
 
-            <a href="{{ route('home') }}#home">Beranda</a>
-            <a href="{{ route('home') }}#sertifikasi">Sertifikasi</a>
-            <a href="{{ route('home') }}#seminar">Seminar</a>
+            <a class="js-scroll-link" href="{{ route('home') }}#home">Beranda</a>
+            <a class="js-scroll-link" href="{{ route('home') }}#sertifikasi">Sertifikasi</a>
+            <a class="js-scroll-link" href="{{ route('home') }}#seminar">Seminar</a>
 
         @endif
 
@@ -44,12 +43,13 @@
 
                 <div id="accountMenu" class="account-dropdown">
                     <div class="account-name">
-                     <a href="{{ route('profile') }}">
-                     {{ is_array($currentUser) ? $currentUser['name'] : ($currentUser->name ?? 'User') }}
-                     </a>
-                </div>
+                        <a href="{{ route('profile') }}">
+                            {{ is_array($currentUser) ? $currentUser['name'] : ($currentUser->name ?? 'User') }}
+                        </a>
+                    </div>
                      
                     <a href="{{ route('logout') }}">Logout</a>
+                </div>
             </div>
         @else
             <a class="login-pill" href="{{ route('login.choose') }}">Masuk</a>

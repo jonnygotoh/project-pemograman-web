@@ -4,28 +4,26 @@
 
 @section('content')
 
-<section id="home" class="section hero-section">
-    <div class="hero-text">
-        <h1>Selamat Datang</h1>
-        <h2>Universitas Internasional Batam</h2>
-        <p>
+<section id="home" class="section hero-section loaded-active no-select">
+    <div class="hero-text js-reveal">
+        <h1 class="delay-1">Selamat Datang</h1>
+        <h2 class="delay-2">Universitas Internasional Batam</h2>
+        <p class="delay-3">
             Universitas dengan standar mutu internasional yang menghasilkan lulusan,
             ilmu pengetahuan, teknologi dan seni yang mampu memenuhi perubahan dinamika global.
         </p>
     </div>
 
-    <div class="hero-image">
-        <img src="{{ asset('images/education.png') }}" alt="Education Illustration">
+    <div class="hero-image js-reveal-img">
+        <img src="{{ asset('images/education.png') }}" alt="Education Illustration" class="delay-4">
     </div>
 </section>
 
-{{-- SERTIFIKASI --}}
 <section id="sertifikasi" class="section data-section">
-
-    <div class="section-heading">
-        <span>Sertifikasi</span>
-        <h2>Daftar Sertifikasi</h2>
-        <p>Informasi jadwal, biaya, dan pendaftaran sertifikasi.</p>
+    <div class="section-heading js-reveal">
+        <span class="delay-1">Sertifikasi</span>
+        <h2 class="delay-2">Daftar Sertifikasi</h2>
+        <p class="delay-3">Informasi jadwal, biaya, and pendaftaran sertifikasi.</p>
     </div>
 
     <div class="view-toggle">
@@ -44,7 +42,7 @@
 
     <div id="sertifikasi-table" class="view-panel hidden">
         @include('pages.partials.table', [
-            'pageTitle' => 'Sertifikasi',
+             'pageTitle' => 'Sertifikasi',
             'type' => 'sertifikasi',
             'columns' => ['Nama', 'Batch', 'Periode', 'Waktu', 'Biaya'],
             'rows' => $certificationRows
@@ -52,13 +50,10 @@
     </div>
 </section>
 
-{{-- SEMINAR --}}
 <section id="seminar" class="section data-section">
-
-    <div class="section-heading">
-        <span>Seminar</span>
-        <h2>Daftar Seminar</h2>
-
+    <div class="section-heading js-reveal">
+        <span class="delay-1">Seminar</span>
+        <h2 class="delay-2">Daftar Seminar</h2>
     </div>
 
     <div class="view-toggle">

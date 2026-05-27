@@ -1,6 +1,7 @@
 <footer class="footer">
        <div class="footer-grid">
-       <section class="footer-section1">            <div class="footer-brand">
+       <section class="footer-section1">            
+       <div class="footer-brand">
                 <img src="{{ asset('images/logo-uib.png') }}" alt="UIB">
                 <span>UNIVERSITAS<br>INTERNASIONAL<br>BATAM</span>
             </div>

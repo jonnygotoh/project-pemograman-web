@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
 
-      <script src="https://unpkg.com/lucide@latest"></script>
-      <link rel="stylesheet" href="{{ asset('css/uib.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/uib.css') }}">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
     @include('templates.header')
-<!-- membuat halaman yang tidak perlu di ubah -->
 
     <main>
         @yield('content')
@@ -19,6 +18,7 @@
 
     @include('templates.footer')
 
-<script src="{{ asset('js/uib.js') }}" defer></script>        
+<script src="{{ asset('js/uib.js') }}" defer></script>
+
 </body>
 </html>
