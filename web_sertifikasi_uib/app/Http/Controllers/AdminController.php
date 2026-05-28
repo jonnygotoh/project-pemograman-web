@@ -4,21 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Models\Seminar;
 use App\Models\Sertifikasi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        $seminars = \App\Models\Seminar::all();
-        $sertifikasis = \App\Models\Sertifikasi::all();
+        $month = $request->month ?? 5;
+        $year = $request->year ?? 2026;
 
-        return view('pages.dashboardAdmin', compact('seminars', 'sertifikasis'));    
+        $data = [
+            'month' => $month,
+            'year' => $year,
+            'seminarRows' => \App\Models\Seminar::all(),
+            'certificationRows' => \App\Models\Sertifikasi::all(),
+            'seminarCalendar' => $this->generateCalendar($month, $year, 'seminar'),
+            'certificationCalendar' => $this->generateCalendar($month, $year, 'sertifikasi'),
+        ];
+
+        return view('pages.dashboardAdmin', $data);
     }
-    
-    // =====================
-    // MANAJEMEN SEMINAR
-    // =====================
+
+    private function seminarRows() {
+        return Seminar::all();
+    }
+
+    private function certificationRows() {
+        return Sertifikasi::all();
+    }
+
+    private function generateCalendar($month, $year, $type) {
+        $days = [];
+        $date = Carbon::create($year, $month, 1);
+        $daysInMonth = $date->daysInMonth;
+        $startDay = $date->dayOfWeek;
+
+        for ($i = 0; $i < $startDay; $i++) {
+            $days[] = ['date' => '', 'muted' => true, 'events' => []];
+        }
+
+        for ($i = 1; $i <= $daysInMonth; $i++) {
+            $hasEvent = in_array($i, $type === 'seminar' ? [10, 11, 17, 18] : [7, 12, 23, 26]);
+            $days[] = [
+                'date' => $i,
+                'events' => $hasEvent ? [['title' => ucfirst($type) . ' Event', 'url' => '#']] : []
+            ];
+        }
+        return $days;
+    }
 
     public function seminarStore(Request $request)
     {
@@ -31,7 +65,7 @@ class AdminController extends Controller
         ]);
 
         // Setelah sukses simpan, lempar kembali ke home dengan pesan sukses
-        return redirect()->route('home')->with('success', 'Data Seminar berhasil ditambahkan!');
+        return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil ditambahkan!');
     }
 
     public function seminarUpdate(Request $request, $id)
@@ -39,7 +73,7 @@ class AdminController extends Controller
         Seminar::find($id)->update($request->all());
 
         // Setelah sukses update, lempar kembali ke home
-        return redirect()->route('home')->with('success', 'Data Seminar berhasil diubah!');
+        return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil diubah!');
     }
 
     public function seminarDelete($id)
@@ -47,7 +81,7 @@ class AdminController extends Controller
         Seminar::find($id)->delete();
 
         // Setelah sukses hapus, lempar kembali ke home
-        return redirect()->route('home')->with('success', 'Data Seminar berhasil dihapus!');
+        return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil dihapus!');
     }
 
     // =====================
@@ -70,20 +104,20 @@ class AdminController extends Controller
             'biaya_umum' => $request->biaya_umum,
         ]);
 
-        return redirect()->route('home')->with('success', 'Data Sertifikasi berhasil ditambahkan!');
+        return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil ditambahkan!');
     }
 
     public function sertifikasiUpdate(Request $request, $id)
     {
         Sertifikasi::find($id)->update($request->all());
 
-        return redirect()->route('home')->with('success', 'Data Sertifikasi berhasil diubah!');
+        return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil diubah!');
     }
 
     public function sertifikasiDelete($id)
     {
         Sertifikasi::find($id)->delete();
 
-        return redirect()->route('home')->with('success', 'Data Sertifikasi berhasil dihapus!');
+        return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil dihapus!');
     }
 }

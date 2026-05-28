@@ -51,6 +51,16 @@
                     <a href="{{ route('logout') }}">Logout</a>
                 </div>
             </div>
+
+       @elseif(session()->has('admin_id'))
+            <div class="account-wrap">
+                <button class="account-btn" onclick="toggleDropdown('adminMenu')">
+                    <i data-lucide="shield-check"></i> Admin
+                </button>
+                <div id="adminMenu" class="account-dropdown">
+                    <a href="{{ route('logout.admin') }}" style="color: #dc3545;">Logout Admin</a>
+                </div>
+            </div>
         @else
             <a class="login-pill" href="{{ route('login.choose') }}">Masuk</a>
         @endif

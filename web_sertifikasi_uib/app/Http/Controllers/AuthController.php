@@ -117,7 +117,7 @@ class AuthController extends Controller
             'admin_name' => $admin->nama
         ]);
 
-        return redirect()->route('home');
+        return redirect()->route('admin.dashboard');
     }
     public function logoutAdmin()
     {
