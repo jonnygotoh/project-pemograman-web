@@ -13,7 +13,7 @@
         </div>
     @endif
 
-    <form class="login-card" method="POST" action="/login/admin">
+    <form class="login-card" method="POST" action="/admin">
         @csrf
 
         <div class="input-icon">

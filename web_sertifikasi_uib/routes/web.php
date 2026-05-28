@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
@@ -44,19 +45,17 @@ Route::post('/admin', [AuthController::class, 'loginAdmin'])->name('login.admin.
 
 Route::get('/logout/admin', [AuthController::class, 'logoutAdmin'])->name('logout.admin');
 
-// ADMIN DASHBOARD (sementara tanpa middleware dulu)
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
-// Route::prefix('admin')->middleware('admin')->group(function () {
+Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
 
-//     Route::get('/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-//     // SEMINAR
-//     Route::post('/seminar/store', [AdminController::class, 'seminarStore']);
-//     Route::post('/seminar/update/{id}', [AdminController::class, 'seminarUpdate']);
-//     Route::get('/seminar/delete/{id}', [AdminController::class, 'seminarDelete']);
+    // SEMINAR
+    Route::post('/seminar/store', [AdminController::class, 'seminarStore']);
+    Route::post('/seminar/update/{id}', [AdminController::class, 'seminarUpdate']);
+    Route::get('/seminar/delete/{id}', [AdminController::class, 'seminarDelete']);
 
-//     // SERTIFIKASI
-//     Route::post('/sertifikasi/store', [AdminController::class, 'sertifikasiStore']);
-//     Route::post('/sertifikasi/update/{id}', [AdminController::class, 'sertifikasiUpdate']);
-//     Route::get('/sertifikasi/delete/{id}', [AdminController::class, 'sertifikasiDelete']);
-// });
+    // SERTIFIKASI
+    Route::post('/sertifikasi/store', [AdminController::class, 'sertifikasiStore']);
+    Route::post('/sertifikasi/update/{id}', [AdminController::class, 'sertifikasiUpdate']);
+    Route::get('/sertifikasi/delete/{id}', [AdminController::class, 'sertifikasiDelete']);
+});

@@ -105,11 +105,11 @@ class AuthController extends Controller
     public function loginAdmin(Request $request)
     {
         $admin = Admin::where('username', $request->username)
-            ->where('password', $request->password)
-            ->first();
+        ->where('password', $request->password)
+        ->first();
 
         if (!$admin) {
-            return back()->with('error', 'Login gagal');
+            return back()->with('error', 'Username atau password salah');
         }
 
         session([
@@ -117,14 +117,14 @@ class AuthController extends Controller
             'admin_name' => $admin->nama
         ]);
 
-        return redirect('/admin/dashboard');
+        return redirect()->route('home');
     }
     public function logoutAdmin()
     {
         session()->forget('admin_id');
         session()->forget('admin_name');
 
-        return redirect('/login/admin');
+        return redirect('');
     }
 
     public function profile()

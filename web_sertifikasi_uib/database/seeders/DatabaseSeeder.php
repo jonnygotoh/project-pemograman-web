@@ -6,6 +6,8 @@ use Illuminate\Database\Seeder;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use App\Models\UserUmum;
+use App\Models\Admin;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -46,6 +48,16 @@ class DatabaseSeeder extends Seeder
                 'password' => '1234',
                 'no_hp' => '08222222222',
                 'alamat' => 'Batam',
+            ]
+        );
+
+        // Seeder Admin
+        Admin::updateOrCreate(
+            ['username' => 'admin'],
+            [
+                'nama' => 'Administrator',
+                'email' => 'admin@gmail.com',
+                'password' => 'admin123',
             ]
         );
     }

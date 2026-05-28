@@ -13,9 +13,11 @@ class MainController extends Controller
     {
         $month = $request->month ?? 5;
         $year = $request->year ?? 2026;
-
         $data = $this->landingData($month, $year);
 
+        if (session()->has('admin_id')) {
+            return view('pages.dashboardAdmin', $data);
+        }
         return view('pages.home', $data);
     }
 
@@ -32,11 +34,6 @@ class MainController extends Controller
             'year' => $year,
             'calendarDays' => $calendarDays
         ]);
-    }
-
-    public function mahasiswa()
-    {
-        return view('mahasiswa.index');
     }
 
     private function landingData($month, $year)

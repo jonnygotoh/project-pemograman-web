@@ -34,7 +34,7 @@
         @php
             $currentUser = auth()->check() ? auth()->user() : session('auth_user');
         @endphp
-
+        
         @if($currentUser)
             <div class="account-wrap">
                 <button class="account-btn" onclick="toggleDropdown('accountMenu')">
