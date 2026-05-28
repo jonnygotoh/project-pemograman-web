@@ -50,12 +50,16 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // SEMINAR
-    Route::post('/seminar/store', [AdminController::class, 'seminarStore']);
+    Route::get('/seminar/create', [AdminController::class, 'seminarCreate'])->name('admin.seminar.create');
+    Route::get('/seminar/edit/{id}', [AdminController::class, 'seminarEdit']);
+    Route::post('/seminar/store', [AdminController::class, 'seminarStore'])->name('admin.seminar.store');
     Route::post('/seminar/update/{id}', [AdminController::class, 'seminarUpdate']);
     Route::get('/seminar/delete/{id}', [AdminController::class, 'seminarDelete']);
 
     // SERTIFIKASI
-    Route::post('/sertifikasi/store', [AdminController::class, 'sertifikasiStore']);
+    Route::get('/sertifikasi/create', [AdminController::class, 'sertifikasiCreate'])->name('admin.sertifikasi.create');
+    Route::get('/sertifikasi/edit/{id}', [AdminController::class, 'sertifikasiEdit']);
+    Route::post('/sertifikasi/store', [AdminController::class, 'sertifikasiStore'])->name('admin.sertifikasi.store');
     Route::post('/sertifikasi/update/{id}', [AdminController::class, 'sertifikasiUpdate']);
     Route::get('/sertifikasi/delete/{id}', [AdminController::class, 'sertifikasiDelete']);
 });

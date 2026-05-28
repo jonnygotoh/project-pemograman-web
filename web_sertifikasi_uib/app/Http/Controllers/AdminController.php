@@ -34,24 +34,57 @@ class AdminController extends Controller
         return Sertifikasi::all();
     }
 
-    private function generateCalendar($month, $year, $type) {
+    private function generateCalendar($month, $year, $type)
+    {
         $days = [];
         $date = Carbon::create($year, $month, 1);
         $daysInMonth = $date->daysInMonth;
         $startDay = $date->dayOfWeek;
+
+        // Ambil semua event berdasarkan bulan dan tahun yang dipilih
+        if ($type === 'seminar') {
+            $events = Seminar::whereMonth('tanggal', $month)
+                            ->whereYear('tanggal', $year)
+                            ->get();
+        } else {
+            $events = Sertifikasi::whereMonth('waktu', $month)
+                                ->whereYear('waktu', $year)
+                                ->get();
+        }
+
+        // Buat pemetaan tanggal ke event
+        $eventMap = [];
+        foreach ($events as $event) {
+            $eventDate = Carbon::parse($type === 'seminar' ? $event->tanggal : $event->waktu)->day;
+            $eventMap[$eventDate][] = [
+                'title' => $event->nama,
+                'url' => '#'
+            ];
+        }
 
         for ($i = 0; $i < $startDay; $i++) {
             $days[] = ['date' => '', 'muted' => true, 'events' => []];
         }
 
         for ($i = 1; $i <= $daysInMonth; $i++) {
-            $hasEvent = in_array($i, $type === 'seminar' ? [10, 11, 17, 18] : [7, 12, 23, 26]);
             $days[] = [
                 'date' => $i,
-                'events' => $hasEvent ? [['title' => ucfirst($type) . ' Event', 'url' => '#']] : []
+                'events' => $eventMap[$i] ?? [] // Mengambil event dari map jika ada
             ];
         }
+
         return $days;
+    }
+// =====================
+// SERTIFIKASI
+// =====================
+
+    public function seminarCreate() {
+        return view('crud.seminar');
+    }
+    public function seminarEdit($id) {
+        $item = Seminar::findOrFail($id);
+        return view('crud.seminar', compact('item'));
     }
 
     public function seminarStore(Request $request)
@@ -85,13 +118,18 @@ class AdminController extends Controller
     }
 
     // =====================
-    // MANAJEMEN SERTIFIKASI
+    // SERTIFIKASI
     // =====================
 
-    // =====================
-    // MANAJEMEN SERTIFIKASI (Sudah Sinkron dengan Migration Kamu)
-    // =====================
+    public function sertifikasiCreate() {
+        return view('crud.sertifikasi');
+    }
 
+    public function sertifikasiEdit($id) {
+        $item = Sertifikasi::findOrFail($id);
+        return view('crud.sertifikasi', compact('item'));
+    }
+    
     public function sertifikasiStore(Request $request)
     {
         Sertifikasi::create([

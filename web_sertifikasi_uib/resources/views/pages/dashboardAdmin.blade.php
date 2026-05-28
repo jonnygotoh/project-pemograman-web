@@ -4,9 +4,8 @@
 
 @section('content')
 
-{{-- Info Bar Admin --}}
 <div style="background: #2d3748; color: #fff; padding: 15px; text-align: center; margin-top: 80px;">
-    <strong>Mode Admin:</strong> Anda sedang melihat halaman manajemen. <a href="{{ route('logout.admin') }}" style="color: #ff9999; margin-left: 20px;">Logout Admin</a>
+    <strong>Mode Admin:</strong> Anda sedang melihat halaman manajemen.</a>
 </div>
 
 <section id="home" class="section hero-section loaded-active no-select">
@@ -22,7 +21,7 @@
         <span class="delay-1">Sertifikasi</span>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2 class="delay-2">Daftar Sertifikasi</h2>
-            <button onclick="openModalTambah('sertifikasi')" class="btn-primary" style="padding: 10px 20px; background: #2563eb; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+            <button onclick="window.location.href='{{ route('admin.sertifikasi.create') }}'" class="btn-primary" style="...">
                 + Tambah Sertifikasi
             </button>
         </div>
@@ -39,7 +38,7 @@
         <span class="delay-1">Seminar</span>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2 class="delay-2">Daftar Seminar</h2>
-            <button onclick="openModalTambah('seminar')" class="btn-primary" style="padding: 10px 20px; background: #2563eb; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+            <button onclick="window.location.href='{{ route('admin.seminar.create') }}'" class="btn-primary" style="...">
                 + Tambah Seminar
             </button>
         </div>
