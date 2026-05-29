@@ -58,7 +58,94 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => { isClickScroll = false; }, 1000);
         });
     });
+
+    
 });
+
+// Date Picker Calendar
+document.addEventListener("DOMContentLoaded", function () {
+    initDatePicker("seminar");
+    initDatePicker("sertifikasi");
+});
+
+function initDatePicker(type) {
+    const btn = document.getElementById(`${type}DatePickerBtn`);
+    const dropdown = document.getElementById(`${type}DatePickerDropdown`);
+    const monthYearText = document.getElementById(`${type}MonthYear`);
+    const monthSelect = document.getElementById(`${type}MonthSelect`);
+    const yearSelect = document.getElementById(`${type}YearSelect`);
+    const goBtn = document.getElementById(`${type}GoDateBtn`);
+
+    if (!btn || !dropdown || !monthYearText || !monthSelect || !yearSelect || !goBtn) return;
+
+    const monthNames = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+
+    let currentMonth = parseInt(btn.dataset.month);
+    let currentYear = parseInt(btn.dataset.year);
+
+    monthYearText.textContent = `${monthNames[currentMonth - 1]} ${currentYear}`;
+    monthSelect.value = currentMonth;
+
+    const realCurrentYear = new Date().getFullYear();
+
+    yearSelect.innerHTML = "";
+
+    for (let year = realCurrentYear - 1; year <= realCurrentYear + 1; year++) {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = year;
+        option.selected = year === currentYear;
+        yearSelect.appendChild(option);
+    }
+
+    btn.onclick = function (e) {
+        e.stopPropagation();
+        dropdown.classList.toggle("show");
+    };
+
+    goBtn.onclick = function (e) {
+        e.stopPropagation();
+
+        const selectedMonth = parseInt(monthSelect.value);
+        const selectedYear = parseInt(yearSelect.value);
+
+        changeMonth(type, selectedMonth, selectedYear);
+        dropdown.classList.remove("show");
+    };
+
+    dropdown.onclick = function (e) {
+        e.stopPropagation();
+    };
+}
+
+document.addEventListener("click", function () {
+    document.querySelectorAll(".calendar-picker-dropdown.show").forEach(function (dropdown) {
+        dropdown.classList.remove("show");
+    });
+});
+
+// Memuat data kalender baru secara AJAX
+async function changeMonth(type, month, year) {
+    try {
+        const response = await fetch(`/calendar/${type}?month=${month}&year=${year}`);
+        const html = await response.text();
+
+        const el = document.getElementById(`${type}-calendar`);
+        if (!el) return;
+
+        el.innerHTML = html;
+
+        initDatePicker(type);
+
+        window.lucide?.createIcons();
+
+    } catch (error) {
+        console.error("Gagal memuat kalender:", error);
+    }
+}
 
 // Mengatur class 'active' pada menu yang sedang terpilih
 function setActiveNav(hash) {
@@ -83,19 +170,19 @@ function switchView(type, view) {
     });
 }
 
-// Memuat data kalender baru secara AJAX
-async function changeMonth(type, month, year) {
-    try {
-        const response = await fetch(`/calendar/${type}?month=${month}&year=${year}`);
-        const html = await response.text();
-        const el = document.getElementById(`${type}-calendar`);
-        if (!el) return;
-        el.innerHTML = html;
-        window.lucide?.createIcons(); 
-    } catch (error) {
-        console.error('Gagal memuat kalender:', error);
-    }
-}
+// // Memuat data kalender baru secara AJAX
+// async function changeMonth(type, month, year) {
+//     try {
+//         const response = await fetch(`/calendar/${type}?month=${month}&year=${year}`);
+//         const html = await response.text();
+//         const el = document.getElementById(`${type}-calendar`);
+//         if (!el) return;
+//         el.innerHTML = html;
+//         window.lucide?.createIcons(); 
+//     } catch (error) {
+//         console.error('Gagal memuat kalender:', error);
+//     }
+// }
 
 function applyPicker(type) {
     const month = document.getElementById(`m-${type}`).value;
@@ -140,4 +227,8 @@ window.addEventListener('click', function(e) {
 
     if (navMenu && !navMenu.contains(e.target) && !menuBtn?.contains(e.target)) navMenu.classList.remove('show');
     if (accountMenu && !accountMenu.contains(e.target) && !accountBtn?.contains(e.target)) accountMenu.classList.remove('show');
+
+
+    
+
 });

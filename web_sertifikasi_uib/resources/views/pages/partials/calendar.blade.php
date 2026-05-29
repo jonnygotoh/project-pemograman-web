@@ -7,18 +7,32 @@
 
     $nextMonth = $month == 12 ? 1 : $month + 1;
     $nextYear = $month == 12 ? $year + 1 : $year;
+
+    
+    $currentYear = now()->year;
+
+    $isPrevDisabled =
+        ($year <= ($currentYear - 1) && $month <= 1);
+
+    $isNextDisabled =
+        ($year >= ($currentYear + 1) && $month >= 12);
 @endphp
 
 <div class="calendar-card">
 
     <div class="calendar-head">
 
-        <button type="button"
-            onclick="changeMonth('{{ $type }}', {{ $prevMonth }}, {{ $prevYear }})">
+        <button
+            type="button"
+            {{ $isPrevDisabled ? 'disabled' : '' }}
+            @if(!$isPrevDisabled)
+                onclick="changeMonth('{{ $type }}', {{ $prevMonth }}, {{ $prevYear }})"
+            @endif
+        >
             <i data-lucide="chevron-left"></i>
         </button>
 
-        <div class="calendar-picker-wrapper" style="position: relative;">
+        <!-- <div class="calendar-picker-wrapper" style="position: relative;">
             <button type="button" class="btn-month-year" onclick="toggleDropdown('picker-{{ $type }}')">
                 {{ \Carbon\Carbon::create($year, $month, 1)->format('F Y') }}
                 <i data-lucide="chevron-down"></i>
@@ -38,10 +52,65 @@
                     @endforeach
                 </select>
             </div>
+        </div> -->
+
+        <div class="calendar-date-picker">
+
+            <button type="button" class="calendar-picker-btn" id="{{ $type }}DatePickerBtn" data-month="{{ $month }}"
+                data-year="{{ $year }}">
+                <span id="{{ $type }}MonthYear"></span>
+                <span class="calendar-picker-arrow">▾</span>
+            </button>
+
+            <div class="calendar-picker-dropdown" id="{{ $type }}DatePickerDropdown">
+
+                <div class="calendar-picker-group">
+                    <label>Bulan</label>
+
+                    <select id="{{ $type }}MonthSelect">
+                        @foreach([
+                            1 => 'Januari',
+                            2 => 'Februari',
+                            3 => 'Maret',
+                            4 => 'April',
+                            5 => 'Mei',
+                            6 => 'Juni',
+                            7 => 'Juli',
+                            8 => 'Agustus',
+                            9 => 'September',
+                            10 => 'Oktober',
+                            11 => 'November',
+                            12 => 'Desember'
+                        ] as $monthValue => $monthName)
+
+                            <option value="{{ $monthValue }}">
+                                {{ $monthName }}
+                            </option>
+
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="calendar-picker-group">
+                    <label>Tahun</label>
+                    <select id="{{ $type }}YearSelect"></select>
+                </div>
+
+                <button type="button" class="calendar-go-btn" id="{{ $type }}GoDateBtn">
+                    Pilih Tanggal
+                </button>
+
+            </div>
+
         </div>
 
-        <button type="button"
-            onclick="changeMonth('{{ $type }}', {{ $nextMonth }}, {{ $nextYear }})">
+        <button
+            type="button"
+            {{ $isNextDisabled ? 'disabled' : '' }}
+            @if(!$isNextDisabled)
+                onclick="changeMonth('{{ $type }}', {{ $nextMonth }}, {{ $nextYear }})"
+            @endif
+        >
             <i data-lucide="chevron-right"></i>
         </button>
 
