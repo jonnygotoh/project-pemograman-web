@@ -44,7 +44,7 @@
         @include('pages.partials.table', [
              'pageTitle' => 'Sertifikasi',
             'type' => 'sertifikasi',
-            'columns' => ['Nama', 'Batch', 'Periode', 'Waktu', 'Biaya'],
+            'columns' => ['No', 'Nama Sertifikasi', 'Periode Pendaftaran', 'Tanggal Pelatihan', 'Tanggal Ujian', 'Biaya Pendaftaran', 'Jumlah Pendaftar'],
             'rows' => $certificationRows
         ])
     </div>
@@ -76,7 +76,7 @@
         @include('pages.partials.table', [
             'pageTitle' => 'Seminar',
             'type' => 'seminar',
-            'columns' => ['Nama', 'Periode', 'Tanggal', 'Waktu', 'Tipe'],
+            'columns' => ['No', 'Nama Seminar', 'Periode Pendaftaran', 'Tanggal Seminar', 'Waktu Seminar', 'Biaya Pendaftaran', 'Jumlah Pendaftar'],
             'rows' => $seminarRows
         ])
     </div>

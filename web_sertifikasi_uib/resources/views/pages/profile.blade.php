@@ -50,7 +50,7 @@
         <div id="profile-seminar-panel" class="responsive-table">
             <table>
                 <thead>
-                    <tr><th>No</th><th>Nama Seminar</th><th>Status Pembayaran</th><th>Keterangan</th><th>Sertifikat</th><th>Aksi</th></tr>
+                    <tr><th>No</th><th>Nama Seminar</th><th>Tanggal</th><th>Status</th><th>Sertifikat</th><th>Catatan</th><th>Aksi</th></tr>
                 </thead>
                 <tbody>
                     @forelse($registered ?? [] as $i => $item)
@@ -75,7 +75,7 @@
         <div id="profile-sertifikasi-panel" class="responsive-table hidden">
             <table>
                 <thead>
-                    <tr><th>No</th><th>Nama Sertifikasi</th><th>Status Pembayaran</th><th>Keterangan</th><th>Sertifikat</th><th>Aksi</th></tr>
+                    <tr><th>No</th><th>Nama Sertifikasi</th><th>Tanggal</th><th>Skor</th><th>Status</th><th>Catatan</th><th>Aksi</th></tr>
                 </thead>
                 <tbody>
                     {{-- Nanti datanya bisa diganti dengan variabel dari Controller, misal: $registeredSertifikasi --}}
