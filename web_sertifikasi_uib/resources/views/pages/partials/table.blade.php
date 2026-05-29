@@ -32,7 +32,10 @@ $rows = $rows ?? [];
                 @foreach($rows as $row)
                     <tr>
                         @foreach($columns as $col)
-                            <td>{{ data_get($row, $col) }}</td>
+                            @php
+                                $dbColumn = strtolower($col); 
+                            @endphp
+                            <td>{{ ucfirst($row->$dbColumn ?? '-') }}</td>
                         @endforeach
                     </tr>
                 @endforeach

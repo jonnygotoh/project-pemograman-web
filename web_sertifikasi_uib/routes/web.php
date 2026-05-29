@@ -28,8 +28,20 @@ Route::get('login/umum', [AuthController::class, 'showLoginForm'])
     ->defaults('type', 'public')
     ->name('login.public');
 
+Route::get('register/umum', [AuthController::class, 'showRegisterForm'])->name('register.public');
+
+Route::post('register/process', [AuthController::class, 'registerPublic'])->name('register.process');
+
 Route::post('login/process', [AuthController::class, 'authenticate'])
     ->name('login.process');
+
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
+
+Route::post('/forgot-password', [AuthController::class, 'checkEmail'])->name('password.check');
+
+Route::get('/reset-password/{email}', [AuthController::class, 'showResetForm'])->name('password.reset.form');
+
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.reset.process');
 
 Route::get('/logout', [AuthController::class, 'logout'])
     ->name('logout');

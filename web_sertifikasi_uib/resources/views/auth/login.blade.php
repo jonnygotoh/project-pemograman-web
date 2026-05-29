@@ -5,6 +5,11 @@
 <section class="login-page">
     <h1>{{ $title ?? 'Masuk Umum' }}</h1>
     
+@if(session('success'))
+    <div class="alert-success" style="padding: 10px; background: #d4edda; color: #155724; border-radius: 5px; margin-bottom: 15px;">
+        {{ session('success') }}
+    </div>
+@endif
 
     <form class="login-card" method="POST" action="{{ $action ?? route('login.process') }}">
         @csrf
@@ -29,8 +34,8 @@
 
         @if(($type ?? 'public') === 'public')
             <div class="login-links">
-                <span>Belum punya akun? <a href="#">Daftar disini</a></span>
-                <a href="#">Lupa Password</a>
+                <span>Belum punya akun? <a href="{{ route('register.public') }}">Daftar disini</a></span>
+                <a href="{{ route('password.forgot') }}">Lupa Password</a>
             </div>
         @endif
 

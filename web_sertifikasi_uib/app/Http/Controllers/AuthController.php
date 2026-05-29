@@ -127,6 +127,36 @@ class AuthController extends Controller
         return redirect('');
     }
 
+    // Menampilkan halaman registrasi
+    public function showRegisterForm()
+    {
+        return view('auth.umumregister', [
+            'title' => 'Daftar Akun Umum',
+            'type' => 'public'
+        ]);
+    }
+
+    // Memproses input registrasi
+    public function registerPublic(Request $request)
+    {
+        $request->validate([
+            'nama'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:user_umum,email',
+            'password' => 'required|min:6',
+            'no_hp'    => 'nullable|string',
+        ]);
+
+        UserUmum::create([
+            'nama'     => $request->nama,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password), // Hash password agar aman
+            'no_hp'    => $request->no_hp,
+        ]);
+
+        return redirect()->route('login.public')
+                        ->with('success', 'Akun berhasil dibuat, silakan login.');
+    }
+
     public function profile()
     {
         // 1. Cek Sesi Login
@@ -189,6 +219,37 @@ class AuthController extends Controller
             'profile' => $profile,
             'registered' => [], // Nanti bisa diisi data seminar kelompok kalian
         ]);
+    }
+
+    public function showForgotPasswordForm() {
+        return view('pages.forgot-password', ['title' => 'Lupa Password']);
+    }
+
+    public function checkEmail(Request $request) {
+        $request->validate(['email' => 'required|email']);
+        $user = UserUmum::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'Email tidak ditemukan.']);
+        }
+
+        return redirect()->route('password.reset.form', ['email' => $user->email]);
+    }
+
+    public function showResetForm($email) {
+        return view('pages.reset-password', ['email' => $email]);
+    }
+
+    public function resetPassword(Request $request) {
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|min:6'
+        ]);
+
+        UserUmum::where('email', $request->email)
+                ->update(['password' => Hash::make($request->password)]);
+
+        return redirect()->route('login.public')->with('success', 'Password berhasil diubah!');
     }
 
     public function logout()

@@ -23,16 +23,7 @@
     <div class="section-heading js-reveal">
         <span class="delay-1">Sertifikasi</span>
         <h2 class="delay-2">Daftar Sertifikasi</h2>
-        <div class="heading-line">
-            @foreach($certificationRows as $sertif)
-                <div class="card">
-                    <h3>{{ $sertif->nama }}</h3>
-                    <p>Periode: {{ $sertif->periode }}</p>
-                    <p>Waktu: {{ $sertif->waktu }}</p>
-                    <p>Biaya: Rp{{ number_format($sertif->biaya_mahasiswa, 0, ',', '.') }}</p>
-                </div>
-            @endforeach
-        </div>
+        <div class="heading-line"></div>
     </div>
 
     <div class="view-toggle">
@@ -63,16 +54,8 @@
     <div class="section-heading js-reveal">
         <span class="delay-1">Seminar</span>
         <h2 class="delay-2">Daftar Seminar</h2>
-        <div class="heading-line">
-           @foreach($seminarRows as $seminar)
-                <div class="card">
-                    <h3>{{ $seminar->nama }}</h3>
-                    <p>Tanggal: {{ $seminar->tanggal }}</p>
-                    <p>Periode: {{ $seminar->periode }}</p>
-                    <span class="badge">{{ $seminar->tipe }}</span>
-                </div>
-            @endforeach
-        </div>
+        <div class="heading-line"> </div>
+        <div class="card-grid"></div>
     </div>
 
     <div class="view-toggle">
