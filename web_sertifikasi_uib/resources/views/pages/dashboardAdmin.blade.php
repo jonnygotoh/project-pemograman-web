@@ -144,24 +144,6 @@
 
     <div class="heading-line"></div>
 
-</div>
-
-            <button
-                onclick="
-                    window.location.href=
-                    '{{ route('admin.sertifikasi.create') }}'
-                "
-                class="btn-primary"
-            >
-                + Tambah Sertifikasi
-            </button>
-
-        </div>
-
-        <div class="heading-line"></div>
-
-    </div>
-
     <!-- CALENDAR -->
     <div id="sertifikasi-calendar" class="view-panel">
 
