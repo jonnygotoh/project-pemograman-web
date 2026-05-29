@@ -97,6 +97,18 @@ async function changeMonth(type, month, year) {
     }
 }
 
+function applyPicker(type) {
+    const month = document.getElementById(`m-${type}`).value;
+    const year = document.getElementById(`y-${type}`).value;
+    
+    // Memanggil fungsi changeMonth original Anda
+    // Kita panggil langsung dengan 3 parameter
+    changeMonth(type, month, year);
+    
+    // Tutup dropdown
+    toggleDropdown(`picker-${type}`);
+}
+
 // Membuka/menutup menu dropdown
 function toggleDropdown(id) {
     document.getElementById(id)?.classList.toggle('show');
