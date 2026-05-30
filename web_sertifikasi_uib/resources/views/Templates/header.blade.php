@@ -36,7 +36,7 @@
         @endphp
         
         @if($currentUser)
-            <div class="account-wrap">
+            <div class="account-wrap" id="dropdownhover">
                 <button class="account-btn" onclick="toggleDropdown('accountMenu')">
                     <i data-lucide="user"></i> Akun
                 </button>

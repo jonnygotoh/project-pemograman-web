@@ -99,9 +99,13 @@ textarea {
 
 .nav-menu a:not(.active):not(.login-pill):hover {
     background: rgba(255, 255, 255, 0.1);
-    color:rgb(53, 53, 124)
+    color: white;
 }
 
+#accountMenu a:hover{
+        color: rgb(46, 46, 119);
+
+}
 .login-pill {
     background: linear-gradient(135deg, #213cff, #7044f6);
     color: white !important;
@@ -147,13 +151,13 @@ textarea {
     top: 2.75rem;
     background: white;
     color: var(--navy);
-    width: 13.75rem;
+    width: 9.75rem;
     border-radius: 0.875rem;
     box-shadow: var(--shadow);
     padding: 0.875rem;
     z-index: 10;
     text-align:center;
-    margin-top: 20px;
+    margin-top:10px;
 }
 
 .account-dropdown.show {
@@ -165,7 +169,7 @@ textarea {
     gap: 10px;
     align-items: center;
     font-weight: 800;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 main {
