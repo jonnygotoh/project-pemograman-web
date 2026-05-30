@@ -505,7 +505,19 @@ main {
 }
 
 .dropdown-content.show { display: flex; }
+.Adash {
+    grid-column: 1 / -1; 
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
+.Adash button, .Adash a {
+    width: 100%;      /* Membuat tombol selebar container */
+    text-align: center;
+    box-sizing: border-box; /* Agar padding tidak merusak lebar */
+}
 /* Responsive */
 
 @media(max-width:900px){

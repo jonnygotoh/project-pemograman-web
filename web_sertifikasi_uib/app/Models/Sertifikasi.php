@@ -16,5 +16,13 @@ class Sertifikasi extends Model
         'biaya_mahasiswa',
         'biaya_dosen',
         'biaya_umum',
+        'jumlah_pendaftar', // Tambahkan ini
     ];
+
+    // Jika nanti Anda ingin menggunakan relasi untuk menghapus pendaftar 
+    // dan mengurangi jumlahnya secara otomatis
+    public function pendaftarSertifikasi()
+    {
+        return $this->hasMany(PendaftarSertifikasi::class, 'sertifikasi_id');
+    }
 }

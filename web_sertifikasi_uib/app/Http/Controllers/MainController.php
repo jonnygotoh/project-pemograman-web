@@ -47,12 +47,36 @@ class MainController extends Controller
 
     private function seminarRows()
     {
-        return Seminar::all();
+        return Seminar::all()->map(function ($seminar, $index) {
+            return [
+                'id' => $seminar->id,
+                'no' => $index + 1,
+                'nama' => $seminar->nama,
+                'periode' => $seminar->periode,
+                'tanggal' => $seminar->tanggal ? Carbon::parse($seminar->tanggal)->format('d M Y') : '-',
+                'waktu' => $seminar->waktu,
+                'biaya' => $seminar->tipe === 'free' ? 'Gratis' : 'Rp ' . number_format($seminar->biaya, 0, ',', '.'),
+                'jumlah_pendaftar' => $seminar->jumlah_pendaftar 
+            ];
+        });
     }
 
     private function certificationRows()
     {
-        return Sertifikasi::all();
+        return Sertifikasi::all()->map(function ($sertif, $index) {
+            return [
+                'id' => $sertif->id,
+                'no' => $index + 1,
+                'nama' => $sertif->nama,
+                'periode' => $sertif->periode,
+                'waktu' => $sertif->waktu ? Carbon::parse($sertif->waktu)->format('d M Y') : '-',
+                'biaya' => "Mhs: Rp" . number_format($sertif->biaya_mahasiswa, 0, ',', '.') . 
+                        " | Dosen: Rp" . number_format($sertif->biaya_dosen, 0, ',', '.') . 
+                        " | Umum: Rp" . number_format($sertif->biaya_umum, 0, ',', '.'),
+                // Sekarang sudah berisi data asli dari database
+                'jumlah_pendaftar' => $sertif->jumlah_pendaftar 
+            ];
+        });
     }
 
     private function generateCalendar($month, $year, $type)

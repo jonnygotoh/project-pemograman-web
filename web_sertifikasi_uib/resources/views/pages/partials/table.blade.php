@@ -11,7 +11,6 @@ $rows = $rows ?? [];
             <h2>{{ $pageTitle }} List</h2>
             <p>All active {{ $type }} data</p>
         </div>
-
         <div class="search-box">
             <i data-lucide="search"></i>
             <input placeholder="Search {{ $type }}...">
@@ -25,6 +24,7 @@ $rows = $rows ?? [];
                     @foreach($columns as $col)
                         <th>{{ $col }}</th>
                     @endforeach
+                    @if(request()->is('admin*')) <th>Actions</th> @endif
                 </tr>
             </thead>
 
@@ -33,10 +33,26 @@ $rows = $rows ?? [];
                     <tr>
                         @foreach($columns as $col)
                             @php
-                                $dbColumn = strtolower($col); 
+                                // Normalisasi kolom: "Nama Sertifikasi" -> "nama_sertifikasi"
+                                // Tapi kita buat mapping agar otomatis mengenali key controller
+                                $field = str_replace(' ', '_', strtolower($col));
+                                
+                                // Mapping Manual agar singkron
+                                if($field === 'nama_sertifikasi') $field = 'nama';
+                                if($field === 'periode_pendaftaran') $field = 'periode';
+                                if($field === 'tanggal_pelatihan' || $field === 'tanggal_ujian') $field = 'waktu';
+                                if($field === 'biaya_pendaftaran') $field = 'biaya';
+                                if($field === 'jumlah_pendaftar') $field = 'pendaftar';
                             @endphp
-                            <td>{{ ucfirst($row->$dbColumn ?? '-') }}</td>
+                            
+                            <td>{{ $row[$field] ?? '-' }}</td>
                         @endforeach
+
+                        @if(request()->is('admin*'))
+                            <td>
+                                <a href="{{ route('admin.'.$type.'.edit', $row['id']) }}">Edit</a>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

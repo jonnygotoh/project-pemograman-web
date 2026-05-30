@@ -13,13 +13,14 @@ return new class extends Migration
     {
     Schema::create('seminar', function (Blueprint $table) {
     $table->id();
-
     $table->string('nama', 150);
     $table->string('periode', 100);
     $table->date('tanggal');
     $table->string('waktu', 50);
-
     $table->enum('tipe', ['free', 'paid'])->default('free');
+    
+    $table->decimal('biaya', 12, 2)->default(0); 
+    $table->integer('jumlah_pendaftar')->default(0);
 
     $table->timestamps();
     });

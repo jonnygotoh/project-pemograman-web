@@ -14,24 +14,45 @@ class AdminController extends Controller
         $month = $request->month ?? 5;
         $year = $request->year ?? 2026;
 
-        $data = [
+        return view('pages.dashboardAdmin', [
             'month' => $month,
             'year' => $year,
-            'seminarRows' => \App\Models\Seminar::all(),
-            'certificationRows' => \App\Models\Sertifikasi::all(),
+            // Menggunakan helper mapping agar format data seragam dengan tabel di Home
+            'seminarRows' => $this->getSeminarRows(),
+            'certificationRows' => $this->getCertificationRows(),
             'seminarCalendar' => $this->generateCalendar($month, $year, 'seminar'),
             'certificationCalendar' => $this->generateCalendar($month, $year, 'sertifikasi'),
-        ];
-
-        return view('pages.dashboardAdmin', $data);
+        ]);
     }
 
-    private function seminarRows() {
-        return Seminar::all();
+    // Helper untuk memformat data seminar agar siap masuk ke 'table.blade.php'
+    private function getSeminarRows() {
+        return Seminar::all()->map(function ($s, $index) {
+            return (object) [
+                'id' => $s->id,
+                'no' => $index + 1,
+                'nama' => $s->nama,
+                'periode' => $s->periode,
+                'waktu' => $s->tanggal ? Carbon::parse($s->tanggal)->format('d M Y') : '-',
+                'biaya' => $s->tipe === 'free' ? 'Gratis' : 'Rp ' . number_format($s->biaya, 0, ',', '.'),
+                'jumlah_pendaftar' => $s->jumlah_pendaftar
+            ];
+        });
     }
 
-    private function certificationRows() {
-        return Sertifikasi::all();
+    // Helper untuk memformat data sertifikasi agar siap masuk ke 'table.blade.php'
+    private function getCertificationRows() {
+        return Sertifikasi::all()->map(function ($s, $index) {
+            return (object) [
+                'id' => $s->id,
+                'no' => $index + 1,
+                'nama' => $s->nama,
+                'periode' => $s->periode,
+                'waktu' => $s->waktu ? Carbon::parse($s->waktu)->format('d M Y') : '-',
+                'biaya' => "Mhs: Rp" . number_format($s->biaya_mahasiswa, 0, ',', '.') . " | Dosen: Rp" . number_format($s->biaya_dosen, 0, ',', '.') . " | Umum: Rp" . number_format($s->biaya_umum, 0, ',', '.'),
+                'jumlah_pendaftar' => $s->jumlah_pendaftar
+            ];
+        });
     }
 
     private function generateCalendar($month, $year, $type)
@@ -89,23 +110,37 @@ class AdminController extends Controller
 
     public function seminarStore(Request $request)
     {
-        Seminar::create([
-            'nama' => $request->nama,
-            'periode' => $request->periode,
-            'tanggal' => $request->tanggal,
-            'waktu' => $request->waktu,
-            'tipe' => $request->tipe,
+        $data = $request->validate([
+            'nama' => 'required',
+            'periode' => 'required',
+            'tanggal' => 'required|date',
+            'waktu' => 'required',
+            'tipe' => 'required',
+            'biaya' => 'nullable|numeric',
         ]);
 
-        // Setelah sukses simpan, lempar kembali ke home dengan pesan sukses
+        $data['jumlah_pendaftar'] = 0; 
+
+        if ($request->tipe === 'free') {
+            $data['biaya'] = 0;
+        }
+
+        Seminar::create($data);
+
         return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil ditambahkan!');
     }
 
     public function seminarUpdate(Request $request, $id)
     {
-        Seminar::find($id)->update($request->all());
+        $seminar = Seminar::findOrFail($id);
+        $data = $request->all();
+        
+        if ($request->tipe === 'free') {
+            $data['biaya'] = 0;
+        }
 
-        // Setelah sukses update, lempar kembali ke home
+        $seminar->update($data);
+
         return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil diubah!');
     }
 
@@ -132,30 +167,35 @@ class AdminController extends Controller
     
     public function sertifikasiStore(Request $request)
     {
-        Sertifikasi::create([
-            'nama' => $request->nama,
-            'batch' => $request->batch,
-            'periode' => $request->periode,
-            'waktu' => $request->waktu, // Menggunakan 'waktu' sebagai tanggal (tipe date)
-            'biaya_mahasiswa' => $request->biaya_mahasiswa,
-            'biaya_dosen' => $request->biaya_dosen,
-            'biaya_umum' => $request->biaya_umum,
+
+        $validated = $request->validate([
+            'nama' => 'required',
+            'batch' => 'nullable',
+            'periode' => 'required',
+            'waktu' => 'required|date',
+            'biaya_mahasiswa' => 'required|numeric',
+            'biaya_dosen' => 'required|numeric',
+            'biaya_umum' => 'required|numeric',
         ]);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil ditambahkan!');
+        $validated['jumlah_pendaftar'] = 0;
+
+        Sertifikasi::create($validated);
+
+        return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil ditambahkan!');
     }
 
     public function sertifikasiUpdate(Request $request, $id)
     {
-        Sertifikasi::find($id)->update($request->all());
+        $sertif = Sertifikasi::findOrFail($id);
+        $sertif->update($request->all());
 
-        return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil diubah!');
+        return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil diubah!');
     }
 
     public function sertifikasiDelete($id)
     {
-        Sertifikasi::find($id)->delete();
-
+        Sertifikasi::findOrFail($id)->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil dihapus!');
     }
 }

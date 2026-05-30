@@ -170,20 +170,6 @@ function switchView(type, view) {
     });
 }
 
-// // Memuat data kalender baru secara AJAX
-// async function changeMonth(type, month, year) {
-//     try {
-//         const response = await fetch(`/calendar/${type}?month=${month}&year=${year}`);
-//         const html = await response.text();
-//         const el = document.getElementById(`${type}-calendar`);
-//         if (!el) return;
-//         el.innerHTML = html;
-//         window.lucide?.createIcons(); 
-//     } catch (error) {
-//         console.error('Gagal memuat kalender:', error);
-//     }
-// }
-
 function applyPicker(type) {
     const month = document.getElementById(`m-${type}`).value;
     const year = document.getElementById(`y-${type}`).value;
@@ -227,8 +213,5 @@ window.addEventListener('click', function(e) {
 
     if (navMenu && !navMenu.contains(e.target) && !menuBtn?.contains(e.target)) navMenu.classList.remove('show');
     if (accountMenu && !accountMenu.contains(e.target) && !accountBtn?.contains(e.target)) accountMenu.classList.remove('show');
-
-
-    
 
 });

@@ -9,10 +9,17 @@ class Seminar extends Model
     protected $table = 'seminar';
 
     protected $fillable = [
-        'nama',
-        'periode',
-        'tanggal',
-        'waktu',
-        'tipe',
+        'nama', 
+        'periode', 
+        'tanggal', 
+        'waktu', 
+        'tipe', 
+        'biaya', 
+        'jumlah_pendaftar',
     ];
+
+    public function pendaftar()
+    {
+        return $this->hasMany(Pendaftar::class, 'seminar_id');
+    }
 }
