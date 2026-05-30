@@ -3,10 +3,11 @@
 @endphp
 
 <header class="navbar no-select">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <a href="{{ $isLanding ? '#home' : route('home') }}"
-       class="brand {{ $isLanding ? 'js-scroll-link' : '' }}">
-        <img src="{{ asset('images/logo-uib.png') }}" alt="UIB">
+        class="brand {{ $isLanding ? 'js-scroll-link' : '' }}">
+        <img src="{{ asset('images/logo-uib.png') }}" alt="Logo">
         <span>UNIVERSITAS<br>INTERNASIONAL<br>BATAM</span>
     </a>
 

@@ -115,25 +115,30 @@
         </button>
 
     </div>
+<div class="calendar-grid">
 
-    <div class="calendar-grid">
+    @foreach(['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] as $day)
+        <div class="calendar-day-name">{{ $day }}</div>
+    @endforeach
 
-        @foreach(['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] as $day)
-            <div class="calendar-day-name">{{ $day }}</div>
-        @endforeach
+    @foreach($calendarDays as $day)
 
-        @foreach($calendarDays as $day)
-            <div class="calendar-cell {{ $day['muted'] ?? false ? 'muted' : '' }}">
-                <strong>{{ $day['date'] }}</strong>
+        <div class="calendar-cell {{ $day['muted'] ?? false ? 'muted' : '' }}">
 
-                @foreach($day['events'] ?? [] as $event)
-                    <a class="calendar-event" href="#">
-                        {{ $event['title'] }}
-                    </a>
-                @endforeach
+            <div class="calendar-date">
+                {{ $day['date'] }}
             </div>
-        @endforeach
 
-    </div>
+            @foreach($day['events'] as $event)
+                <a class="calendar-event" href="{{ $event['url'] }}">
+                    {{ $event['title'] }}
+                </a>
+            @endforeach
+
+        </div>
+
+    @endforeach
+
+</div>
 
 </div>

@@ -75,3 +75,9 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     Route::post('/sertifikasi/update/{id}', [AdminController::class, 'sertifikasiUpdate']);
     Route::delete('/sertifikasi/delete/{id}', [AdminController::class, 'sertifikasiDelete']);
 });
+
+//menampilkan detail sertifikasi-seminar
+Route::get('/detailseminar/{id}', [MainController::class, 'showSeminar'])->name('seminar.show');
+Route::get('/detailsertifikasi/{id}', [MainController::class, 'showSertifikasi'])->name('sertifikasi.show');
+
+});

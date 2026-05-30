@@ -83,41 +83,93 @@ class MainController extends Controller
     {
         $days = [];
         $date = Carbon::create($year, $month, 1);
+
         $daysInMonth = $date->daysInMonth;
         $startDay = $date->dayOfWeek;
 
-        // Ambil semua event berdasarkan bulan dan tahun yang dipilih
+        // 1. GET EVENTS
         if ($type === 'seminar') {
             $events = Seminar::whereMonth('tanggal', $month)
-                            ->whereYear('tanggal', $year)
-                            ->get();
+                ->whereYear('tanggal', $year)
+                ->get();
         } else {
             $events = Sertifikasi::whereMonth('waktu', $month)
-                                ->whereYear('waktu', $year)
-                                ->get();
+                ->whereYear('waktu', $year)
+                ->get();
         }
 
-        // Buat pemetaan tanggal ke event
+        // 2. MAP EVENTS
         $eventMap = [];
+
         foreach ($events as $event) {
-            $eventDate = Carbon::parse($type === 'seminar' ? $event->tanggal : $event->waktu)->day;
+            $eventDate = Carbon::parse(
+                $type === 'seminar'
+                    ? $event->tanggal
+                    : $event->waktu
+            )->day;
+
             $eventMap[$eventDate][] = [
+                'id' => $event->id,
                 'title' => $event->nama,
-                'url' => '#'
+                'url' => $type === 'seminar'
+                    ? route('seminar.show', $event->id)
+                    : route('sertifikasi.show', $event->id),
             ];
         }
 
+        // 3. EMPTY DAYS
         for ($i = 0; $i < $startDay; $i++) {
-            $days[] = ['date' => '', 'muted' => true, 'events' => []];
+            $days[] = [
+                'date' => '',
+                'muted' => true,
+                'events' => []
+            ];
         }
 
+        // 4. DAYS IN MONTH
         for ($i = 1; $i <= $daysInMonth; $i++) {
             $days[] = [
                 'date' => $i,
-                'events' => $eventMap[$i] ?? [] // Mengambil event dari map jika ada
+                'events' => $eventMap[$i] ?? []
             ];
         }
 
         return $days;
-    }
+        }
+
+    //menampilkan detail seminar/sertifikasi
+ public function showSeminar($id)
+{
+    $seminar = Seminar::findOrFail($id);
+
+    $event = [
+        'title' => $seminar->nama,
+        'description' => $seminar->deskripsi ?? '-',
+        'date' => $seminar->tanggal,
+        'time' => $seminar->waktu,
+        'place' => $seminar->tempat ?? '-',
+        'mode' => $seminar->mode ?? 'offline',
+        'poster' => $seminar->poster ?? null,
+    ];
+
+    return view('pages.detail', compact('event'));
 }
+
+    public function showSertifikasi($id)
+    {
+        $sertif = Sertifikasi::findOrFail($id);
+
+        $event = [
+            'title' => $sertif->nama,
+            'description' => $sertif->deskripsi ?? '-',
+            'date' => $sertif->waktu,
+            'time' => $sertif->jam ?? '-',
+            'place' => $sertif->tempat ?? '-',
+            'mode' => $sertif->mode ?? 'offline',
+            'poster' => $sertif->poster ?? null,
+        ];
+
+        return view('pages.detail', compact('event'));
+    }
+
+ }

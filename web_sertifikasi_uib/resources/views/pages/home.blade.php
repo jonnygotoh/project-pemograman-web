@@ -60,7 +60,7 @@
 
     <div class="view-toggle">
         <button class="active" onclick="switchView('seminar','calendar')">Kalender</button>
-        <button onclick="switchView('seminar','table')">Tabel</button>
+        <button onclick="switchView('seminar','table')">Tabel</butmainton>
     </div>
 
     <div id="seminar-calendar" class="view-panel">
@@ -82,3 +82,11 @@
     </div>
 </section>
 @endsection
+
+@section('scripts')
+<script>// --untuk menampilkan SweetAlert setelah login berhasil
+</script>
+@endsection
+
+</body>
+</html>

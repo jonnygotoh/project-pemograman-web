@@ -58,30 +58,27 @@ class AuthController extends Controller
         ]);
     }
 
-    public function authenticate(Request $request)
+ public function authenticate(Request $request)
     {
         $request->validate([
             'identity' => 'required',
             'password' => 'required',
             'type' => 'required',
         ]);
-
         $config = $this->types[$request->type];
-
         $query = $config['model']::query();
 
         foreach ($config['identity'] as $i => $field) {
-
             $i === 0
                 ? $query->where($field, $request->identity)
                 : $query->orWhere($field, $request->identity);
         }
-
         $user = $query->first();
 
         if (!$user || !$this->checkPassword($request->password, $user->password)) {
             return back()
                 ->withErrors(['identity' => 'Login gagal'])
+                ->with('error', 'Login gagal, silakan periksa kembali kredensial Anda.')
                 ->withInput();
         }
 
@@ -93,9 +90,7 @@ class AuthController extends Controller
                 'role' => $request->type,
             ]
         ]);
-
-        return redirect()->route('home');
-    }
+    return redirect()->route('home')->with('success', 'Login berhasil! Selamat datang kembali.');    }
     
     public function showLoginAdmin()
     {
@@ -104,12 +99,19 @@ class AuthController extends Controller
 
     public function loginAdmin(Request $request)
     {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
         $admin = Admin::where('username', $request->username)
         ->where('password', $request->password)
         ->first();
 
         if (!$admin) {
-            return back()->with('error', 'Username atau password salah');
+            return back()
+                ->with('error', 'Username atau password salah')
+                ->withInput();
         }
 
         session([
@@ -117,8 +119,8 @@ class AuthController extends Controller
             'admin_name' => $admin->nama
         ]);
 
-        return redirect()->route('admin.dashboard');
-    }
+    return redirect()->route('admin.dashboard')->with('success', 'Login berhasil! Selamat datang kembali.');    }
+
     public function logoutAdmin()
     {
         session()->forget('admin_id');
