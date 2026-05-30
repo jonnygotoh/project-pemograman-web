@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
 
-    <link rel="stylesheet" href="{{ asset('css/uib.css') }}">
-    <script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="{{ asset('css/uib.css') }}?v={{ filemtime(public_path('css/uib.css')) }}">
+<script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
