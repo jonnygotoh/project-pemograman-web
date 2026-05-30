@@ -36,7 +36,7 @@
         @endphp
         
         @if($currentUser)
-            <div class="account-wrap" id="dropdownhover">
+            <div class="account-wrap">
                 <button class="account-btn" onclick="toggleDropdown('accountMenu')">
                     <i data-lucide="user"></i> Akun
                 </button>
@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-       @elseif(session()->has('admin_id'))
+       @elseif(session()->has('admin_id') && request()->is('admin/*'))
             <div class="account-wrap">
                 <button class="account-btn" onclick="toggleDropdown('adminMenu')">
                     <i data-lucide="shield-check"></i> Admin
