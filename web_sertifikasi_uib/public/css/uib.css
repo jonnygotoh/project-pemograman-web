@@ -99,7 +99,7 @@ textarea {
 
 .nav-menu a:not(.active):not(.login-pill):hover {
     background: rgba(255, 255, 255, 0.1);
-    color: #FFFFFF;
+    color:rgb(53, 53, 124)
 }
 
 .login-pill {
@@ -152,6 +152,8 @@ textarea {
     box-shadow: var(--shadow);
     padding: 0.875rem;
     z-index: 10;
+    text-align:center;
+    margin-top: 20px;
 }
 
 .account-dropdown.show {
@@ -160,10 +162,10 @@ textarea {
 
 .account-dropdown a,
 .account-name {
-    display: flex;
     gap: 10px;
     align-items: center;
     font-weight: 800;
+    margin-bottom: 15px;
 }
 
 main {
@@ -498,7 +500,7 @@ main {
     transform: translateX(-50%);
     background: white;
     padding: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(255, 0, 0, 0.1);
     border-radius: 8px;
     z-index: 1000;
     gap: 5px;
@@ -653,8 +655,7 @@ main {
 }
 
 .section-heading {
-    text-align: center;
-    
+    text-align: left;
     margin-bottom: 32px;
 }
 
@@ -667,16 +668,16 @@ main {
 }
 
 .section-heading span {
-    display: inline-block;
+    display: block;
     color: var(--primary);
     font-weight: 800;
-    margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-size: 12px;
 }
 
 .section-heading h2 {
+    padding: 0;
     margin: 0;
     font-size: 36px;
     letter-spacing: -0.02em;
@@ -2185,6 +2186,9 @@ th {
     background:white;
 }
 
+    text-align:center;
+}
+
 /* responsive */
 
 @media(max-width:900px){
@@ -2212,6 +2216,3 @@ th {
     }
 }
 
-#left{
-    float:left;
-}

@@ -128,10 +128,10 @@
 
     <div class="admin-section-header">
         <div>
-            <h2 class="delay-2">
+            <h2 class="delay-2" id="down">
                 Daftar Sertifikasi
             </h2>
-            <p class="admin-subtitle">
+            <p class="admin-subtitle" id="down">
                 Kelola jadwal dan data sertifikasi mahasiswa.
             </p>
         </div>

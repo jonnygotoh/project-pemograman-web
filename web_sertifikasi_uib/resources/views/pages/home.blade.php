@@ -20,7 +20,7 @@
 </section>
 
 <section id="sertifikasi" class="section data-section">
-    <div class="section-heading js-reveal">
+    <div class="section-heading js-reveal" id="center">
         <span class="delay-1">Sertifikasi</span>
         <h2 class="delay-2">Daftar Sertifikasi</h2>
         <div class="heading-line"></div>
@@ -51,7 +51,7 @@
 </section>
 
 <section id="seminar" class="section data-section">
-    <div class="section-heading js-reveal">
+    <div class="section-heading js-reveal" id="center">
         <span class="delay-1">Seminar</span>
         <h2 class="delay-2">Daftar Seminar</h2>
         <div class="heading-line"> </div>
