@@ -11,7 +11,7 @@ class MainController extends Controller
 {
     public function home(Request $request)
     {
-        $month = $request->month ?? 5;
+        $month = $request->month ?? 6;
         $year = $request->year ?? 2026;
         $data = $this->landingData($month, $year);
 

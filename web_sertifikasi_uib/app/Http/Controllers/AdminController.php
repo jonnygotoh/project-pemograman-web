@@ -11,7 +11,7 @@ class AdminController extends Controller
 {
     public function dashboard(Request $request)
     {
-        $month = $request->month ?? 5;
+        $month = $request->month ?? 6;
         $year = $request->year ?? 2026;
 
         return view('pages.dashboardAdmin', [

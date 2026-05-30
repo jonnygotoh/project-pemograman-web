@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
+
     public function run(): void
     {
         // Seeder Dosen
@@ -59,6 +60,12 @@ class DatabaseSeeder extends Seeder
                 'email' => 'admin@gmail.com',
                 'password' => 'admin123',
             ]
+        // call seeder
         );
+
+        $this->call([
+            SeminarSeeder::class,
+            SertifikasiSeeder::class,
+        ]);
     }
 }
