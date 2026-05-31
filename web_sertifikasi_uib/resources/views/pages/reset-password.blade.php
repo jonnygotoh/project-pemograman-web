@@ -18,6 +18,6 @@
 @endsection
 
 @section('scripts')
-<script>// --untuk menampilkan SweetAlert setelah login berhasil
+<script>
 </script>
 @endsection

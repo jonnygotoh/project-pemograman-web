@@ -22,9 +22,16 @@
             <p><i data-lucide="clock"></i> <b>Waktu:</b> {{ $event['time'] }}</p>
             <p><i data-lucide="map-pin"></i> <b>Tempat:</b> {{ $event['place'] }}</p>
 
-            <button class="btn-primary" onclick="{{ auth()->check() || session()->has('auth_user') ? 'openConfirmRegister()' : 'openLoginRequired()' }}">
-                DAFTAR SEKARANG <i data-lucide="arrow-right"></i>
-            </button>
+            @if(auth()->check() || session()->has('auth_user'))
+                <a href="{{ route('upload.payment', ['sertifikasi_id' => $event['id']]) }}" class="btn-primary">
+                    DAFTAR SEKARANG <i data-lucide="arrow-right"></i>
+                </a>
+            @else
+                {{-- Arahkan ke login jika belum login --}}
+                <a href="{{ route('login.choose') }}" class="btn-primary">
+                    LOGIN UNTUK DAFTAR <i data-lucide="log-in"></i>
+                </a>
+            @endif
         </div>
     </div>
 </section>

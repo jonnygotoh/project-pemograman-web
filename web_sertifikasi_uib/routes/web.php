@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PembayaranController;
 
 Route::get('/', [MainController::class, 'home'])->name('home');
 
@@ -49,9 +50,6 @@ Route::get('/logout', [AuthController::class, 'logout'])
 Route::get('/profile', [AuthController::class, 'profile'])
     ->name('profile');
 
-Route::view('/upload-payment', 'pages.upload-payment')
-    ->name('upload.payment');
-
 Route::get('/admin', [AuthController::class, 'showLoginAdmin'])->name('login.admin');
 Route::post('/admin', [AuthController::class, 'loginAdmin'])->name('login.admin.process');
 
@@ -74,9 +72,14 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     Route::post('/sertifikasi/store', [AdminController::class, 'sertifikasiStore'])->name('admin.sertifikasi.store');
     Route::post('/sertifikasi/update/{id}', [AdminController::class, 'sertifikasiUpdate']);
     Route::delete('/sertifikasi/delete/{id}', [AdminController::class, 'sertifikasiDelete']);
+    Route::post('/verifikasi-pembayaran/{id}', [AdminController::class, 'verifikasiPembayaran'])->name('admin.verifikasi.pembayaran');
 });
 
 //menampilkan detail sertifikasi-seminar
 Route::get('/detailseminar/{id}', [MainController::class, 'showSeminar'])->name('seminar.show');
 Route::get('/detailsertifikasi/{id}', [MainController::class, 'showSertifikasi'])->name('sertifikasi.show');
+// pembayaran
+Route::post('/pembayaran-sertifikasi', [PembayaranController::class, 'store'])->name('pendaftaran.store');
+Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy'])->name('pembayaran.destroy');
 
+Route::get('/upload-payment/{sertifikasi_id}', [MainController::class, 'showUploadPage'])->name('upload.payment');

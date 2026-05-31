@@ -6,6 +6,7 @@ use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use App\Models\UserUmum;
 use App\Models\Admin;
+use App\Models\PembayaranSertifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -177,50 +178,53 @@ class AuthController extends Controller
         }
         $user = $config['model']::find($id);
 
-        // 3. Ubah status role menjadi Bahasa Indonesia agar rapi di tampilan
+        // 3. Integrasi Data Pembayaran Sertifikasi
+        $pembayarans = PembayaranSertifikasi::with('sertifikasi')
+                        ->where('user_id', $id)
+                        ->where('user_type', $role)
+                        ->get();
+
+        // 4. Ubah status role menjadi Bahasa Indonesia
         $statusLabel = 'Umum';
         if ($role === 'student') $statusLabel = 'Mahasiswa';
         if ($role === 'lecturer') $statusLabel = 'Dosen';
 
-        // 4. Susun 6 data array sesuai urutan figma (Kiri dulu baru Kanan)
-        // Kolom Kiri: Nama, NPM, Email | Kolom Kanan: Prodi, No.HP, Status
+        // 5. Susun data profil
         $profile = [
             [
-                'icon' => 'user',
-                'label' => 'Nama',
+                'icon' => 'user', 
+                'label' => 'Nama', 
                 'value' => $user->nama ?? $user->name ?? '-'
             ],
             [
-                'icon' => 'id-card', // <--- Ubah jadi id-card
-                'label' => $role === 'lecturer' ? 'NIDN' : ($role === 'student' ? 'NPM' : 'ID'),
+                'icon' => 'id-card', 
+                'label' => $role === 'lecturer' ? 'NIDN' : ($role === 'student' ? 'NPM' : 'ID'), 
                 'value' => $user->npm ?? $user->nidn ?? '-'
             ],
             [
-                'icon' => 'mail',
-                'label' => 'Email',
+                'icon' => 'mail', 
+                'label' => 'Email', 
                 'value' => $user->email ?? '-'
             ],
             [
-                'icon' => 'graduation-cap',
-                'label' => 'Prodi',
+                'icon' => 'graduation-cap', 
+                'label' => 'Prodi', 
                 'value' => $user->prodi ?? '-'
             ],
             [
-                'icon' => 'phone',
-                'label' => 'No. HP',
+                'icon' => 'phone', 
+                'label' => 'No. HP', 
                 'value' => $user->no_hp ?? '-'
             ],
             [
-                'icon' => 'user-round-check',
-                'label' => 'Status',
+                'icon' => 'user-round-check', 
+                'label' => 'Status', 
                 'value' => $statusLabel
             ],
         ];
 
-        return view('pages.profile', [
-            'profile' => $profile,
-            'registered' => [], // Nanti bisa diisi data seminar kelompok kalian
-        ]);
+        return view('pages.profile', compact('profile', 'pembayarans'));
+        // 'registered' => [], // Nanti bisa diisi data seminar kelompok kalian
     }
 
     public function showForgotPasswordForm() {

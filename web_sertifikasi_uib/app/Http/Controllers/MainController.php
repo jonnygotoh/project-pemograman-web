@@ -83,28 +83,29 @@ class MainController extends Controller
     }
 
     //menampilkan detail seminar/sertifikasi
- public function showSeminar($id)
-{
-    $seminar = Seminar::findOrFail($id);
+    public function showSeminar($id)
+    {
+        $seminar = Seminar::findOrFail($id);
 
-    $event = [
-        'title' => $seminar->nama,
-        'description' => $seminar->deskripsi ?? '-',
-        'date' => $seminar->tanggal,
-        'time' => $seminar->waktu,
-        'place' => $seminar->tempat ?? '-',
-        'mode' => $seminar->mode ?? 'offline',
-        'poster' => $seminar->poster ?? null,
-    ];
+        $event = [
+            'title' => $seminar->nama,
+            'description' => $seminar->deskripsi ?? '-',
+            'date' => $seminar->tanggal,
+            'time' => $seminar->waktu,
+            'place' => $seminar->tempat ?? '-',
+            'mode' => $seminar->mode ?? 'offline',
+            'poster' => $seminar->poster ?? null,
+        ];
 
-    return view('pages.detail', compact('event'));
-}
+        return view('pages.detail', compact('event'));
+    }
 
     public function showSertifikasi($id)
     {
         $sertif = Sertifikasi::findOrFail($id);
 
         $event = [
+            'id' => $sertif->id,
             'title' => $sertif->nama,
             'description' => $sertif->deskripsi ?? '-',
             'date' => $sertif->waktu,
@@ -116,5 +117,10 @@ class MainController extends Controller
 
         return view('pages.detail', compact('event'));
     }
-
- }
+    public function showUploadPage($sertifikasi_id) 
+    {
+        // Pastikan sertifikasi ada
+        $sertifikasi = \App\Models\Sertifikasi::findOrFail($sertifikasi_id);
+        return view('pages.upload-payment', compact('sertifikasi_id'));
+    }
+}

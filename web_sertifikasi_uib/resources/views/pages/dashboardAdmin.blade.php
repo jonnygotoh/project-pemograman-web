@@ -6,10 +6,6 @@
 
 @section('content')
 
-<!-- =========================
-     ADMIN BANNER
-========================= -->
-
 <div class="admin-banner">
     <strong>Admin Panel</strong>
     <span>
@@ -17,16 +13,11 @@
     </span>
 </div>
 
-<!-- =========================
-     HERO
-========================= -->
-
 <section
     id="home"
     class="section hero-section loaded-active no-select admin-hero"
 >
 
-    <!-- LEFT -->
     <div class="hero-text js-reveal">
 
         <span class="delay-1 admin-label">
@@ -61,7 +52,6 @@
 
         </div>
 
-        <!-- STATS -->
         <div class="dashboard-stats delay-4">
 
             <div class="status-card">
@@ -98,7 +88,6 @@
 
     </div>
 
-    <!-- RIGHT -->
     <div class="hero-image js-reveal-img">
 
         <img
@@ -110,10 +99,6 @@
     </div>
 
 </section>
-
-<!-- =========================
-     SERTIFIKASI
-========================= -->
 
 <section
     id="sertifikasi"
@@ -144,7 +129,6 @@
 
     <div class="heading-line"></div>
 
-    <!-- CALENDAR -->
     <div id="sertifikasi-calendar" class="view-panel">
 
         @include('pages.partials.calendar', [
@@ -157,10 +141,6 @@
     </div>
 
 </section>
-
-<!-- =========================
-     SEMINAR
-========================= -->
 
 <section
     id="seminar"
@@ -203,7 +183,6 @@
 
     </div>
 
-    <!-- CALENDAR -->
     <div id="seminar-calendar" class="view-panel">
 
         @include('pages.partials.calendar', [
@@ -215,6 +194,55 @@
 
     </div>
 
+</section>
+
+<section id="pembayaran" class="section data-section admin-section">
+    <div class="section-heading js-reveal admin-heading">
+        <span class="delay-1" id="left">Pembayaran</span>
+        <h2 class="delay-2">Verifikasi Pembayaran</h2>
+        <div class="heading-line"></div>
+    </div>
+
+    <div class="view-panel">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>User ID</th>
+                    <th>Tipe</th>
+                    <th>Bukti Bayar</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($pembayaranMenunggu as $index => $item)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $item->user_id }}</td>
+                    <td>{{ ucfirst($item->user_type) }}</td>
+                    <td>
+                        <a href="{{ asset('storage/bukti_bayar/' . $item->bukti_bayar) }}" target="_blank" class="btn-outline">Lihat Bukti</a>
+                    </td>
+                    <td>
+                        <form action="{{ route('admin.verifikasi.pembayaran', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin dengan perubahan status ini?')">
+                            @csrf
+                            <select name="status" class="form-input" required style="display: block; margin-bottom: 5px;">
+                                <option value="lunas">Lunas</option>
+                                <option value="ditolak">Tolak</option>
+                            </select>
+                            <input type="text" name="catatan_admin" placeholder="Catatan (opsional)" class="form-input" style="display: block; margin-bottom: 5px;">
+                            <button type="submit" class="btn-primary">Simpan Status</button>
+                        </form>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="5" style="text-align: center;">Tidak ada pembayaran yang perlu diverifikasi.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </section>
 
 @endsection

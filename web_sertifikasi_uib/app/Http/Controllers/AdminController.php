@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Seminar;
 use App\Models\Sertifikasi;
+use App\Models\PembayaranSertifikasi;
+use App\Models\SertifikasiMahasiswa;
+use App\Models\SertifikasiDosen;
+use App\Models\SertifikasiUserUmum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Traits\CalendarHelper;
 
 class AdminController extends Controller
@@ -17,6 +22,8 @@ class AdminController extends Controller
         $month = $request->month ?? 6;
         $year = $request->year ?? 2026;
 
+        $pembayaranMenunggu = PembayaranSertifikasi::where('status', 'menunggu')->get();
+
         return view('pages.dashboardAdmin', [
             'month' => $month,
             'year' => $year,
@@ -25,6 +32,8 @@ class AdminController extends Controller
             'certificationRows' => $this->getCertificationRows(),
             'seminarCalendar' => $this->generateCalendar($month, $year, 'seminar'),
             'certificationCalendar' => $this->generateCalendar($month, $year, 'sertifikasi'),
+
+            'pembayaranMenunggu' => $pembayaranMenunggu,
         ]);
     }
 
@@ -159,5 +168,46 @@ class AdminController extends Controller
     {
         Sertifikasi::findOrFail($id)->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil dihapus!');
+    }
+    // --- Verifikasi Pembayaran Method ---
+    public function verifikasiPembayaran(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:lunas,ditolak',
+            'catatan_admin' => 'nullable|string'
+        ]);
+
+        $pembayaran = PembayaranSertifikasi::findOrFail($id);
+
+        DB::transaction(function () use ($pembayaran, $request) {
+            // 1. Update status pembayaran
+            $pembayaran->update([
+                'status' => $request->status, 
+                'catatan_admin' => $request->catatan_admin
+            ]);
+
+            // 2. Gunakan $request->status sebagai nilai update (bukan string 'lunas' statis)
+            $statusToSet = $request->status; 
+
+            switch ($pembayaran->user_type) {
+                case 'student':
+                    SertifikasiMahasiswa::where('npm', $pembayaran->user_id)
+                        ->where('sertifikasi_id', $pembayaran->sertifikasi_id)
+                        ->update(['status_pembayaran' => $statusToSet]);
+                    break;
+                case 'lecturer':
+                    SertifikasiDosen::where('nidn', $pembayaran->user_id)
+                        ->where('sertifikasi_id', $pembayaran->sertifikasi_id)
+                        ->update(['status_pembayaran' => $statusToSet]);
+                    break;
+                case 'public':
+                    SertifikasiUserUmum::where('user_umum_id', $pembayaran->user_id)
+                        ->where('sertifikasi_id', $pembayaran->sertifikasi_id)
+                        ->update(['status_pembayaran' => $statusToSet]);
+                    break;
+            }
+        });
+
+        return redirect()->route('admin.dashboard')->with('success', 'Status pendaftaran diupdate menjadi: ' . $request->status);
     }
 }
