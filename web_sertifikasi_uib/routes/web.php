@@ -80,4 +80,3 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
 Route::get('/detailseminar/{id}', [MainController::class, 'showSeminar'])->name('seminar.show');
 Route::get('/detailsertifikasi/{id}', [MainController::class, 'showSertifikasi'])->name('sertifikasi.show');
 
-});
