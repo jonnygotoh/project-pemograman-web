@@ -6,9 +6,12 @@ use App\Models\Seminar;
 use App\Models\Sertifikasi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Traits\CalendarHelper;
 
 class MainController extends Controller
 {
+    use CalendarHelper; 
+
     public function home(Request $request)
     {
         $month = $request->month ?? 6;
@@ -78,64 +81,6 @@ class MainController extends Controller
             ];
         });
     }
-
-    private function generateCalendar($month, $year, $type)
-    {
-        $days = [];
-        $date = Carbon::create($year, $month, 1);
-
-        $daysInMonth = $date->daysInMonth;
-        $startDay = $date->dayOfWeek;
-
-        // 1. GET EVENTS
-        if ($type === 'seminar') {
-            $events = Seminar::whereMonth('tanggal', $month)
-                ->whereYear('tanggal', $year)
-                ->get();
-        } else {
-            $events = Sertifikasi::whereMonth('waktu', $month)
-                ->whereYear('waktu', $year)
-                ->get();
-        }
-
-        // 2. MAP EVENTS
-        $eventMap = [];
-
-        foreach ($events as $event) {
-            $eventDate = Carbon::parse(
-                $type === 'seminar'
-                    ? $event->tanggal
-                    : $event->waktu
-            )->day;
-
-            $eventMap[$eventDate][] = [
-                'id' => $event->id,
-                'title' => $event->nama,
-                'url' => $type === 'seminar'
-                    ? route('seminar.show', $event->id)
-                    : route('sertifikasi.show', $event->id),
-            ];
-        }
-
-        // 3. EMPTY DAYS
-        for ($i = 0; $i < $startDay; $i++) {
-            $days[] = [
-                'date' => '',
-                'muted' => true,
-                'events' => []
-            ];
-        }
-
-        // 4. DAYS IN MONTH
-        for ($i = 1; $i <= $daysInMonth; $i++) {
-            $days[] = [
-                'date' => $i,
-                'events' => $eventMap[$i] ?? []
-            ];
-        }
-
-        return $days;
-        }
 
     //menampilkan detail seminar/sertifikasi
  public function showSeminar($id)

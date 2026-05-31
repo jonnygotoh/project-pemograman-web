@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
 
-<link rel="stylesheet" href="{{ asset('css/uib.css') }}?v={{ filemtime(public_path('css/uib.css')) }}">
-<script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{{ asset('css/uib.css') }}?v={{ filemtime(public_path('css/uib.css')) }}">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>[data-lucide] { visibility: hidden; }</style>
 </head>
 <body>
 
@@ -18,32 +21,37 @@
 
     @include('templates.footer')
 
-    <script src="{{ asset('js/uib.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="{{ asset('js/uib.js') }}"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // JIKA LOGIN / PROSES BERHASIL
+            // 1. Inisialisasi Icon Lucide
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+                // Tampilkan icon setelah dirender
+                document.querySelectorAll("[data-lucide]").forEach(el => {
+                    el.style.visibility = "visible";
+                });
+            }
+
+            // 2. Notifikasi SweetAlert
             @if(session('success'))
                 Swal.fire({ 
                     icon: 'success', 
                     title: 'Berhasil', 
-                    text: @json(session('success')),
-                    showConfirmButton: true, 
-                    confirmButtonColor: '#3085d6', 
-                    confirmButtonText: 'OK' 
+                    text: {!! json_encode(session('success')) !!},
+                    confirmButtonColor: '#3085d6' 
                 });
             @endif
 
-            // JIKA LOGIN / PROSES GAGAL
             @if(session('error') || $errors->any())
                 Swal.fire({ 
                     icon: 'error', 
                     title: 'Gagal', 
-                    text: @json(session('error') ?? $errors->first()),
-                    showConfirmButton: true,
-                    confirmButtonColor: '#d33', // <-- Warna merah untuk tombol OK gagal
-                    confirmButtonText: 'OK'
+                    text: {!! json_encode(session('error') ?? $errors->first()) !!},
+                    confirmButtonColor: '#d33'
                 });
             @endif
         });

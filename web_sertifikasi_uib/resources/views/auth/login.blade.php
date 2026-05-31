@@ -2,6 +2,13 @@
 @section('title', $title ?? 'Login')
 
 @section('content')
+<!-- loading sebelum user masuk -->
+<div id="loader" class="loading-overlay">
+    <div class="spinner"></div>
+    <p style="font-weight: bold; color: #333;">Memproses data...</p>
+</div>
+//
+
 <section class="login-page">
     <h1>{{ $title ?? 'Masuk Umum' }}</h1>
     
@@ -49,7 +56,17 @@
 @endsection
 
 @section('scripts')
-<script>// --untuk menampilkan SweetAlert setelah login berhasil
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector('form');
+        const loader = document.getElementById('loader');
+
+        if(form) {
+            form.addEventListener('submit', function() {
+                loader.style.display = 'flex';
+            });
+        }
+    });
 </script>
 @endsection
 

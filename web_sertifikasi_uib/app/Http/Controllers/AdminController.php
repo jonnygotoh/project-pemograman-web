@@ -6,9 +6,12 @@ use App\Models\Seminar;
 use App\Models\Sertifikasi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Traits\CalendarHelper;
 
 class AdminController extends Controller
 {
+    use CalendarHelper; 
+
     public function dashboard(Request $request)
     {
         $month = $request->month ?? 6;
@@ -55,47 +58,6 @@ class AdminController extends Controller
         });
     }
 
-    private function generateCalendar($month, $year, $type)
-    {
-        $days = [];
-        $date = Carbon::create($year, $month, 1);
-        $daysInMonth = $date->daysInMonth;
-        $startDay = $date->dayOfWeek;
-
-        // Ambil semua event berdasarkan bulan dan tahun yang dipilih
-        if ($type === 'seminar') {
-            $events = Seminar::whereMonth('tanggal', $month)
-                            ->whereYear('tanggal', $year)
-                            ->get();
-        } else {
-            $events = Sertifikasi::whereMonth('waktu', $month)
-                                ->whereYear('waktu', $year)
-                                ->get();
-        }
-
-        // Buat pemetaan tanggal ke event
-        $eventMap = [];
-        foreach ($events as $event) {
-            $eventDate = Carbon::parse($type === 'seminar' ? $event->tanggal : $event->waktu)->day;
-            $eventMap[$eventDate][] = [
-                'title' => $event->nama,
-                'url' => '#'
-            ];
-        }
-
-        for ($i = 0; $i < $startDay; $i++) {
-            $days[] = ['date' => '', 'muted' => true, 'events' => []];
-        }
-
-        for ($i = 1; $i <= $daysInMonth; $i++) {
-            $days[] = [
-                'date' => $i,
-                'events' => $eventMap[$i] ?? [] // Mengambil event dari map jika ada
-            ];
-        }
-
-        return $days;
-    }
 // =====================
 // SERTIFIKASI
 // =====================
