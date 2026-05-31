@@ -32,28 +32,6 @@
             <i data-lucide="chevron-left"></i>
         </button>
 
-        <!-- <div class="calendar-picker-wrapper" style="position: relative;">
-            <button type="button" class="btn-month-year" onclick="toggleDropdown('picker-{{ $type }}')">
-                {{ \Carbon\Carbon::create($year, $month, 1)->format('F Y') }}
-                <i data-lucide="chevron-down"></i>
-            </button>
-
-            <div id="picker-{{ $type }}" class="dropdown-content">
-                <select id="m-{{ $type }}" onchange="applyPicker('{{ $type }}')">
-                    @foreach(range(1, 12) as $m)
-                        <option value="{{ $m }}" {{ $m == $month ? 'selected' : '' }}>
-                            {{ \Carbon\Carbon::create(null, $m, 1)->format('F') }}
-                        </option>
-                    @endforeach
-                </select>
-                <select id="y-{{ $type }}" onchange="applyPicker('{{ $type }}')">
-                    @foreach(range($year - 5, $year + 5) as $y)
-                        <option value="{{ $y }}" {{ $y == $year ? 'selected' : '' }}>{{ $y }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div> -->
-
         <div class="calendar-date-picker">
 
             <button type="button" class="calendar-picker-btn" id="{{ $type }}DatePickerBtn" data-month="{{ $month }}"
