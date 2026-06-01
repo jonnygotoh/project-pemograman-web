@@ -3,23 +3,10 @@
 
 @section('content')
 <section class="profile-page">
-<div class="profile-card">
-
     <div class="profile-card">
-    <div class="avatar-box">
-        @php
-            $filename = collect([$user->pasfoto])
-                ->merge([$user->npm, $user->nama, explode('@', $user->email ?? '')[0]])
-                ->filter()
-                ->flatMap(fn($n) => [($c = preg_replace('/[^a-z0-9]+/', '', strtolower($n))), "$c.png", "$c.jpg", "$c.jpeg"])
-                ->unique()
-                ->first(fn($file) => file_exists(public_path('images/pasfoto/' . $file))) ?? 'default.png';
-        @endphp
-
-        {{-- Gunakan atribut dan struktur yang persis sama dengan kode asli Anda agar CSS tidak berubah --}}
-        <img src="{{ asset('images/pasfoto/' . $filename) }}" alt="{{ $user->nama ?? 'User' }}">
-    </div>
-</div>
+        <div class="avatar-box">
+           <img src="{{ asset('images/pasfoto/' . $filename) }}" alt="{{ $user->nama ?? 'User' }}" >
+        </div>
 
         <div class="profile-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%;">
             @foreach(collect($profile)->chunk(3) as $column)

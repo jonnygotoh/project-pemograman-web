@@ -89,7 +89,7 @@ class AuthController extends Controller
                 'name' => $user->nama ?? $user->name,
                 'email' => $user->email,
                 'role' => $request->type,
-                'pasfoto' => $user->pasfoto, 
+                'pasfoto' => $user->pasfoto, // Tambahkan ini!
             ]
         ]);
     return redirect()->route('home')->with('success', 'Login berhasil! Selamat datang kembali.');    }
@@ -172,59 +172,75 @@ class AuthController extends Controller
         $role = $authUser['role'];
         $id = $authUser['id'];
 
-        // 2. Ambil data lengkap user dari database sesuai modelnya
+        // 2. Ambil data lengkap user
         $config = $this->types[$role] ?? null;
         if (!$config) {
             return redirect()->route('login.choose');
         }
         $user = $config['model']::find($id);
 
-        // 3. Integrasi Data Pembayaran Sertifikasi
-        $pembayarans = PembayaranSertifikasi::with('sertifikasi')
-                        ->where('user_id', $id)
-                        ->where('user_type', $role)
-                        ->get();
+        // 3. Logika Looping pasfoto (Diletakkan sebelum data lain agar bersih)
+        $filename = 'default.png';
+        $photoCandidates = [];
 
-        // 4. Ubah status role menjadi Bahasa Indonesia
+        if (!empty($user->pasfoto)) {
+            $photoCandidates[] = strtolower($user->pasfoto);
+        }
+
+        if (!empty($user->email)) {
+            $email = strtolower($user->email);
+            [$localPart, $domain] = array_pad(explode('@', $email, 2), 2, '');
+            $localPart = preg_replace('/[^a-z0-9]+/', '', $localPart);
+            $cleanDomain = preg_replace('/[^a-z0-9]+/', '', $domain);
+            $cleanDomainName = preg_replace('/[^a-z0-9]+/', '', explode('.', $domain)[0] ?? '');
+            $hyphenDomain = trim(preg_replace('/[^a-z0-9]+/', '-', $domain), '-');
+
+            if ($localPart !== '') {
+                $photoCandidates[] = $localPart;
+                if ($cleanDomainName !== '') {
+                    $photoCandidates[] = $localPart . '-' . $cleanDomainName;
+                    $photoCandidates[] = $localPart . '-' . $hyphenDomain;
+                }
+                if ($cleanDomain !== '') {
+                    $photoCandidates[] = $localPart . $cleanDomain;
+                }
+            }
+        }
+        if (!empty($user->npm)) {
+            $photoCandidates[] = strtolower(preg_replace('/[^a-z0-9]+/', '', $user->npm));
+        }
+        if (!empty($user->nama)) {
+            $photoCandidates[] = strtolower(preg_replace('/[^a-z0-9]+/', '', $user->nama));
+        }
+        foreach (array_unique($photoCandidates) as $candidate) {
+            foreach (['png', 'jpg', 'jpeg'] as $ext) {
+                $checkName = $candidate . '.' . $ext;
+                if (file_exists(public_path('images/pasfoto/' . $checkName))) {
+                    $filename = $checkName;
+                    break 2;
+                }
+            }
+        }
+        // 4. Integrasi Data Pembayaran
+        $pembayarans = PembayaranSertifikasi::with('sertifikasi')
+            ->where('user_id', $id)
+            ->where('user_type', $role)
+            ->get();
+        // 5. Ubah status role menjadi Bahasa Indonesia
         $statusLabel = 'Umum';
         if ($role === 'student') $statusLabel = 'Mahasiswa';
         if ($role === 'lecturer') $statusLabel = 'Dosen';
-
-        // 5. Susun data profil
+        // 6. Susun data profil
         $profile = [
-            [
-                'icon' => 'user', 
-                'label' => 'Nama', 
-                'value' => $user->nama ?? $user->name ?? '-'
-            ],
-            [
-                'icon' => 'id-card', 
-                'label' => $role === 'lecturer' ? 'NIDN' : ($role === 'student' ? 'NPM' : 'ID'), 
-                'value' => $user->npm ?? $user->nidn ?? '-'
-            ],
-            [
-                'icon' => 'mail', 
-                'label' => 'Email', 
-                'value' => $user->email ?? '-'
-            ],
-            [
-                'icon' => 'graduation-cap', 
-                'label' => 'Prodi', 
-                'value' => $user->prodi ?? '-'
-            ],
-            [
-                'icon' => 'phone', 
-                'label' => 'No. HP', 
-                'value' => $user->no_hp ?? '-'
-            ],
-            [
-                'icon' => 'user-round-check', 
-                'label' => 'Status', 
-                'value' => $statusLabel
-            ],
+            ['icon' => 'user', 'label' => 'Nama', 'value' => $user->nama ?? $user->name ?? '-'],
+            ['icon' => 'id-card', 'label' => $role === 'lecturer' ? 'NIDN' : ($role === 'student' ? 'NPM' : 'ID'), 'value' => $user->npm ?? $user->nidn ?? '-'],
+            ['icon' => 'mail', 'label' => 'Email', 'value' => $user->email ?? '-'],
+            ['icon' => 'graduation-cap', 'label' => 'Prodi', 'value' => $user->prodi ?? '-'],
+            ['icon' => 'phone', 'label' => 'No. HP', 'value' => $user->no_hp ?? '-'],
+            ['icon' => 'user-round-check', 'label' => 'Status', 'value' => $statusLabel],
         ];
-
-    return view('pages.profile', compact('profile', 'pembayarans', 'user'));        // 'registered' => [], // Nanti bisa diisi data seminar kelompok kalian
+        // Kirim semua data ke view
+        return view('pages.profile', compact('profile', 'pembayarans', 'user', 'filename'));
     }
 
     public function showForgotPasswordForm() {
