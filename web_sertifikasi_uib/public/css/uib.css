@@ -524,50 +524,6 @@ main {
     text-align: center;
     box-sizing: border-box; /* Agar padding tidak merusak lebar */
 }
-/* Responsive */
-
-@media(max-width:900px){
-
-    .admin-banner{
-        padding:14px 20px;
-    }
-
-    .admin-hero{
-        grid-template-columns:1fr;
-
-        text-align:center;
-
-        min-height:auto !important;
-
-        padding:
-            50px 24px !important;
-    }
-
-    .admin-hero .hero-text{
-        max-width:100%;
-    }
-
-    .admin-hero-actions{
-        justify-content:center;
-
-        flex-wrap:wrap;
-    }
-
-    .dashboard-stats{
-        grid-template-columns:1fr;
-    }
-
-    .admin-section-header{
-        flex-direction:column;
-
-        align-items:flex-start;
-    }
-
-    .admin-hero .hero-image img{
-        transform:none;
-        max-width:100%;
-    }
-}
 
 .hero-image {
     position: relative;
@@ -577,7 +533,7 @@ main {
 .hero-image img {
     width: 100%;
     max-width: 600px;
-    transform: scale(1.8) translateX(-140px) translateY(-10px);
+    transform: scale(1.8) translateX(-10px) translateY(-10px);
     transform-origin: center;
     display: block;
 }
@@ -780,7 +736,7 @@ main {
     display: flex;
     align-items: center;
     gap: 10px;
-
+    
     border: none !important;
     background: transparent !important;
     box-shadow: none !important;
@@ -1735,135 +1691,6 @@ th {
     color: var(--navy);
 }
 
-@media(max-width:900px) {
-    .navbar {
-        padding: 0 20px
-    }
-
-    .mobile-menu-btn {
-        display: block
-    }
-
-    .nav-menu {
-        display: none;
-        position: absolute;
-        left: 18px;
-        right: 18px;
-        top: 82px;
-        background: var(--navy);
-        border-radius: 16px;
-        padding: 18px;
-        flex-direction: column;
-        align-items: stretch
-    }
-
-    .nav-menu.show {
-        display: flex
-    }
-
-    .nav-menu a {
-        display: block;
-        text-align: center;
-        padding: 12px 0;
-    }
-
-    .section {
-        padding: 54px 24px
-    }
-
-    .hero-section,
-    .detail-page,
-    .profile-card,
-    .upload-grid,
-    .footer-grid {
-        grid-template-columns: 1fr
-    }
-
-    .hero-text {
-        max-width: 100%;
-    }
-
-    .hero-image {
-        max-width: 100%;
-        margin: 32px auto 0;
-    }
-
-    .hero-image img {
-        max-width: 100%;
-    }
-
-    .hero-section {
-        padding: 48px 18px 36px;
-        min-height: auto;
-        gap: 28px;
-    }
-
-    .hero-section h1 {
-        font-size: 38px
-    }
-
-    .hero-section h2 {
-        font-size: 24px
-    }
-
-    .hero-section p {
-        font-size: 15px;
-        max-width: 100%;
-    }
-
-    .choice-grid{
-        grid-template-columns: 1fr
-    }
-
-    .detail-hero h1 {
-        font-size: 30px
-    }
-
-    .profile-info {
-        grid-template-columns: 1fr
-    }
-
-    .calendar-grid {
-        min-width: 100%;
-    }
-
-    .calendar-card {
-        overflow-x: auto
-    }
-
-    .table-title {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 14px
-    }
-
-    .search-box {
-        width: 100%;
-        min-width: 0
-    }
-
-    .footer {
-        padding: 36px 24px;
-        margin: 0 ;
-    }
-
-    .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
-
-    .footer-section1,
-    .footer-section2 {
-        margin: 0;
-    }
-
-    .upload-page,
-    .profile-page,
-    .detail-page {
-        padding: 24px
-    }
-}
-
 @keyframes premiumFadeInUp {
     from {
         opacity: 0;
@@ -2205,32 +2032,6 @@ th {
     text-align:center;
 }
 
-/* responsive */
-
-@media(max-width:900px){
-
-    .admin-form-page{
-        padding:
-            50px 18px 70px;
-    }
-
-    .admin-form-card{
-        padding:28px;
-    }
-
-    .admin-form-grid{
-        grid-template-columns:1fr;
-    }
-
-    .admin-form-actions{
-        flex-direction:column;
-    }
-
-    .admin-form-actions .btn-primary,
-    .admin-form-actions .btn-outline-danger{
-        width:100%;
-    }
-}
 
 /* login user loading */
  .loading-overlay {
@@ -2264,3 +2065,141 @@ th {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
+
+/* --- GANTI SEMUA MEDIA QUERY LAMA DENGAN INI --- */
+@media (max-width: 900px) {
+    /* Layout Utama & Navbar */
+    .navbar { padding: 0 20px; }
+    .mobile-menu-btn { display: block; }
+    .nav-menu {
+        display: none; position: absolute; left: 18px; right: 18px; top: 82px;
+        background: var(--navy); border-radius: 16px; padding: 18px;
+        flex-direction: column; align-items: stretch;
+    }
+    .nav-menu.show { display: flex; }
+    .nav-menu a { display: block; text-align: center; padding: 12px 0; }
+
+    .login-choice-page,
+    .login-page {
+        padding: 32px 16px 28px !important;
+    }
+    .choice-grid {
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    .choice-card,
+    .login-card {
+        margin: 0 auto !important;
+        width: min(100%, 520px) !important;
+    }
+
+    /* Profil & Hero */
+    .section, .upload-page, .profile-page, .detail-page { padding: 24px !important; }
+    
+    .hero-image img {
+    transform: scale(1.5) translateX(-80px) translateY(-10px);
+    transform-origin: center;
+    display: block;
+}
+    /* FIX PROFIL: Membuat foto di atas, data di bawah, rapi */
+    .profile-card {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 20px !important;
+    }
+
+    /* 2. Foto ke Tengah */
+    .avatar-box {
+        margin: 0 auto 20px auto !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+    
+    .avatar-box img {
+        margin: 0 auto !important;
+    }
+
+    /* 3. Data di bawah Foto agar Rapi */
+    .profile-info-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    .profile-row {
+        justify-content: center !important;
+    }
+
+    /* 4. FIX TABEL (Agar tidak keluar layar) */
+    .registered-card {
+        width: 100% !important;
+        overflow: hidden !important; /* Mencegah elemen keluar */
+    }
+
+    .responsive-table {
+        width: 100% !important;
+        overflow-x: auto !important; /* Tabel bisa di-swipe */
+        padding-bottom: 20px;
+    }
+
+    .responsive-table.hidden {
+        display: none !important;
+    }
+
+    .responsive-table table {
+        width: 100% !important;
+        min-width: 600px !important; /* Ukuran minimum agar tabel tidak hancur */
+        table-layout: fixed !important; /* Memaksa agar tabel menyesuaikan lebar kolom */
+    }
+
+    .responsive-table th,
+    .responsive-table td {
+        padding: 12px 8px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .responsive-table th:first-child,
+    .responsive-table td:first-child {
+        width: 72px !important;
+    }
+
+    .responsive-table th:nth-child(2),
+    .responsive-table td:nth-child(2) {
+        width: 220px !important;
+        min-width: 220px !important;
+    }
+
+    .registered-card .responsive-table {
+        display: none;
+    }
+    #profile-seminar-panel {
+        display: block;
+    }
+    .registered-card .tabs:has(button.active:nth-child(1)) ~ #profile-seminar-panel {
+        display: block;
+    }
+    .registered-card .tabs:has(button.active:nth-child(2)) ~ #profile-sertifikasi-panel {
+        display: block;
+    }
+
+    /* Admin & Form */
+    .admin-form-page { padding: 50px 18px 70px; }
+    .admin-form-card { padding: 28px; }
+    .admin-form-grid, .admin-hero, .dashboard-stats, .hero-section, 
+    .detail-page, .profile-card, .upload-grid, .footer-grid, .choice-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .admin-form-actions { flex-direction: column; }
+    .admin-form-actions .btn-primary, .admin-form-actions .btn-outline-danger { width: 100%; }
+
+    /* Footer & Tabel */
+    .footer { padding: 36px 24px; margin: 0; }
+    .table-title { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .search-box { width: 100%; }
+}
