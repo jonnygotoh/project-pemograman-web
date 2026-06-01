@@ -224,14 +224,19 @@
                         <a href="{{ asset('storage/bukti_bayar/' . $item->bukti_bayar) }}" target="_blank" class="btn-outline">Lihat Bukti</a>
                     </td>
                     <td>
-                        <form action="{{ route('admin.verifikasi.pembayaran', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin dengan perubahan status ini?')">
+                        <form action="{{ route('admin.verifikasi.pembayaran', $item->id) }}" method="POST" onsubmit="return confirm('Simpan data ini?')">
                             @csrf
-                            <select name="status" class="form-input" required style="display: block; margin-bottom: 5px;">
+                            <select name="status" class="form-input" style="display: block; margin-bottom: 5px;">
                                 <option value="lunas">Lunas</option>
                                 <option value="ditolak">Tolak</option>
                             </select>
-                            <input type="text" name="catatan_admin" placeholder="Catatan (opsional)" class="form-input" style="display: block; margin-bottom: 5px;">
-                            <button type="submit" class="btn-primary">Simpan Status</button>
+                            
+                            {{-- Input Skor untuk Admin --}}
+                            <input type="number" name="skor" placeholder="Input Skor (0-100)" class="form-input" min="0" max="100" style="display: block; margin-bottom: 5px;">
+                            
+                            <input type="text" name="catatan_admin" placeholder="Catatan" class="form-input" style="display: block; margin-bottom: 5px;">
+                            
+                            <button type="submit" class="btn-primary">Simpan</button>
                         </form>
                     </td>
                 </tr>

@@ -172,21 +172,24 @@ class AdminController extends Controller
     // --- Verifikasi Pembayaran Method ---
     public function verifikasiPembayaran(Request $request, $id)
     {
+        // 1. Validasi input: status wajib, skor opsional (0-100), catatan opsional
         $request->validate([
-            'status' => 'required|in:lunas,ditolak',
+            'status'        => 'required|in:lunas,ditolak',
+            'skor'          => 'nullable|numeric|min:0|max:100', 
             'catatan_admin' => 'nullable|string'
         ]);
 
         $pembayaran = PembayaranSertifikasi::findOrFail($id);
 
         DB::transaction(function () use ($pembayaran, $request) {
-            // 1. Update status pembayaran
+            // 2. Update status, skor, dan catatan di tabel pembayaran_sertifikasi
             $pembayaran->update([
-                'status' => $request->status, 
+                'status'        => $request->status, 
+                'skor'          => $request->skor,
                 'catatan_admin' => $request->catatan_admin
             ]);
 
-            // 2. Gunakan $request->status sebagai nilai update (bukan string 'lunas' statis)
+            // 3. Update status pembayaran di tabel relasi (Mahasiswa/Dosen/Umum)
             $statusToSet = $request->status; 
 
             switch ($pembayaran->user_type) {
@@ -208,6 +211,6 @@ class AdminController extends Controller
             }
         });
 
-        return redirect()->route('admin.dashboard')->with('success', 'Status pendaftaran diupdate menjadi: ' . $request->status);
+        return redirect()->route('admin.dashboard')->with('success', 'Status dan skor berhasil diperbarui!');
     }
 }

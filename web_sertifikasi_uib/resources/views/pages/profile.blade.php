@@ -40,7 +40,7 @@
             <div class="search-box"><i data-lucide="search"></i><input placeholder="Search data..."></div>
         </div>
 
-        {{-- PANEL 1: SEMINAR (Biarkan apa adanya) --}}
+        {{-- PANEL 1: SEMINAR --}}
         <div id="profile-seminar-panel" class="responsive-table">
             <table>
                 <thead>
@@ -52,17 +52,18 @@
             </table>
         </div>
 
-        {{-- PANEL 2: SERTIFIKASI (Tabel yang sudah terhubung ke data) --}}
+        {{-- PANEL 2: SERTIFIKASI --}}
         <div id="profile-sertifikasi-panel" class="responsive-table hidden">
             <table>
                 <thead>
-                    <tr><th>No</th><th>Nama Sertifikasi</th><th>Status</th><th>Catatan</th><th>Aksi</th></tr>
+                    <tr><th>No</th><th>Nama Sertifikasi</th><th>Skor</th><th>Status</th><th>Catatan</th><th>Aksi</th></tr>
                 </thead>
                 <tbody>
                     @forelse($pembayarans as $i => $p)
                     <tr>
                         <td>{{ $i + 1 }}</td>
                         <td><b>{{ $p->sertifikasi->nama ?? '-' }}</b></td>
+                        <td>{{ $p->skor ?? '-' }}</td>
                         <td>
                             @if($p->status == 'lunas') <span class="badge bg-success">Lunas</span>
                             @elseif($p->status == 'ditolak') <span class="badge bg-danger">Ditolak</span>
@@ -80,7 +81,7 @@
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="5" style="text-align: center;">Belum ada pendaftaran sertifikasi.</td></tr>
+                    <tr><td colspan="6" style="text-align: center;">Belum ada pendaftaran sertifikasi.</td></tr>
                     @endforelse
                 </tbody>
             </table>
