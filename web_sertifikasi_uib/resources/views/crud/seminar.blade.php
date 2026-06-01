@@ -33,6 +33,14 @@
                     <input type="text" name="waktu" value="{{ $item->waktu ?? '' }}" required class="form-control" placeholder="Contoh: 09:00 - 12:00">
                 </label>
             </div>
+
+             <div class="form-group">
+                <label>Token Event (Kode Akses)
+                    <input type="text" name="token_event" value="{{ $item->token_event ?? '' }}" 
+                        class="form-control" placeholder="Contoh: SEMINAR2026-XYZ" required>
+                </label>
+            </div>
+            
         </div> 
 
         <div class="Adash" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px; width: 100%;">

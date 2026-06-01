@@ -113,10 +113,35 @@ class MainController extends Controller
         ];
         return view('pages.detail', compact('event'));
     }
-    public function showUploadPage($sertifikasi_id) 
+    public function verifikasiTokenSeminar(Request $request) 
     {
-        // Pastikan sertifikasi ada
-        $sertifikasi = \App\Models\Sertifikasi::findOrFail($sertifikasi_id);
-        return view('pages.upload-payment', compact('sertifikasi_id'));
+        $request->validate([
+            'token' => 'required', 
+            'pendaftaran_id' => 'required'
+        ]);
+        
+        // 1. Ambil data pendaftaran beserta relasi seminarnya
+        // Kita harus memuat relasi 'seminar' agar bisa akses token_event dari seeder
+        $pendaftar = \App\Models\PendaftaranSeminar::with('seminar')->find($request->pendaftaran_id);
+
+        if (!$pendaftar) {
+            return back()->with('error', 'Data pendaftaran tidak ditemukan.');
+        }
+
+        // 2. Cek apakah seminar memiliki data (untuk keamanan)
+        if (!$pendaftar->seminar) {
+            return back()->with('error', 'Data seminar tidak ditemukan.');
+        }
+
+        // 3. Bandingkan token input user dengan token_event dari SEEDER (tabel seminar)
+        // Kita menggunakan trim() untuk menghilangkan spasi yang tidak sengaja terinput
+        if (trim($request->token) !== trim($pendaftar->seminar->token_event)) {
+            return back()->with('error', 'Token salah! Silakan periksa kembali token event Anda.');
+        }
+
+        // 4. Jika cocok, update status
+        $pendaftar->update(['status_sertifikat' => 'verified']);
+        
+        return back()->with('success', 'Berhasil! Sertifikat Anda sudah terverifikasi.');
     }
 }

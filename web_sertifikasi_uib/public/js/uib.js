@@ -344,3 +344,8 @@ window.addEventListener('click', function(e) {
     if (accountMenu && !accountMenu.contains(e.target) && !accountBtn?.contains(e.target)) accountMenu.classList.remove('show');
 
 });
+
+function openTokenModal(id) {
+    document.getElementById('modal_seminar_id').value = id;
+    document.getElementById('tokenModal').style.display = 'block';
+}

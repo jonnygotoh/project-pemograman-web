@@ -84,27 +84,30 @@ class AdminController extends Controller
         return view('crud.seminar', compact('item'));
     }
 
-    public function seminarStore(Request $request)
-    {
+    public function seminarStore(Request $request) {
         $data = $request->validate([
             'nama' => 'required',
             'periode' => 'required',
             'tanggal' => 'required|date',
             'waktu' => 'required',
+            'token_event' => 'required|unique:seminar,token_event' // Input dari form
         ]);
-
-        $data['jumlah_pendaftar'] = 0; 
-        // Hapus validasi dan logika tipe/biaya
         Seminar::create($data);
-
-        return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil ditambahkan!');
+        return redirect()->route('admin.dashboard');
     }
 
     public function seminarUpdate(Request $request, $id)
     {
         $seminar = Seminar::findOrFail($id);
-        // Cukup update $request->all() atau spesifik field
-        $seminar->update($request->only(['nama', 'periode', 'tanggal', 'waktu']));
+
+        // Tambahkan 'token_event' di dalam array 'only'
+        $seminar->update($request->only([
+            'nama', 
+            'periode', 
+            'tanggal', 
+            'waktu', 
+            'token_event' // <--- INI KUNCI AGAR DATA TERSIMPAN
+        ]));
 
         return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil diubah!');
     }
@@ -113,6 +116,26 @@ class AdminController extends Controller
     {
         Seminar::find($id)->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil dihapus!');
+    }
+    
+    public function updateSertifikatSeminar(Request $request, $id)
+    {
+        $request->validate([
+            'sertifikat' => 'required|file|mimes:pdf,jpg,png|max:2048',
+        ]);
+
+        $pendaftar = \App\Models\PendaftaranSeminar::findOrFail($id);
+        
+        // Simpan file
+        $path = $request->file('sertifikat')->store('sertifikat/seminar', 'public');
+        
+        // Update data: status jadi 'verified' agar sistem mengenali sertifikat sudah siap
+        $pendaftar->update([
+            'sertifikat_path' => $path,
+            'status_sertifikat' => 'verified' 
+        ]);
+
+        return back()->with('success', 'Sertifikat berhasil diupload dan dipublikasikan ke peserta.');
     }
 
     // =====================

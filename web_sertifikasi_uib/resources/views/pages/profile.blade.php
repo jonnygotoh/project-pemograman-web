@@ -2,6 +2,7 @@
 @section('title', 'Profile')
 
 @section('content')
+
 <section class="profile-page">
     <div class="profile-card">
         <div class="avatar-box">
@@ -44,7 +45,7 @@
         <div id="profile-seminar-panel" class="responsive-table">
             <table>
                 <thead>
-                    <tr><th>No</th><th>Nama Seminar</th><th>Tanggal</th><th>Waktu</th><th>Status</th><<th>Aksi</th></tr>
+                    <tr><th>No</th><th>Nama Seminar</th><th>Tanggal</th><th>Waktu</th><th>Status</th><th>Aksi</th></tr>
                 </thead>
                 <tbody>
                     @forelse($seminars as $i => $s)
@@ -53,10 +54,25 @@
                         <td><b>{{ $s->seminar->nama ?? 'N/A' }}</b></td>
                         <td>{{ $s->seminar->tanggal ?? '-' }}</td>
                         <td>{{ $s->seminar->waktu ?? '-' }}</td>
-                        <td><span class="badge bg-success">Terdaftar</span></td>
+                        <td>
+                            @if($s->status_sertifikat == 'verified')
+                                <span class="badge bg-success">Sertifikat Siap</span>
+                            @else
+                                <span class="badge bg-info">Terdaftar</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($s->status_sertifikat == 'verified')
+                                {{-- Sertifikat sudah ada, user bisa download --}}
+                                <a href="{{ asset('storage/' . $s->sertifikat_path) }}" target="_blank" class="btn-sm btn-primary">Lihat Sertifikat</a>
+                            @else
+                                {{-- Sertifikat belum ada, user harus isi token --}}
+                                <button type="button" onclick="openTokenModal({{ $s->id }})" class="btn-sm btn-info">Isi Token</button>
+                            @endif
+                        </td>
                     </tr>
                     @empty
-                    <tr><td colspan="5" style="text-align: center;">Belum ada pendaftaran seminar.</td></tr>
+                    <tr><td colspan="6" style="text-align: center;">Belum ada pendaftaran seminar.</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -111,4 +127,23 @@
         </div>
     </div>
 </section>
+
+<div id="tokenModal" class="modal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+    <div class="modal-content" style="background:white; width:300px; margin:15% auto; padding:20px; border-radius:8px;">
+        <form action="{{ route('verifikasi.token.seminar') }}" method="POST">
+            @csrf
+            {{-- Ubah name dan id menjadi seminar_id --}}
+            <input type="hidden" name="pendaftaran_id" id="modal_seminar_id">
+            
+            <h5>Masukkan Token</h5>
+            <input type="text" name="token" class="form-control" placeholder="Masukkan token dari admin" required>
+            
+            <div style="margin-top:15px; text-align:right;">
+                <button type="button" onclick="document.getElementById('tokenModal').style.display='none'" class="btn-sm btn-secondary">Batal</button>
+                <button type="submit" class="btn-sm btn-primary">Verifikasi</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 @endsection

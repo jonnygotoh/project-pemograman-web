@@ -19,6 +19,7 @@ class SeminarSeeder extends Seeder
                 'tipe' => 'free',
                 'biaya' => 0,
                 'jumlah_pendaftar' => 10,
+                'token_event' => 'Tech-2026',
             ]
         );
 
@@ -31,6 +32,7 @@ class SeminarSeeder extends Seeder
                 'tipe' => 'paid',
                 'biaya' => 50000,
                 'jumlah_pendaftar' => 5,
+                'token_event' => 'WEBDEV-2026',
             ]
         );
     }

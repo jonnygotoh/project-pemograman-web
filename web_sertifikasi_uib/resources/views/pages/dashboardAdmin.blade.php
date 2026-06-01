@@ -126,7 +126,6 @@
 </section>
 
 {{-- SECTION PEMBAYARAN --}}
-{{-- SECTION PEMBAYARAN --}}
 <section id="pembayaran" class="section data-section admin-section">
     <div class="section-heading js-reveal admin-heading">
         <span class="delay-1" id="left">Pembayaran</span>

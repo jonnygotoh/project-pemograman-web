@@ -66,6 +66,8 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     Route::post('/seminar/store', [AdminController::class, 'seminarStore'])->name('admin.seminar.store');
     Route::put('/seminar/update/{id}', [AdminController::class, 'seminarUpdate'])->name('admin.seminar.update');
     Route::delete('/seminar/delete/{id}', [AdminController::class, 'seminarDelete'])->name('admin.seminar.delete');
+    Route::post('/seminar/upload-sertifikat/{id}', [AdminController::class, 'updateSertifikatSeminar'])
+    ->name('admin.seminar.uploadSertifikat');
 
     // SERTIFIKASI
     Route::get('/sertifikasi/create', [AdminController::class, 'sertifikasiCreate'])->name('admin.sertifikasi.create');
@@ -87,3 +89,7 @@ Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy'])->nam
 Route::get('/bukti-bayar/{filename}', [PembayaranController::class, 'viewBuktiBayar'])->name('bukti.view');
 
 Route::get('/upload-payment/{sertifikasi_id}', [MainController::class, 'showUploadPage'])->name('upload.payment');
+
+Route::post('/profile/verifikasi-token-seminar', [App\Http\Controllers\MainController::class, 'verifikasiTokenSeminar'])
+    ->name('verifikasi.token.seminar');
+

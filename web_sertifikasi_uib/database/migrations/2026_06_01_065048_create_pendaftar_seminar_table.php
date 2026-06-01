@@ -13,6 +13,12 @@ return new class extends Migration
             $table->foreignId('seminar_id')->constrained('seminar')->onDelete('cascade');
             $table->string('user_id');
             $table->string('user_type');
+            
+            // Kolom baru untuk Sertifikat
+            $table->string('token_sertifikat')->nullable();
+            $table->string('status_sertifikat')->default('menunggu'); // 'menunggu' atau 'verified'
+            $table->string('sertifikat_path')->nullable(); 
+            
             $table->timestamps();
         });
     }
