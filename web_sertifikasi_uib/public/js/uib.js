@@ -61,7 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    
+    initSortableTables();
+
 });
 
 // Date Picker Calendar
@@ -191,6 +192,111 @@ function switchView(type, view) {
         btn.classList.remove('active');
         if (btn.getAttribute('onclick')?.includes(view)) btn.classList.add('active');
     });
+}
+
+function initSortableTables() {
+    document.querySelectorAll('.responsive-table table').forEach(table => {
+        const headers = table.querySelectorAll('thead th');
+        headers.forEach((th, index) => {
+            if (th.dataset.sortable === 'true') {
+                th.classList.add('sortable');
+                th.addEventListener('click', () => sortTableByColumn(table, index));
+            }
+        });
+    });
+}
+
+function sortTableByColumn(table, columnIndex) {
+    const tbody = table.tBodies[0];
+    if (!tbody) return;
+
+    const headers = table.querySelectorAll('thead th');
+    const th = headers[columnIndex];
+    if (!th || th.dataset.sortable !== 'true') return;
+
+    const currentOrder = th.dataset.sortDirection === 'asc' ? 'desc' : 'asc';
+    headers.forEach(header => {
+        header.dataset.sortDirection = '';
+        header.classList.remove('asc', 'desc');
+        const icon = header.querySelector('.sort-icon');
+        if (icon) icon.textContent = '↕';
+    });
+    th.dataset.sortDirection = currentOrder;
+    th.classList.add(currentOrder);
+    const activeIcon = th.querySelector('.sort-icon');
+    if (activeIcon) activeIcon.textContent = currentOrder === 'asc' ? '▲' : '▼';
+
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    const sortedRows = rows.sort((a, b) => {
+        const aText = normalizeCellValue(a.cells[columnIndex]?.textContent || '');
+        const bText = normalizeCellValue(b.cells[columnIndex]?.textContent || '');
+
+        if (typeof aText === 'number' && typeof bText === 'number') {
+            return currentOrder === 'asc' ? aText - bText : bText - aText;
+        }
+
+        if (typeof aText === 'string' && typeof bText === 'string') {
+            return currentOrder === 'asc'
+                ? aText.localeCompare(bText, 'id', { numeric: true })
+                : bText.localeCompare(aText, 'id', { numeric: true });
+        }
+
+        return 0;
+    });
+
+    sortedRows.forEach(row => tbody.appendChild(row));
+}
+
+function normalizeCellValue(value) {
+    const trimmed = value.trim();
+    if (!trimmed) return '';
+
+    const numericValue = trimmed
+        .replace(/[Rp\s]/g, '')
+        .replace(/\./g, '')
+        .replace(/,/g, '.');
+    if (/^-?\d+(\.\d+)?$/.test(numericValue)) {
+        return parseFloat(numericValue);
+    }
+
+    const dateValue = parseIndonesianDate(trimmed);
+    if (dateValue !== null) {
+        return dateValue;
+    }
+
+    return trimmed.toLowerCase();
+}
+
+function parseIndonesianDate(value) {
+    const monthMap = {
+        januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5,
+        juli: 6, agustus: 7, september: 8, oktober: 9, november: 10, desember: 11
+    };
+
+    const rangeMatch = value.match(/(\d{1,2}\s+[A-Za-z]+\s+\d{4})/gi);
+    if (rangeMatch && rangeMatch.length > 0) {
+        return parseSingleDate(rangeMatch[0], monthMap);
+    }
+
+    const monthYearMatch = value.match(/^(?:\d{1,2}\s+)?([A-Za-z]+)\s+(\d{4})$/i);
+    if (monthYearMatch) {
+        return parseSingleDate(`1 ${monthYearMatch[1]} ${monthYearMatch[2]}`, monthMap);
+    }
+
+    return null;
+}
+
+function parseSingleDate(dateString, monthMap) {
+    const cleaned = dateString.trim().toLowerCase();
+    const match = cleaned.match(/(\d{1,2})\s+([a-zA-Z]+)\s+(\d{4})/);
+    if (!match) return null;
+
+    const day = parseInt(match[1], 10);
+    const month = monthMap[match[2]];
+    const year = parseInt(match[3], 10);
+    if (month === undefined || Number.isNaN(day) || Number.isNaN(year)) return null;
+
+    return new Date(year, month, day).getTime();
 }
 
 function applyPicker(type) {

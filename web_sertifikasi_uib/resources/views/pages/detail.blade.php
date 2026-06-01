@@ -22,21 +22,54 @@
             <p><i data-lucide="clock"></i> <b>Waktu:</b> {{ $event['time'] }}</p>
             <p><i data-lucide="map-pin"></i> <b>Tempat:</b> {{ $event['place'] }}</p>
 
+            @php
+                $user = session('auth_user');
+            @endphp
+
             @if(auth()->check() || session()->has('auth_user'))
+
                 @if(($event['category'] ?? '') == 'sertifikasi')
-                    <a href="{{ route('upload.payment', ['sertifikasi_id' => $event['id']]) }}" class="btn-primary">
-                        DAFTAR SERTIFIKASI <i data-lucide="arrow-right"></i>
-                    </a>
-                @else
-                    {{-- Form Pendaftaran Seminar --}}
-                    <form action="{{ route('pendaftaran.store') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="seminar_id" value="{{ $event['id'] }}">
-                        <button type="submit" class="btn-primary">
-                            DAFTAR SEMINAR <i data-lucide="arrow-right"></i>
+
+                    @php
+                        $sudahDaftarSertif = \App\Models\PembayaranSertifikasi::where('sertifikasi_id', $event['id'])
+                            ->where('user_id', $user['id'] ?? null)
+                            ->exists();
+                    @endphp
+
+                    @if($sudahDaftarSertif)
+                        <button class="btn-primary" disabled style="opacity:0.6; cursor:not-allowed;">
+                            SUDAH TERDAFTAR
                         </button>
-                    </form>
+                    @else
+                        <a href="{{ route('upload.payment', ['sertifikasi_id' => $event['id']]) }}" class="btn-primary">
+                            DAFTAR SERTIFIKASI <i data-lucide="arrow-right"></i>
+                        </a>
+                    @endif
+
+                @else
+
+                    @php
+                        $sudahDaftarSeminar = \App\Models\PendaftaranSeminar::where('seminar_id', $event['id'])
+                            ->where('user_id', $user['id'] ?? null)
+                            ->exists();
+                    @endphp
+
+                    @if($sudahDaftarSeminar)
+                        <button class="btn-primary" disabled style="opacity:0.6; cursor:not-allowed;">
+                            SUDAH TERDAFTAR
+                        </button>
+                    @else
+                        <form action="{{ route('pendaftaran.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="seminar_id" value="{{ $event['id'] }}">
+                            <button type="submit" class="btn-primary">
+                                DAFTAR SEMINAR <i data-lucide="arrow-right"></i>
+                            </button>
+                        </form>
+                    @endif
+
                 @endif
+
             @else
                 <a href="{{ route('login.choose') }}" class="btn-primary">
                     LOGIN UNTUK DAFTAR <i data-lucide="log-in"></i>

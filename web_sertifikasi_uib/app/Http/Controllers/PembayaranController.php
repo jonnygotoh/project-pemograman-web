@@ -29,7 +29,7 @@ class PembayaranController extends Controller
 
         $file = $request->file('bukti_bayar');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('public/bukti_bayar', $filename);
+        $file->storeAs('bukti_bayar', $filename, 'public');
 
         \App\Models\PembayaranSertifikasi::create([
             'user_id'        => session('auth_user')['id'],
@@ -49,10 +49,21 @@ class PembayaranController extends Controller
                         ->firstOrFail();
 
         if ($pembayaran->bukti_bayar) {
-            Storage::delete('public/bukti_bayar/' . $pembayaran->bukti_bayar);
+            Storage::disk('public')->delete('bukti_bayar/' . $pembayaran->bukti_bayar);
         }
         
         $pembayaran->delete();
         return back()->with('success', 'Pendaftaran dibatalkan.');
+    }
+
+    public function viewBuktiBayar($filename)
+    {
+        $path = 'bukti_bayar/' . $filename;
+        
+        if (!Storage::disk('public')->exists($path)) {
+            abort(404, 'File tidak ditemukan');
+        }
+
+        return response()->file(Storage::disk('public')->path($path));
     }
 }

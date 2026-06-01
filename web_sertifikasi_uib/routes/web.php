@@ -84,5 +84,6 @@ Route::get('/detailsertifikasi/{id}', [MainController::class, 'showSertifikasi']
 // pembayaran
 Route::post('/pembayaran-sertifikasi', [PembayaranController::class, 'store'])->name('pendaftaran.store');
 Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy'])->name('pembayaran.destroy');
+Route::get('/bukti-bayar/{filename}', [PembayaranController::class, 'viewBuktiBayar'])->name('bukti.view');
 
 Route::get('/upload-payment/{sertifikasi_id}', [MainController::class, 'showUploadPage'])->name('upload.payment');

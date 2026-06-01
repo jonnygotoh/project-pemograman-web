@@ -11,6 +11,7 @@ use App\Models\SertifikasiUserUmum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Traits\CalendarHelper;
 
 class AdminController extends Controller
@@ -23,6 +24,12 @@ class AdminController extends Controller
         $year = $request->year ?? 2026;
 
         $pembayaranMenunggu = PembayaranSertifikasi::where('status', 'menunggu')->get();
+        
+        // Add bukti_bayar URL to each payment
+        $pembayaranMenunggu = $pembayaranMenunggu->map(function($item) {
+            $item->bukti_bayar_url = route('bukti.view', ['filename' => $item->bukti_bayar]);
+            return $item;
+        });
 
         return view('pages.dashboardAdmin', [
             'month' => $month,

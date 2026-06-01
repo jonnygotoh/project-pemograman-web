@@ -44,7 +44,7 @@
         <div id="profile-seminar-panel" class="responsive-table">
             <table>
                 <thead>
-                    <tr><th>No</th><th>Nama Seminar</th><th>Tanggal</th><th>Waktu</th><th>Status</th></tr>
+                    <tr><th>No</th><th>Nama Seminar</th><th>Tanggal</th><th>Waktu</th><th>Status</th><<th>Aksi</th></tr>
                 </thead>
                 <tbody>
                     @forelse($seminars as $i => $s)
@@ -75,11 +75,24 @@
                         <td><b>{{ $p->sertifikasi->nama ?? '-' }}</b></td>
                         <td>{{ $p->skor ?? '-' }}</td>
                         <td>
-                            @if($p->status == 'lunas') <span class="badge bg-success">Lunas</span>
-                            @elseif($p->status == 'ditolak') <span class="badge bg-danger">Ditolak</span>
-                            @else <span class="badge bg-warning text-dark">Menunggu</span>
-                            @endif
-                        </td>
+        @php
+            $skor = $p->skor;
+        @endphp
+
+        {{-- Status (lulus/tidak lulus/menunggu) --}}
+        @php
+            $skor = $p->skor;
+        @endphp
+
+        @if(is_null($skor))
+            <span class="badge bg-warning text-dark">Menunggu Skor</span>
+        @elseif($skor < 70)
+            <span class="badge bg-danger">Tidak Lulus</span>
+        @else
+            <span class="badge bg-success">Lulus</span>
+        @endif
+
+        </td>
                         <td>{{ $p->catatan_admin ?? '-' }}</td>
                         <td>
                             @if($p->status == 'menunggu')

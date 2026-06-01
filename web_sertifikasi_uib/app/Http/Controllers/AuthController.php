@@ -84,6 +84,9 @@ class AuthController extends Controller
                 ->withInput();
         }
 
+        // Clear admin session jika ada
+        session()->forget(['admin_id', 'admin_name']);
+        
         session([
             'auth_user' => [
                 'id' => $user->id,
@@ -117,6 +120,9 @@ class AuthController extends Controller
                 ->withInput();
         }
 
+        // Clear user session jika ada
+        session()->forget('auth_user');
+        
         session([
             'admin_id' => $admin->id,
             'admin_name' => $admin->nama

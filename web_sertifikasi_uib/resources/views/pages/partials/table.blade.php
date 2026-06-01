@@ -22,7 +22,10 @@ $rows = $rows ?? [];
             <thead>
                 <tr>
                     @foreach($columns as $col)
-                        <th>{{ $col }}</th>
+                        <th data-sortable="true">
+                            <span class="sort-label">{{ $col }}</span>
+                            <span class="sort-icon">↕</span>
+                        </th>
                     @endforeach
                     @if(request()->is('admin*')) <th>Actions</th> @endif
                 </tr>

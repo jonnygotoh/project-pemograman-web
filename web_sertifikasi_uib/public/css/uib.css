@@ -1033,6 +1033,37 @@ td {
     font-size: 14px;
 }
 
+th.sortable {
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+th.sortable .sort-icon {
+    margin-left: 8px;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+th.sortable.asc .sort-icon {
+    transform: rotate(180deg);
+    color: var(--primary);
+}
+
+th.sortable.desc .sort-icon {
+    transform: rotate(0deg);
+    color: var(--primary);
+}
+
+th.sortable:hover .sort-icon {
+    color: var(--navy);
+}
+
+th.sortable .sort-label {
+    display: inline-flex;
+    align-items: center;
+}
+
 th {
     background: var(--light);
     color: var(--muted);
@@ -2068,6 +2099,11 @@ th {
 
 /* --- GANTI SEMUA MEDIA QUERY LAMA DENGAN INI --- */
 @media (max-width: 900px) {
+    
+     body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+    }
     /* Layout Utama & Navbar */
     .navbar { padding: 0 20px; }
     .mobile-menu-btn { display: block; }
@@ -2134,34 +2170,54 @@ th {
         justify-content: center !important;
     }
 
-    /* 4. FIX TABEL (Agar tidak keluar layar) */
+/* 4. FIX TABEL (Agar tidak keluar layar & bisa digeser) */
     .registered-card {
         width: 100% !important;
-        overflow: hidden !important; /* Mencegah elemen keluar */
+        overflow: hidden !important; 
     }
 
+    /* Memastikan kontainer tabel punya scroll horizontal */
     .responsive-table {
         width: 100% !important;
-        overflow-x: auto !important; /* Tabel bisa di-swipe */
-        padding-bottom: 20px;
+        display: block !important;
+        overflow-x: auto !important; 
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 20px !important;
     }
 
+    /* Tabel di dalam kontainer */
+    .responsive-table table {
+        width: 100% !important;
+        min-width: 600px !important; /* Memberikan ruang agar tidak hancur */
+        table-layout: auto !important; /* Penting: Biarkan lebar dinamis */
+    }
+
+    /* Memastikan tabel yang tersembunyi tidak muncul dobel */
     .responsive-table.hidden {
         display: none !important;
     }
 
-    .responsive-table table {
+    /* CSS Khusus agar tabel verifikasi Admin juga bisa di-scroll */
+    .admin-table-container {
         width: 100% !important;
-        min-width: 600px !important; /* Ukuran minimum agar tabel tidak hancur */
-        table-layout: fixed !important; /* Memaksa agar tabel menyesuaikan lebar kolom */
+        overflow-x: auto !important;
+        display: block !important;
+        -webkit-overflow-scrolling: touch;
     }
 
-    .responsive-table th,
-    .responsive-table td {
-        padding: 12px 8px !important;
+    .admin-table-container table {
+        width: 100% !important;
+        min-width: 700px !important; /* Beri ruang lebih untuk kolom verifikasi */
+        table-layout: auto !important;
+    }
+
+    /* Penyesuaian agar sel tabel tidak terlalu rapat */
+    .responsive-table th, 
+    .responsive-table td,
+    .admin-table-container th,
+    .admin-table-container td {
+        padding: 12px 10px !important;
         white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
     }
 
     .responsive-table th:first-child,
@@ -2205,11 +2261,19 @@ th {
         right: 0 !important;
         justify-content: center !important;
         padding: 0 12px;
+        margin: 0 auto !important;
     }
     .admin-hero .hero-image img {
         transform: none !important;
         max-width: 100% !important;
-        margin: 0 auto;
+        margin: 0 auto !important;
+    }
+    .admin-hero .hero-text {
+        width: 100% !important;
+    }
+    .admin-hero .hero-text,
+    .admin-hero .hero-image {
+        justify-self: center !important;
     }
     .dashboard-stats {
         grid-template-columns: 1fr !important;
@@ -2219,8 +2283,270 @@ th {
         min-width: 0 !important;
     }
 
+    
+    .admin-table-container {
+        width: 100% !important;
+        overflow-x: auto !important;
+        display: block !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-table-container table {
+        width: 100% !important;
+        min-width: 700px !important; /* Beri ruang lebih untuk kolom verifikasi */
+        table-layout: auto !important;
+    }
+
     /* Footer & Tabel */
     .footer { padding: 36px 24px; margin: 0; }
     .table-title { flex-direction: column; align-items: flex-start; gap: 14px; }
     .search-box { width: 100%; }
 }
+
+
+/* untuk admin */
+    .thumbnail-wrapper {
+        display: flex;
+        justify-content: center;
+    }
+
+    .bukti-thumbnail {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .bukti-thumbnail:hover {
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Sortable Table Styles */
+    .table thead th.sortable {
+        cursor: pointer;
+        user-select: none;
+        position: relative;
+        transition: background-color 0.2s ease;
+    }
+
+    .table thead th.sortable:hover {
+        background-color: #f0f0f0;
+    }
+
+    .table thead th.sortable.asc,
+    .table thead th.sortable.desc {
+        background-color: #e8e8ff;
+        color: #667eea;
+        font-weight: 600;
+    }
+
+    .sort-icon {
+        display: inline-block;
+        margin-left: 6px;
+        font-size: 12px;
+        opacity: 0.6;
+        transition: opacity 0.2s ease;
+    }
+
+    .table thead th.sortable:hover .sort-icon {
+        opacity: 1;
+    }
+
+    .table thead th.sortable.asc .sort-icon::before {
+        content: '▲';
+    }
+
+    .table thead th.sortable.asc .sort-icon {
+        content: '▲';
+    }
+
+    .table thead th.sortable.desc .sort-icon::before {
+        content: '▼';
+    }
+
+    .table thead th.sortable.desc .sort-icon {
+        content: '▼';
+    }
+
+    /* Modal Styles */
+    .image-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        animation: fadeIn 0.3s ease;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    .image-modal-wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .image-modal-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        max-width: 900px;
+        max-height: 750px;
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 60px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+        transform: scale(1);
+        transform-origin: center;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .image-modal-content.zoomed {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+
+    .image-zoom-container {
+        position: relative;
+        flex: 1;
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        cursor: grab;
+        user-select: none;
+        -webkit-user-select: none;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .image-zoom-container:active {
+        cursor: grabbing;
+    }
+
+    .image-zoom-container::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .image-zoom-container::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .image-zoom-container::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+    }
+
+    .image-zoom-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .zoomable-image {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        transform-origin: center;
+        transition: transform 0.2s ease;
+        user-select: none;
+        -webkit-user-select: none;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+    }
+
+    .zoom-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: linear-gradient(to right, #f8f9fa, #ffffff, #f8f9fa);
+        border-top: 1px solid #e9ecef;
+    }
+
+    .zoom-btn {
+        padding: 8px 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        min-width: 40px;
+    }
+
+    .zoom-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .zoom-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 4px rgba(102, 126, 234, 0.3);
+    }
+
+    .zoom-percentage {
+        min-width: 70px;
+        text-align: center;
+        font-weight: 700;
+        color: #333;
+        font-size: 14px;
+        background-color: #f0f0f0;
+        padding: 6px 12px;
+        border-radius: 4px;
+    }
+
+    .close-btn {
+        position: fixed;
+        top: 50%;
+        right: 2%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border: none;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-size: 32px;
+        cursor: pointer;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s ease;
+        line-height: 1;
+        padding: 0;
+        z-index: 10000;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .close-btn:hover {
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+    }
+
+    .close-btn:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
