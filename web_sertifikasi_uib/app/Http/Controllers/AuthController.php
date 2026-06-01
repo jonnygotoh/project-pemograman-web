@@ -89,6 +89,7 @@ class AuthController extends Controller
                 'name' => $user->nama ?? $user->name,
                 'email' => $user->email,
                 'role' => $request->type,
+                'pasfoto' => $user->pasfoto, 
             ]
         ]);
     return redirect()->route('home')->with('success', 'Login berhasil! Selamat datang kembali.');    }
@@ -223,8 +224,7 @@ class AuthController extends Controller
             ],
         ];
 
-        return view('pages.profile', compact('profile', 'pembayarans'));
-        // 'registered' => [], // Nanti bisa diisi data seminar kelompok kalian
+    return view('pages.profile', compact('profile', 'pembayarans', 'user'));        // 'registered' => [], // Nanti bisa diisi data seminar kelompok kalian
     }
 
     public function showForgotPasswordForm() {

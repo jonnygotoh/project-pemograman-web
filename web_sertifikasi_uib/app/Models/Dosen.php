@@ -14,5 +14,12 @@ class Dosen extends Model
         'email',
         'no_hp',
         'jurusan',
+        'pasfoto',
     ];
+    public function setPasfotoAttribute($value)
+    {
+        $this->attributes['pasfoto'] = $value
+            ? strtolower($value)
+            : null;
+    }
 }

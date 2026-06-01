@@ -14,7 +14,15 @@ class UserUmum extends Model
         'password',
         'no_hp',
         'alamat',
+        'pasfoto',
+
     ];
+    public function setPasfotoAttribute($value)
+    {
+        $this->attributes['pasfoto'] = $value
+            ? strtolower($value)
+            : null;
+    }
 
     protected $hidden = [
         'password',

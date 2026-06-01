@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    window.lucide?.createIcons();
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons({ searchSelector: '[data-lucide]' });
+    }
 
     let isClickScroll = false;
 
@@ -140,7 +142,21 @@ async function changeMonth(type, month, year) {
 
         initDatePicker(type);
 
-        window.lucide?.createIcons();
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            try {
+            // Buat ulang ikon secara global 
+            } catch (err) {
+                // fallback:
+                try { window.lucide.createIcons && window.lucide.createIcons(); } catch (e) {}
+            }
+            //lucide fix
+            document.querySelectorAll(`#${type}-calendar [data-lucide]`).forEach(el => {
+                el.style.visibility = 'visible';
+            });
+            document.querySelectorAll(`#${type}-calendar svg`).forEach(svg => {
+                svg.style.visibility = 'visible';
+            });
+        }
 
     } catch (error) {
         console.error("Gagal memuat kalender:", error);

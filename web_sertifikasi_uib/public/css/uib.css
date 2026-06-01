@@ -577,7 +577,7 @@ main {
 .hero-image img {
     width: 100%;
     max-width: 600px;
-    transform: scale(1.8) translateX(-170px);
+    transform: scale(1.8) translateX(-140px) translateY(-10px);
     transform-origin: center;
     display: block;
 }

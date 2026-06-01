@@ -14,5 +14,13 @@ class Mahasiswa extends Model
         'email',
         'no_hp',
         'prodi',
+        'pasfoto',
     ];
+
+    public function setPasfotoAttribute($value)
+    {
+        $this->attributes['pasfoto'] = $value
+            ? strtolower($value)
+            : null;
+    }
 }
