@@ -97,15 +97,54 @@ textarea {
     transition: all 0.2s ease;
 }
 
-.nav-menu a:not(.active):not(.login-pill):hover {
+.nav-menu > a:not(.active):not(.login-pill):hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
+}   
+
+.account-name a{
+    display:block;
+
+    padding:12px 14px;
+
+    text-decoration:none;
+    color:#111827;
+
+    font-size:14px;
+    font-weight:500;
+
+    border-radius:8px;
+
+    transition:background .2s ease;
 }
 
-#accountMenu a:hover{
-        color: rgb(46, 46, 119);
+.account-dropdown button{
+    width:100%;
+    padding:12px 14px;
 
+    border:none;
+    background:none;
+
+    text-align:left;
+
+    font-size:14px;
+    font-weight:500;
+
+    color:#374151;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    transition:all .2s ease;
 }
+
+.account-dropdown a:hover,
+.account-dropdown button:hover {
+    background: rgba(248, 250, 252, 0.9);
+    color: rgba(22, 61, 143, .75);
+}
+
 .login-pill {
     background: linear-gradient(135deg, #213cff, #7044f6);
     color: white !important;
@@ -148,16 +187,18 @@ textarea {
     display: none;
     position: absolute;
     right: 0;
-    top: 2.75rem;
-    background: white;
-    color: var(--navy);
-    width: 9.75rem;
-    border-radius: 0.875rem;
-    box-shadow: var(--shadow);
-    padding: 0.875rem;
-    z-index: 10;
-    text-align:center;
-    margin-top:10px;
+    top: calc(100% + 8px);
+
+    width: 180px;
+    padding: 8px;
+
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+
+    z-index: 100;
 }
 
 .account-dropdown.show {
@@ -165,11 +206,26 @@ textarea {
 }
 
 .account-dropdown a,
-.account-name {
-    gap: 10px;
-    align-items: center;
-    font-weight: 800;
-    margin-bottom: 20px;
+.account-dropdown button{
+    width:100%;
+    display:block;
+
+    padding:12px 14px;
+    font-weight: 500;
+    border:none;
+    border-radius:14px;
+
+    background:transparent;
+
+    text-decoration:none;
+    color:var(--navy);
+
+    font-family:'Product Sans',sans-serif;
+    font-size:14px;
+
+    cursor:pointer;
+
+    transition:all .22s ease;
 }
 
 main {
