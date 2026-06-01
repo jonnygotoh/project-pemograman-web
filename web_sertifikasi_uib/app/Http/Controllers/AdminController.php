@@ -37,24 +37,22 @@ class AdminController extends Controller
         ]);
     }
 
-    // Helper untuk memformat data seminar agar siap masuk ke 'table.blade.php'
     private function getSeminarRows() {
-        return Seminar::all()->map(function ($s, $index) {
+        return Seminar::withCount('pendaftar')->get()->map(function ($s, $index) {
             return (object) [
                 'id' => $s->id,
                 'no' => $index + 1,
                 'nama' => $s->nama,
                 'periode' => $s->periode,
-                'tanggal' => $s->tanggal ? Carbon::parse($s->tanggal)->format('d M Y') : '-', // Sesuaikan label
+                'tanggal' => $s->tanggal ? Carbon::parse($s->tanggal)->format('d M Y') : '-',
                 'waktu' => $s->waktu,
-                'jumlah_pendaftar' => $s->jumlah_pendaftar
+                'jumlah_pendaftar' => $s->pendaftar_count
             ];
         });
     }
 
-    // Helper untuk memformat data sertifikasi agar siap masuk ke 'table.blade.php'
     private function getCertificationRows() {
-        return Sertifikasi::all()->map(function ($s, $index) {
+        return Sertifikasi::withCount('pendaftarSertifikasi')->get()->map(function ($s, $index) {
             return (object) [
                 'id' => $s->id,
                 'no' => $index + 1,
@@ -62,7 +60,7 @@ class AdminController extends Controller
                 'periode' => $s->periode,
                 'waktu' => $s->waktu ? Carbon::parse($s->waktu)->format('d M Y') : '-',
                 'biaya' => "Mhs: Rp" . number_format($s->biaya_mahasiswa, 0, ',', '.') . " | Dosen: Rp" . number_format($s->biaya_dosen, 0, ',', '.') . " | Umum: Rp" . number_format($s->biaya_umum, 0, ',', '.'),
-                'jumlah_pendaftar' => $s->jumlah_pendaftar
+                'jumlah_pendaftar' => $s->pendaftar_sertifikasi_count
             ];
         });
     }
@@ -107,8 +105,6 @@ class AdminController extends Controller
     public function seminarDelete($id)
     {
         Seminar::find($id)->delete();
-
-        // Setelah sukses hapus, lempar kembali ke home
         return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil dihapus!');
     }
 

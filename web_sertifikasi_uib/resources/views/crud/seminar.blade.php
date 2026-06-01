@@ -40,5 +40,15 @@
             <a href="{{ route('admin.dashboard') }}" class="btn-primary" style="text-align: center; text-decoration: none; width: 100%; padding: 10px;">Batal</a>
         </div>    
     </form>
+
+        @if(isset($item))
+            <form action="{{ route('admin.seminar.delete', $item->id) }}" 
+                method="POST" 
+                onsubmit="return confirm('Apakah Anda yakin ingin menghapus seminar ini?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-primary" style="width: 100%; Margin-top: 10px;">Hapus Data Seminar</button>
+            </form>
+        @endif
 </section>
 @endsection

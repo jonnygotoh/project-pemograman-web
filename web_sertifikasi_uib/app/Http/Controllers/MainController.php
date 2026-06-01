@@ -50,7 +50,7 @@ class MainController extends Controller
 
     private function seminarRows()
     {
-        return Seminar::all()->map(function ($seminar, $index) {
+        return Seminar::withCount('pendaftar')->get()->map(function ($seminar, $index) {
             return [
                 'id' => $seminar->id,
                 'no' => $index + 1,
@@ -58,14 +58,14 @@ class MainController extends Controller
                 'periode' => $seminar->periode,
                 'tanggal' => $seminar->tanggal ? Carbon::parse($seminar->tanggal)->format('d M Y') : '-',
                 'waktu' => $seminar->waktu,
-                'jumlah_pendaftar' => $seminar->jumlah_pendaftar 
+                'jumlah_pendaftar' => $seminar->pendaftar_count 
             ];
         });
     }
 
     private function certificationRows()
     {
-        return Sertifikasi::all()->map(function ($sertif, $index) {
+        return Sertifikasi::withCount('pendaftarSertifikasi')->get()->map(function ($sertif, $index) {
             return [
                 'id' => $sertif->id,
                 'no' => $index + 1,
@@ -73,15 +73,13 @@ class MainController extends Controller
                 'periode' => $sertif->periode,
                 'waktu' => $sertif->waktu ? Carbon::parse($sertif->waktu)->format('d M Y') : '-',
                 'biaya' => "Mhs: Rp" . number_format($sertif->biaya_mahasiswa, 0, ',', '.') . 
-                        " | Dosen: Rp" . number_format($sertif->biaya_dosen, 0, ',', '.') . 
-                        " | Umum: Rp" . number_format($sertif->biaya_umum, 0, ',', '.'),
-                // Sekarang sudah berisi data asli dari database
-                'jumlah_pendaftar' => $sertif->jumlah_pendaftar 
+                           " | Dosen: Rp" . number_format($sertif->biaya_dosen, 0, ',', '.') . 
+                           " | Umum: Rp" . number_format($sertif->biaya_umum, 0, ',', '.'),
+                'jumlah_pendaftar' => $sertif->pendaftar_sertifikasi_count 
             ];
         });
     }
 
-    //menampilkan detail seminar/sertifikasi
     public function showSeminar($id)
     {
         $seminar = Seminar::findOrFail($id);

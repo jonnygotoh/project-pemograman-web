@@ -18,6 +18,6 @@ class Seminar extends Model
 
     public function pendaftar()
     {
-        return $this->hasMany(Pendaftar::class, 'seminar_id');
+        return $this->hasMany(PendaftaranSeminar::class, 'seminar_id');
     }
 }
