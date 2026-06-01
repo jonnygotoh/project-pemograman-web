@@ -76,17 +76,11 @@
         @include('pages.partials.table', [
             'pageTitle' => 'Seminar',
             'type' => 'seminar',
-            'columns' => ['No', 'Nama', 'Periode', 'Tanggal', 'Waktu', 'Biaya', 'Pendaftar'],
+            'columns' => ['No', 'Nama', 'Periode', 'Tanggal', 'Waktu', 'Pendaftar'],
             'rows' => $seminarRows
         ])
     </div>
 </section>
 @endsection
-
-@section('scripts')
-<script>// --untuk menampilkan SweetAlert setelah login berhasil
-</script>
-@endsection
-
 </body>
 </html>

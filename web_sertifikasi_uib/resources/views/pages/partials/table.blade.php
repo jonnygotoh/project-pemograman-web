@@ -33,24 +33,25 @@ $rows = $rows ?? [];
                     <tr>
                         @foreach($columns as $col)
                             @php
-                                // Normalisasi kolom: "Nama Sertifikasi" -> "nama_sertifikasi"
-                                // Tapi kita buat mapping agar otomatis mengenali key controller
                                 $field = str_replace(' ', '_', strtolower($col));
                                 
-                                // Mapping Manual agar singkron
+                                // Mapping Manual agar singkron dengan key di controller
                                 if($field === 'nama_sertifikasi') $field = 'nama';
                                 if($field === 'periode_pendaftaran') $field = 'periode';
                                 if($field === 'tanggal_pelatihan' || $field === 'tanggal_ujian') $field = 'waktu';
                                 if($field === 'biaya_pendaftaran') $field = 'biaya';
-                                if($field === 'jumlah_pendaftar') $field = 'pendaftar';
+                                if($field === 'jumlah_pendaftar') $field = 'jumlah_pendaftar'; // Pastikan sesuai key di controller
                             @endphp
                             
-                            <td>{{ $row[$field] ?? '-' }}</td>
+                            <td>
+                                {{-- Cek apakah row adalah array atau objek, lalu akses dinamis --}}
+                                {{ is_array($row) ? ($row[$field] ?? '-') : ($row->{$field} ?? '-') }}
+                            </td>
                         @endforeach
 
                         @if(request()->is('admin*'))
                             <td>
-                                <a href="{{ route('admin.'.$type.'.edit', $row['id']) }}">Edit</a>
+                                <a href="{{ route('admin.'.$type.'.edit', is_array($row) ? $row['id'] : $row->id) }}">Edit</a>
                             </td>
                         @endif
                     </tr>

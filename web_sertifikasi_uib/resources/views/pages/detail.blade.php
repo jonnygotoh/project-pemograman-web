@@ -23,11 +23,21 @@
             <p><i data-lucide="map-pin"></i> <b>Tempat:</b> {{ $event['place'] }}</p>
 
             @if(auth()->check() || session()->has('auth_user'))
-                <a href="{{ route('upload.payment', ['sertifikasi_id' => $event['id']]) }}" class="btn-primary">
-                    DAFTAR SEKARANG <i data-lucide="arrow-right"></i>
-                </a>
+                @if(($event['category'] ?? '') == 'sertifikasi')
+                    <a href="{{ route('upload.payment', ['sertifikasi_id' => $event['id']]) }}" class="btn-primary">
+                        DAFTAR SERTIFIKASI <i data-lucide="arrow-right"></i>
+                    </a>
+                @else
+                    {{-- Form Pendaftaran Seminar --}}
+                    <form action="{{ route('pendaftaran.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="seminar_id" value="{{ $event['id'] }}">
+                        <button type="submit" class="btn-primary">
+                            DAFTAR SEMINAR <i data-lucide="arrow-right"></i>
+                        </button>
+                    </form>
+                @endif
             @else
-                {{-- Arahkan ke login jika belum login --}}
                 <a href="{{ route('login.choose') }}" class="btn-primary">
                     LOGIN UNTUK DAFTAR <i data-lucide="log-in"></i>
                 </a>
@@ -36,5 +46,3 @@
     </div>
 </section>
 @endsection
-
-

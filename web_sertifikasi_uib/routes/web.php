@@ -61,17 +61,20 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
 
     // SEMINAR
     Route::get('/seminar/create', [AdminController::class, 'seminarCreate'])->name('admin.seminar.create');
-    Route::get('/seminar/edit/{id}', [AdminController::class, 'seminarEdit']);
+    // Penambahan ->name() di bawah ini:
+    Route::get('/seminar/edit/{id}', [AdminController::class, 'seminarEdit'])->name('admin.seminar.edit');
     Route::post('/seminar/store', [AdminController::class, 'seminarStore'])->name('admin.seminar.store');
-    Route::post('/seminar/update/{id}', [AdminController::class, 'seminarUpdate']);
-    Route::delete('/seminar/delete/{id}', [AdminController::class, 'seminarDelete']);
+    Route::put('/seminar/update/{id}', [AdminController::class, 'seminarUpdate'])->name('admin.seminar.update');
+    Route::delete('/seminar/delete/{id}', [AdminController::class, 'seminarDelete'])->name('admin.seminar.delete');
 
     // SERTIFIKASI
     Route::get('/sertifikasi/create', [AdminController::class, 'sertifikasiCreate'])->name('admin.sertifikasi.create');
-    Route::get('/sertifikasi/edit/{id}', [AdminController::class, 'sertifikasiEdit']);
+    // Penambahan ->name() di bawah ini:
+    Route::get('/sertifikasi/edit/{id}', [AdminController::class, 'sertifikasiEdit'])->name('admin.sertifikasi.edit');
     Route::post('/sertifikasi/store', [AdminController::class, 'sertifikasiStore'])->name('admin.sertifikasi.store');
-    Route::post('/sertifikasi/update/{id}', [AdminController::class, 'sertifikasiUpdate']);
-    Route::delete('/sertifikasi/delete/{id}', [AdminController::class, 'sertifikasiDelete']);
+    Route::put('/sertifikasi/update/{id}', [AdminController::class, 'sertifikasiUpdate'])->name('admin.sertifikasi.update');
+    Route::delete('/sertifikasi/delete/{id}', [AdminController::class, 'sertifikasiDelete'])->name('admin.sertifikasi.delete');
+    
     Route::post('/verifikasi-pembayaran/{id}', [AdminController::class, 'verifikasiPembayaran'])->name('admin.verifikasi.pembayaran');
 });
 

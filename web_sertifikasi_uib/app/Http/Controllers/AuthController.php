@@ -7,6 +7,7 @@ use App\Models\Mahasiswa;
 use App\Models\UserUmum;
 use App\Models\Admin;
 use App\Models\PembayaranSertifikasi;
+use App\Models\PendaftarsnSeminar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -179,7 +180,7 @@ class AuthController extends Controller
         }
         $user = $config['model']::find($id);
 
-        // 3. Logika Looping pasfoto (Diletakkan sebelum data lain agar bersih)
+        // 3. Logika Looping pasfoto
         $filename = 'default.png';
         $photoCandidates = [];
 
@@ -212,6 +213,7 @@ class AuthController extends Controller
         if (!empty($user->nama)) {
             $photoCandidates[] = strtolower(preg_replace('/[^a-z0-9]+/', '', $user->nama));
         }
+        
         foreach (array_unique($photoCandidates) as $candidate) {
             foreach (['png', 'jpg', 'jpeg'] as $ext) {
                 $checkName = $candidate . '.' . $ext;
@@ -221,16 +223,25 @@ class AuthController extends Controller
                 }
             }
         }
-        // 4. Integrasi Data Pembayaran
+
+        // 4. Integrasi Data Pembayaran Sertifikasi
         $pembayarans = PembayaranSertifikasi::with('sertifikasi')
             ->where('user_id', $id)
             ->where('user_type', $role)
             ->get();
-        // 5. Ubah status role menjadi Bahasa Indonesia
+
+        // 5. Integrasi Data Pendaftaran Seminar (BARU)
+        $seminars = \App\Models\PendaftaranSeminar::with('seminar')
+            ->where('user_id', $id)
+            ->where('user_type', $role)
+            ->get();
+
+        // 6. Ubah status role menjadi Bahasa Indonesia
         $statusLabel = 'Umum';
         if ($role === 'student') $statusLabel = 'Mahasiswa';
         if ($role === 'lecturer') $statusLabel = 'Dosen';
-        // 6. Susun data profil
+
+        // 7. Susun data profil
         $profile = [
             ['icon' => 'user', 'label' => 'Nama', 'value' => $user->nama ?? $user->name ?? '-'],
             ['icon' => 'id-card', 'label' => $role === 'lecturer' ? 'NIDN' : ($role === 'student' ? 'NPM' : 'ID'), 'value' => $user->npm ?? $user->nidn ?? '-'],
@@ -239,8 +250,9 @@ class AuthController extends Controller
             ['icon' => 'phone', 'label' => 'No. HP', 'value' => $user->no_hp ?? '-'],
             ['icon' => 'user-round-check', 'label' => 'Status', 'value' => $statusLabel],
         ];
-        // Kirim semua data ke view
-        return view('pages.profile', compact('profile', 'pembayarans', 'user', 'filename'));
+
+        // Kirim semua data termasuk $seminars ke view
+        return view('pages.profile', compact('profile', 'pembayarans', 'seminars', 'user', 'filename'));
     }
 
     public function showForgotPasswordForm() {

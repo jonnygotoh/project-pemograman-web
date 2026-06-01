@@ -7,24 +7,31 @@
 
     <form action="{{ isset($item) ? route('admin.seminar.update', $item->id) : route('admin.seminar.store') }}" method="POST">
         @csrf
+        @if(isset($item)) @method('PUT') @endif
         
         <div class="admin-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-            <div class="form-group"><label>Nama <input type="text" name="nama" value="{{ $item->nama ?? '' }}" required class="form-control"></label></div>
-            <div class="form-group"><label>Periode <input type="text" name="periode" value="{{ $item->periode ?? '' }}" required class="form-control"></label></div>
-            <div class="form-group"><label>Tanggal <input type="date" name="tanggal" value="{{ isset($item) ? $item->tanggal->format('Y-m-d') : '' }}" required class="form-control"></label></div>
-            <div class="form-group"><label>Waktu <input type="text" name="waktu" value="{{ $item->waktu ?? '' }}" required class="form-control"></label></div>
-            
             <div class="form-group">
-                <label>Tipe
-                    <select name="tipe" id="tipe-select" class="form-control" onchange="toggleBiaya(this.value)">
-                        <option value="free" {{ ($item->tipe ?? '') == 'free' ? 'selected' : '' }}>Free</option>
-                        <option value="paid" {{ ($item->tipe ?? '') == 'paid' ? 'selected' : '' }}>Paid</option>
-                    </select>
+                <label>Nama 
+                    <input type="text" name="nama" value="{{ $item->nama ?? '' }}" required class="form-control">
                 </label>
             </div>
-
-            <div class="form-group" id="biaya-group" style="grid-column: span 2; {{ ($item->tipe ?? '') == 'paid' ? 'display: block;' : 'display: none;' }}">
-                <label>Biaya (Rp) <input type="number" name="biaya" value="{{ $item->biaya ?? 0 }}" class="form-control"></label>
+            
+            <div class="form-group">
+                <label>Periode 
+                    <input type="text" name="periode" value="{{ $item->periode ?? '' }}" required class="form-control">
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label>Tanggal 
+                    <input type="date" name="tanggal" value="{{ isset($item) ? \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d') : '' }}" required class="form-control">
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label>Waktu 
+                    <input type="text" name="waktu" value="{{ $item->waktu ?? '' }}" required class="form-control" placeholder="Contoh: 09:00 - 12:00">
+                </label>
             </div>
         </div> 
 
@@ -34,10 +41,4 @@
         </div>    
     </form>
 </section>
-
-<script>
-    function toggleBiaya(value) {
-        document.getElementById('biaya-group').style.display = (value === 'paid') ? 'block' : 'none';
-    }
-</script>
 @endsection

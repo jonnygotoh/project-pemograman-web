@@ -58,7 +58,6 @@ class MainController extends Controller
                 'periode' => $seminar->periode,
                 'tanggal' => $seminar->tanggal ? Carbon::parse($seminar->tanggal)->format('d M Y') : '-',
                 'waktu' => $seminar->waktu,
-                'biaya' => $seminar->tipe === 'free' ? 'Gratis' : 'Rp ' . number_format($seminar->biaya, 0, ',', '.'),
                 'jumlah_pendaftar' => $seminar->jumlah_pendaftar 
             ];
         });
@@ -86,35 +85,34 @@ class MainController extends Controller
     public function showSeminar($id)
     {
         $seminar = Seminar::findOrFail($id);
-
         $event = [
-            'title' => $seminar->nama,
+            'id'          => $seminar->id,
+            'title'       => $seminar->nama,
             'description' => $seminar->deskripsi ?? '-',
-            'date' => $seminar->tanggal,
-            'time' => $seminar->waktu,
-            'place' => $seminar->tempat ?? '-',
-            'mode' => $seminar->mode ?? 'offline',
-            'poster' => $seminar->poster ?? null,
+            'date'        => $seminar->tanggal,
+            'time'        => $seminar->waktu,
+            'place'       => $seminar->tempat ?? '-',
+            'mode'        => $seminar->mode ?? 'offline',
+            'poster'      => $seminar->poster ?? null,
+            'category'    => 'seminar' // Penanda agar blade tahu ini seminar
         ];
-
         return view('pages.detail', compact('event'));
     }
 
     public function showSertifikasi($id)
     {
         $sertif = Sertifikasi::findOrFail($id);
-
         $event = [
-            'id' => $sertif->id,
-            'title' => $sertif->nama,
+            'id'          => $sertif->id,
+            'title'       => $sertif->nama,
             'description' => $sertif->deskripsi ?? '-',
-            'date' => $sertif->waktu,
-            'time' => $sertif->jam ?? '-',
-            'place' => $sertif->tempat ?? '-',
-            'mode' => $sertif->mode ?? 'offline',
-            'poster' => $sertif->poster ?? null,
+            'date'        => $sertif->waktu,
+            'time'        => $sertif->jam ?? '-',
+            'place'       => $sertif->tempat ?? '-',
+            'mode'        => $sertif->mode ?? 'offline',
+            'poster'      => $sertif->poster ?? null,
+            'category'    => 'sertifikasi' // Penanda agar blade tahu ini sertifikasi
         ];
-
         return view('pages.detail', compact('event'));
     }
     public function showUploadPage($sertifikasi_id) 

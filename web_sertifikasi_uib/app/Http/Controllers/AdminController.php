@@ -45,8 +45,8 @@ class AdminController extends Controller
                 'no' => $index + 1,
                 'nama' => $s->nama,
                 'periode' => $s->periode,
-                'waktu' => $s->tanggal ? Carbon::parse($s->tanggal)->format('d M Y') : '-',
-                'biaya' => $s->tipe === 'free' ? 'Gratis' : 'Rp ' . number_format($s->biaya, 0, ',', '.'),
+                'tanggal' => $s->tanggal ? Carbon::parse($s->tanggal)->format('d M Y') : '-', // Sesuaikan label
+                'waktu' => $s->waktu,
                 'jumlah_pendaftar' => $s->jumlah_pendaftar
             ];
         });
@@ -86,16 +86,10 @@ class AdminController extends Controller
             'periode' => 'required',
             'tanggal' => 'required|date',
             'waktu' => 'required',
-            'tipe' => 'required',
-            'biaya' => 'nullable|numeric',
         ]);
 
         $data['jumlah_pendaftar'] = 0; 
-
-        if ($request->tipe === 'free') {
-            $data['biaya'] = 0;
-        }
-
+        // Hapus validasi dan logika tipe/biaya
         Seminar::create($data);
 
         return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil ditambahkan!');
@@ -104,13 +98,8 @@ class AdminController extends Controller
     public function seminarUpdate(Request $request, $id)
     {
         $seminar = Seminar::findOrFail($id);
-        $data = $request->all();
-        
-        if ($request->tipe === 'free') {
-            $data['biaya'] = 0;
-        }
-
-        $seminar->update($data);
+        // Cukup update $request->all() atau spesifik field
+        $seminar->update($request->only(['nama', 'periode', 'tanggal', 'waktu']));
 
         return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil diubah!');
     }

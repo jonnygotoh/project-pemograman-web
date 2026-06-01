@@ -13,8 +13,6 @@ class Seminar extends Model
         'periode', 
         'tanggal', 
         'waktu', 
-        'tipe', 
-        'biaya', 
         'jumlah_pendaftar',
     ];
 

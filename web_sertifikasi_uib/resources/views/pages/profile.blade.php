@@ -5,7 +5,7 @@
 <section class="profile-page">
     <div class="profile-card">
         <div class="avatar-box">
-           <img src="{{ asset('images/pasfoto/' . $filename) }}" alt="{{ $user->nama ?? 'User' }}" >
+             <img src="{{ asset('images/pasfoto/' . $filename) }}" alt="{{ $user->nama ?? 'User' }}" >
         </div>
 
         <div class="profile-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%;">
@@ -44,10 +44,20 @@
         <div id="profile-seminar-panel" class="responsive-table">
             <table>
                 <thead>
-                    <tr><th>No</th><th>Nama Seminar</th><th>Tanggal</th><th>Status</th><th>Sertifikat</th><th>Catatan</th><th>Aksi</th></tr>
+                    <tr><th>No</th><th>Nama Seminar</th><th>Tanggal</th><th>Waktu</th><th>Status</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td colspan="7" style="text-align: center;">Belum ada data.</td></tr>
+                    @forelse($seminars as $i => $s)
+                    <tr>
+                        <td>{{ $i + 1 }}</td>
+                        <td><b>{{ $s->seminar->nama ?? 'N/A' }}</b></td>
+                        <td>{{ $s->seminar->tanggal ?? '-' }}</td>
+                        <td>{{ $s->seminar->waktu ?? '-' }}</td>
+                        <td><span class="badge bg-success">Terdaftar</span></td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="5" style="text-align: center;">Belum ada pendaftaran seminar.</td></tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

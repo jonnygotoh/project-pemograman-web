@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PembayaranSertifikasi;
+use App\Models\PendaftaranSeminar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -10,35 +11,41 @@ class PembayaranController extends Controller
 {
     public function store(Request $request)
     {
-        // 1. Validasi hanya untuk field yang penting
+        // A. LOGIKA SEMINAR (Langsung daftar, tanpa validasi file)
+        if ($request->has('seminar_id')) {
+            \App\Models\PendaftaranSeminar::create([
+                'seminar_id' => $request->seminar_id,
+                'user_id'    => session('auth_user')['id'],
+                'user_type'  => session('auth_user')['role'],
+            ]);
+            return redirect()->route('profile')->with('success', 'Berhasil mendaftar Seminar!');
+        }
+
+        // B. LOGIKA SERTIFIKASI (Wajib upload bukti bayar)
         $request->validate([
             'bukti_bayar' => 'required|image|max:2048',
             'sertifikasi_id' => 'required'
         ]);
 
-        // 2. Upload file
         $file = $request->file('bukti_bayar');
         $filename = time() . '_' . $file->getClientOriginalName();
         $file->storeAs('public/bukti_bayar', $filename);
 
-        // 3. Simpan ke database (Hanya data yang ada di $fillable Model)
-        PembayaranSertifikasi::create([
+        \App\Models\PembayaranSertifikasi::create([
             'user_id'        => session('auth_user')['id'],
             'user_type'      => session('auth_user')['role'],
             'sertifikasi_id' => $request->sertifikasi_id,
             'bukti_bayar'    => $filename,
             'status'         => 'menunggu',
-            // Field lain dari form (bank_name, dsb) otomatis diabaikan oleh Laravel
         ]);
 
-        return redirect()->route('profile')->with('success', 'Pendaftaran berhasil dikirim!');
+        return redirect()->route('profile')->with('success', 'Pendaftaran Sertifikasi berhasil!');
     }
 
     public function destroy($id)
     {
         $pembayaran = PembayaranSertifikasi::where('id', $id)
                         ->where('user_id', session('auth_user')['id'])
-                        ->where('user_type', session('auth_user')['role'])
                         ->firstOrFail();
 
         if ($pembayaran->bukti_bayar) {
@@ -46,7 +53,6 @@ class PembayaranController extends Controller
         }
         
         $pembayaran->delete();
-        
         return back()->with('success', 'Pendaftaran dibatalkan.');
     }
 }
