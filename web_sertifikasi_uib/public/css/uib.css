@@ -2198,6 +2198,27 @@ th {
     .admin-form-actions { flex-direction: column; }
     .admin-form-actions .btn-primary, .admin-form-actions .btn-outline-danger { width: 100%; }
 
+    .admin-hero .hero-image {
+        width: 100% !important;
+        max-width: 100% !important;
+        bottom: 0 !important;
+        right: 0 !important;
+        justify-content: center !important;
+        padding: 0 12px;
+    }
+    .admin-hero .hero-image img {
+        transform: none !important;
+        max-width: 100% !important;
+        margin: 0 auto;
+    }
+    .dashboard-stats {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+    }
+    .dashboard-stats .status-card {
+        min-width: 0 !important;
+    }
+
     /* Footer & Tabel */
     .footer { padding: 36px 24px; margin: 0; }
     .table-title { flex-direction: column; align-items: flex-start; gap: 14px; }
