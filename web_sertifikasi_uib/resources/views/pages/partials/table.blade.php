@@ -1,6 +1,6 @@
 @php
 $pageTitle = $pageTitle ?? 'Data';
-$type = $type ?? 'items';
+$type = $type ?? 'items'; // 'seminar' atau 'sertifikasi'
 $columns = $columns ?? [];
 $rows = $rows ?? [];
 @endphp
@@ -33,28 +33,31 @@ $rows = $rows ?? [];
 
             <tbody>
                 @foreach($rows as $row)
-                    <tr>
+                    @php
+                        $id = is_array($row) ? $row['id'] : $row->id;
+                        // Menentukan route berdasarkan $type
+                        $routeName = ($type == 'seminar') ? 'seminar.show' : 'sertifikasi.show';
+                        $detailUrl = route($routeName, ['id' => $id]);
+                    @endphp
+
+                    <tr onclick="window.location='{{ $detailUrl }}';" style="cursor: pointer;">
                         @foreach($columns as $col)
                             @php
                                 $field = str_replace(' ', '_', strtolower($col));
-                                
-                                // Mapping Manual agar singkron dengan key di controller
                                 if($field === 'nama_sertifikasi') $field = 'nama';
                                 if($field === 'periode_pendaftaran') $field = 'periode';
                                 if($field === 'tanggal_pelatihan' || $field === 'tanggal_ujian') $field = 'waktu';
                                 if($field === 'biaya_pendaftaran') $field = 'biaya';
-                                if($field === 'jumlah_pendaftar') $field = 'jumlah_pendaftar'; // Pastikan sesuai key di controller
                             @endphp
                             
                             <td>
-                                {{-- Cek apakah row adalah array atau objek, lalu akses dinamis --}}
                                 {{ is_array($row) ? ($row[$field] ?? '-') : ($row->{$field} ?? '-') }}
                             </td>
                         @endforeach
 
                         @if(request()->is('admin*'))
-                            <td>
-                                <a href="{{ route('admin.'.$type.'.edit', is_array($row) ? $row['id'] : $row->id) }}">Edit</a>
+                            <td onclick="event.stopPropagation();">
+                                <a href="{{ route('admin.'.$type.'.edit', $id) }}">Edit</a>
                             </td>
                         @endif
                     </tr>

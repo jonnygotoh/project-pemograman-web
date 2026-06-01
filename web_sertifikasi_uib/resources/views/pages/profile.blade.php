@@ -51,7 +51,11 @@
                     @forelse($seminars as $i => $s)
                     <tr>
                         <td>{{ $i + 1 }}</td>
-                        <td><b>{{ $s->seminar->nama ?? 'N/A' }}</b></td>
+                        <td>
+                            <a href="{{ route('seminar.show', $s->seminar->id ?? 0) }}" style="text-decoration:none; color:inherit;">
+                                <b>{{ $s->seminar->nama ?? 'N/A' }}</b>
+                            </a>
+                        </td>
                         <td>{{ $s->seminar->tanggal ?? '-' }}</td>
                         <td>{{ $s->seminar->waktu ?? '-' }}</td>
                         <td>
@@ -63,10 +67,8 @@
                         </td>
                         <td>
                             @if($s->status_sertifikat == 'verified')
-                                {{-- Sertifikat sudah ada, user bisa download --}}
                                 <a href="{{ asset('storage/' . $s->sertifikat_path) }}" target="_blank" class="btn-sm btn-primary">Lihat Sertifikat</a>
                             @else
-                                {{-- Sertifikat belum ada, user harus isi token --}}
                                 <button type="button" onclick="openTokenModal({{ $s->id }})" class="btn-sm btn-info">Isi Token</button>
                             @endif
                         </td>
@@ -88,27 +90,22 @@
                     @forelse($pembayarans as $i => $p)
                     <tr>
                         <td>{{ $i + 1 }}</td>
-                        <td><b>{{ $p->sertifikasi->nama ?? '-' }}</b></td>
+                        <td>
+                            <a href="{{ route('sertifikasi.show', $p->sertifikasi->id ?? 0) }}" style="text-decoration:none; color:inherit;">
+                                <b>{{ $p->sertifikasi->nama ?? '-' }}</b>
+                            </a>
+                        </td>
                         <td>{{ $p->skor ?? '-' }}</td>
                         <td>
-        @php
-            $skor = $p->skor;
-        @endphp
-
-        {{-- Status (lulus/tidak lulus/menunggu) --}}
-        @php
-            $skor = $p->skor;
-        @endphp
-
-        @if(is_null($skor))
-            <span class="badge bg-warning text-dark">Menunggu Skor</span>
-        @elseif($skor < 70)
-            <span class="badge bg-danger">Tidak Lulus</span>
-        @else
-            <span class="badge bg-success">Lulus</span>
-        @endif
-
-        </td>
+                            @php $skor = $p->skor; @endphp
+                            @if(is_null($skor))
+                                <span class="badge bg-warning text-dark">Menunggu Skor</span>
+                            @elseif($skor < 70)
+                                <span class="badge bg-danger">Tidak Lulus</span>
+                            @else
+                                <span class="badge bg-success">Lulus</span>
+                            @endif
+                        </td>
                         <td>{{ $p->catatan_admin ?? '-' }}</td>
                         <td>
                             @if($p->status == 'menunggu')
@@ -132,7 +129,6 @@
     <div class="modal-content" style="background:white; width:300px; margin:15% auto; padding:20px; border-radius:8px;">
         <form action="{{ route('verifikasi.token.seminar') }}" method="POST">
             @csrf
-            {{-- Ubah name dan id menjadi seminar_id --}}
             <input type="hidden" name="pendaftaran_id" id="modal_seminar_id">
             
             <h5>Masukkan Token</h5>
