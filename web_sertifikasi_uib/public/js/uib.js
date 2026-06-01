@@ -133,23 +133,30 @@ document.addEventListener("click", function () {
 async function changeMonth(type, month, year) {
     try {
         const response = await fetch(`/calendar/${type}?month=${month}&year=${year}`);
-        const html = await response.text();
+        if (!response.ok) {
+            const text = await response.text();
+            console.error(`Gagal memuat kalender: HTTP ${response.status}`, text);
+            return;
+        }
 
+        const html = await response.text();
         const el = document.getElementById(`${type}-calendar`);
         if (!el) return;
 
         el.innerHTML = html;
-
         initDatePicker(type);
 
         if (window.lucide && typeof window.lucide.createIcons === 'function') {
             try {
-            // Buat ulang ikon secara global 
+                window.lucide.createIcons();
             } catch (err) {
-                // fallback:
-                try { window.lucide.createIcons && window.lucide.createIcons(); } catch (e) {}
+                try {
+                    window.lucide.createIcons && window.lucide.createIcons();
+                } catch (e) {
+                    console.warn('Lucide reinit failed', e);
+                }
             }
-            //lucide fix
+
             document.querySelectorAll(`#${type}-calendar [data-lucide]`).forEach(el => {
                 el.style.visibility = 'visible';
             });

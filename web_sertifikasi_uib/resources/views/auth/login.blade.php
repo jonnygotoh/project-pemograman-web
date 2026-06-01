@@ -7,7 +7,6 @@
     <div class="spinner"></div>
     <p style="font-weight: bold; color: #333;">Memproses data...</p>
 </div>
-//
 
 <section class="login-page">
     <h1>{{ $title ?? 'Masuk Umum' }}</h1>

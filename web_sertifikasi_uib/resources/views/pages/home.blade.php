@@ -60,7 +60,7 @@
 
     <div class="view-toggle">
         <button class="active" onclick="switchView('seminar','calendar')">Kalender</button>
-        <button onclick="switchView('seminar','table')">Tabel</butmainton>
+        <button onclick="switchView('seminar','table')">Tabel</button>
     </div>
 
     <div id="seminar-calendar" class="view-panel">
