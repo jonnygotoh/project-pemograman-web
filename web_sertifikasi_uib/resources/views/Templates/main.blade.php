@@ -38,25 +38,22 @@
 
             // 2. Notifikasi SweetAlert
             @if(session('success'))
-                Swal.fire({ 
-                    icon: 'success', 
-                    title: 'Berhasil', 
-                    text: {!! json_encode(session('success')) !!},
-                    confirmButtonColor: '#3085d6' 
-                });
-            @endif
+            Swal.fire({ 
+                icon: 'success', 
+                title: 'Berhasil', 
+                // Kita gabungkan pesan sukses dengan nama user di sini:
+                text: 'Halo {{ session('user_name') }}, {{ session('success') }}',
+                confirmButtonColor: '#3085d6' 
+            });
+        @endif
 
-            @if(session('error') || $errors->any())
-                Swal.fire({ 
-                    icon: 'error', 
-                    title: 'Gagal', 
-                    text: {!! json_encode(session('error') ?? $errors->first()) !!},
-                    confirmButtonColor: '#d33'
-                });
-            @endif
-        });
+        @if(session('error') || $errors->any())
+            Swal.fire({ 
+                icon: 'error', 
+                title: 'Gagal', 
+                text: {!! json_encode(session('error') ?? $errors->first()) !!},
+                confirmButtonColor: '#d33'
+            });
+        @endif
+    });
     </script>
-
-    @yield('scripts') 
-</body>
-</html>

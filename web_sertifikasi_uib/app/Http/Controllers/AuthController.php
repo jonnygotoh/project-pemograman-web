@@ -96,8 +96,10 @@ class AuthController extends Controller
                 'pasfoto' => $user->pasfoto, // Tambahkan ini!
             ]
         ]);
-    return redirect()->route('home')->with('success', 'Login berhasil! Selamat datang kembali.');    }
-    
+        return redirect()->route('home')
+                ->with('success', 'Selamat datang kembali!')
+                ->with('user_name', $user->nama ?? $user->name);
+    }    
     public function showLoginAdmin()
     {
         return view('auth.adminlogin');
