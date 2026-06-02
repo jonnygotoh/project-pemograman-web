@@ -6,6 +6,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\PendaftaranController;
 
 Route::get('/', [MainController::class, 'home'])->name('home');
 
@@ -85,6 +86,8 @@ Route::get('/detailseminar/{id}', [MainController::class, 'showSeminar'])->name(
 Route::get('/detailsertifikasi/{id}', [MainController::class, 'showSertifikasi'])->name('sertifikasi.show');
 // pembayaran
 Route::post('/pembayaran-sertifikasi', [PembayaranController::class, 'store'])->name('pendaftaran.store');
+// pendaftaran seminar (tersendiri dari pembayaran)
+Route::post('/pendaftaran-seminar', [PendaftaranController::class, 'store'])->name('pendaftaran.seminar.store');
 Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy'])->name('pembayaran.destroy');
 Route::get('/bukti-bayar/{filename}', [PembayaranController::class, 'viewBuktiBayar'])->name('bukti.view');
 

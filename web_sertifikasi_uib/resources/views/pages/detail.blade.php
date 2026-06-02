@@ -53,7 +53,7 @@
                         <a href="javascript:void(0)" class="btn-primary" onclick="confirmDaftarSeminar()">
                             DAFTAR SEMINAR <i data-lucide="arrow-right"></i>
                         </a>
-                        <form id="form-seminar" action="{{ route('pendaftaran.store') }}" method="POST" style="display:none;">
+                        <form id="form-seminar" action="{{ route('pendaftaran.seminar.store') }}" method="POST" style="display:none;">
                             @csrf
                             <input type="hidden" name="seminar_id" value="{{ $event['id'] }}">
                         </form>
@@ -65,4 +65,13 @@
         </div>
     </div>
 </section>
+<script>
+    function confirmDaftarSeminar() {
+        var ok = confirm('Anda yakin ingin mendaftar seminar ini?');
+        if (ok) {
+            var f = document.getElementById('form-seminar');
+            if (f) f.submit();
+        }
+    }
+</script>
 @endsection
