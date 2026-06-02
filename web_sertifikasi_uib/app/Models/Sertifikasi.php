@@ -17,6 +17,7 @@ class Sertifikasi extends Model
         'biaya_dosen',
         'biaya_umum',
         'jumlah_pendaftar', 
+        'poster',
     ];
 
     public function pendaftarSertifikasi()

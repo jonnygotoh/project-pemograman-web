@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('batch', 50)->nullable();
             $table->string('periode');
             $table->date('waktu');
+            $table->string('poster')->nullable();
 
             // Biaya
             $table->integer('biaya_mahasiswa')->default(0);

@@ -15,6 +15,7 @@ class Seminar extends Model
         'waktu', 
         'jumlah_pendaftar',
         'token_event',
+        'poster',
     ];
 
     public function pendaftar()

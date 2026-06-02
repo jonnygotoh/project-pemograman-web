@@ -15,6 +15,7 @@ class SertifikasiSeeder extends Seeder
             [
                 'periode' => 'Juni 2026',
                 'waktu' => '2026-06-10',
+                'poster' => 'cisco.png',
                 'biaya_mahasiswa' => 200000,
                 'biaya_dosen' => 300000,
                 'biaya_umum' => 500000,
@@ -26,6 +27,7 @@ class SertifikasiSeeder extends Seeder
             [
                 'periode' => 'Juni 2026',
                 'waktu' => '2026-06-25',
+                'poster' => 'aws.png',
                 'biaya_mahasiswa' => 300000,
                 'biaya_dosen' => 400000,
                 'biaya_umum' => 600000,

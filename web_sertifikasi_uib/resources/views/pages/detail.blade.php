@@ -8,7 +8,8 @@
 
 <section class="detail-page">
     <div class="poster-card">
-        <img src="{{ $event['poster'] ?? asset('images/poster-placeholder.png') }}" alt="Poster">
+        <img src="{{ !empty($event['poster']) ? asset('images/' . $event['poster']) : asset('images/poster-default.jpg') }}" 
+            alt="Poster untuk {{ $event['title'] }}">
     </div>
 
     <div class="detail-card">

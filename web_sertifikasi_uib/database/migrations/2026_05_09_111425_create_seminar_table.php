@@ -18,6 +18,7 @@ return new class extends Migration
     $table->date('tanggal');
     $table->string('waktu', 50);
     $table->enum('tipe', ['free', 'paid'])->default('free');
+    $table->string('poster')->nullable();
     $table->string('token_event', 50)->nullable();
     
     $table->decimal('biaya', 12, 2)->default(0); 
