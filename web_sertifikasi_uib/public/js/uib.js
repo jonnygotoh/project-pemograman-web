@@ -449,7 +449,7 @@ function initTablePagination(){
 
             entriesInfo.textContent=
                 visibleCount
-                    ? `Showing ${showingStart} to ${showingEnd} entries`
+                    ? `Showing ${showingStart} to ${showingEnd} entries of ${showingEnd} entries`
                     : "Showing 0 entries";
 
         }

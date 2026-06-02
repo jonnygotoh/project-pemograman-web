@@ -138,7 +138,7 @@ $rows = $rows ?? [];
 
     <div class="table-pagination">
         <div class="entries-info">
-            Showing 1 to 5 entries
+            Showing 1 of 5 to 5 entries
         </div>
         <button class="page-btn prev-btn">
             Prev
