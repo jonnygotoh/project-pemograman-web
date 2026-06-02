@@ -349,3 +349,183 @@ function openTokenModal(id) {
     document.getElementById('modal_seminar_id').value = id;
     document.getElementById('tokenModal').style.display = 'block';
 }
+
+/* ==================================================
+   TABLE PAGINATION
+================================================== */
+
+document.addEventListener("DOMContentLoaded",()=>{initTablePagination();});
+
+function initTablePagination(){
+    document.querySelectorAll(".table-card").forEach(tableCard=>{
+
+        const tbody=tableCard.querySelector(".paginated-body");
+        if(!tbody) return;
+
+        const rows=tbody.querySelectorAll("tr");
+        if(!rows.length) return;
+
+        const pageNumbers=tableCard.querySelector(".page-numbers");
+        const prevBtn=tableCard.querySelector(".prev-btn");
+        const nextBtn=tableCard.querySelector(".next-btn");
+
+        const rowsPerPage=10;
+        const totalPages=99;
+
+        let currentPage=1;
+
+        function showPage(page){
+
+            currentPage=page;
+
+            const start=(page-1)*rowsPerPage;
+            const end=start+rowsPerPage;
+
+            let visibleCount=0;
+
+            rows.forEach((row,index)=>{
+
+                const visible=
+                    index>=start &&
+                    index<end;
+
+                row.style.display=
+                    visible ? "" : "none";
+
+                if(visible) visibleCount++;
+
+            });
+
+            let emptyRow=
+                tbody.querySelector(".empty-page-row");
+
+            if(!visibleCount){
+
+                if(!emptyRow){
+
+                    const title=
+                        tableCard
+                        .querySelector("h2")
+                        ?.textContent
+                        ?.toLowerCase() || "data";
+
+                    emptyRow=
+                        document.createElement("tr");
+
+                    emptyRow.className=
+                        "empty-page-row";
+
+                    emptyRow.innerHTML=`
+                        <td colspan="999"
+                            style="
+                                text-align:center;
+                                padding:30px;
+                                color:#666;
+                                font-style:italic;
+                            ">
+                            Belum tersedia ${title}.
+                        </td>
+                    `;
+
+                    tbody.appendChild(emptyRow);
+                }
+
+            }else if(emptyRow){
+
+                emptyRow.remove();
+
+            }
+
+            renderPagination();
+        }
+
+        function addPageButton(page){
+
+            const btn=
+                document.createElement("button");
+
+            btn.textContent=page;
+
+            btn.className=
+                page===currentPage
+                    ? "page-btn active"
+                    : "page-btn";
+
+            btn.addEventListener("click",()=>{
+                showPage(page);
+            });
+
+            pageNumbers.appendChild(btn);
+        }
+
+        function addDots(){
+
+            const dots=
+                document.createElement("span");
+
+            dots.className=
+                "pagination-dots";
+
+            dots.textContent="...";
+
+            pageNumbers.appendChild(dots);
+        }
+
+        function renderPagination(){
+
+            pageNumbers.innerHTML="";
+
+            let start;
+            let end;
+
+            if(currentPage <= 4){
+
+                start = 1;
+                end = 4;
+
+            }else{
+
+                start = currentPage - 3;
+                end = currentPage;
+
+            }
+
+            for(let i=start;i<=end;i++){
+                addPageButton(i);
+            }
+
+            if(end < totalPages){
+
+                addDots();
+
+                addPageButton(totalPages);
+
+            }
+
+            prevBtn.disabled=
+                currentPage===1;
+
+            nextBtn.disabled=
+                currentPage===totalPages;
+        }
+
+        prevBtn.addEventListener("click",()=>{
+
+            if(currentPage>1){
+                showPage(currentPage-1);
+            }
+
+        });
+
+        nextBtn.addEventListener("click",()=>{
+
+            if(currentPage<totalPages){
+                showPage(currentPage+1);
+            }
+
+        });
+
+        showPage(1);
+
+    });
+}
