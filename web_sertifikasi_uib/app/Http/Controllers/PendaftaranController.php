@@ -33,12 +33,12 @@ class PendaftaranController extends Controller
             return back()->with('error', 'Anda sudah terdaftar pada seminar ini.');
         }
 
-        // Buat pendaftaran
+        // Buat pendaftaran (status default 'menunggu')
         PendaftaranSeminar::create([
             'seminar_id' => $request->seminar_id,
             'user_id' => $userId,
             'user_type' => $userType,
-            'status_sertifikat' => null,
+            'status_sertifikat' => 'menunggu',
         ]);
 
         // Increment jumlah_pendaftar di tabel seminar
