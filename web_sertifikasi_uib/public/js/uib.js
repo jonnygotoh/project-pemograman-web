@@ -368,8 +368,9 @@ function initTablePagination(){
         const pageNumbers=tableCard.querySelector(".page-numbers");
         const prevBtn=tableCard.querySelector(".prev-btn");
         const nextBtn=tableCard.querySelector(".next-btn");
-
-        const rowsPerPage=10;
+        const entriesInfo=tableCard.querySelector(".entries-info");
+        
+        const rowsPerPage=5;
         const totalPages=99;
 
         let currentPage=1;
@@ -430,13 +431,30 @@ function initTablePagination(){
                     tbody.appendChild(emptyRow);
                 }
 
-            }else if(emptyRow){
+        }else if(emptyRow){
 
-                emptyRow.remove();
+            emptyRow.remove();
 
-            }
+        }
 
-            renderPagination();
+        const showingStart=
+            visibleCount
+                ? start+1
+                : 0;
+
+        const showingEnd=
+            Math.min(end,rows.length);
+
+        if(entriesInfo){
+
+            entriesInfo.textContent=
+                visibleCount
+                    ? `Showing ${showingStart} to ${showingEnd} entries`
+                    : "Showing 0 entries";
+
+        }
+
+        renderPagination();
         }
 
         function addPageButton(page){
@@ -527,5 +545,24 @@ function initTablePagination(){
 
         showPage(1);
 
+    });
+}
+
+function confirmDaftar(url, roleLabel) {
+    Swal.fire({
+        title: 'sertifikasi.uib.ac.id says',
+        text: "Apakah anda yakin ingin mendaftar sebagai Peserta " + roleLabel + " ?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true,
+        // Gunakan ini sebagai pengganti customClass agar tidak bentrok dengan CSS Anda
+        confirmButtonColor: '#3085d6', 
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = url;
+        }
     });
 }

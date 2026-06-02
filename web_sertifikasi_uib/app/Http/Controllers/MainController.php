@@ -113,6 +113,15 @@ class MainController extends Controller
         ];
         return view('pages.detail', compact('event'));
     }
+    
+    public function showUploadPage($sertifikasi_id)
+        {
+    // Pastikan sertifikasi ada di database sebelum menampilkan form
+    $sertifikasi = \App\Models\Sertifikasi::findOrFail($sertifikasi_id);
+    
+    return view('pages.upload-payment', compact('sertifikasi_id'));
+    }   
+
     public function verifikasiTokenSeminar(Request $request) 
     {
         $request->validate([

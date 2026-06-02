@@ -137,6 +137,9 @@ $rows = $rows ?? [];
     </div>
 
     <div class="table-pagination">
+        <div class="entries-info">
+            Showing 1 to 5 entries
+        </div>
         <button class="page-btn prev-btn">
             Prev
         </button>

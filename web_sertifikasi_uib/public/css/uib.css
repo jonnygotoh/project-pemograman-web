@@ -2607,14 +2607,15 @@ th {
         }
     }
 
-    .table-pagination{
+.table-pagination{
     display:flex;
-    justify-content:center;
     align-items:center;
-    gap:8px;
-    margin-top:20px;
-    flex-wrap:wrap;
+    justify-content:center;
+    gap:12px;
+    margin-top: 40px;
+    position:relative;
 }
+
 
 .page-numbers{
     display:flex;
@@ -2646,4 +2647,15 @@ th {
 .page-btn:disabled{
     opacity:.5;
     cursor:not-allowed;
+}
+
+.entries-info{
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:14px;
+    color:#666;
+    margin:0;
+    white-space:nowrap;
 }
