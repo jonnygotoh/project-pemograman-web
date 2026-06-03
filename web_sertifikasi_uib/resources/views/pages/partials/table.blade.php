@@ -29,7 +29,9 @@ $rows = $rows ?? [];
                         </th>
                     @endforeach
 
-                    <th>Aksi</th>
+                    @if(!request()->is('admin*'))
+                        <th>Aksi</th>
+                    @endif
 
                     @if(request()->is('admin*'))
                         <th>Actions</th>
@@ -91,8 +93,9 @@ $rows = $rows ?? [];
                             </td>
 
                         @endforeach
-
-                        <td onclick="event.stopPropagation();">
+                        
+                         @if(!request()->is('admin*'))
+                            <td onclick="event.stopPropagation();">
 
                             <a href="{{ $detailUrl }}"
                                class="btn-primary"
@@ -115,6 +118,7 @@ $rows = $rows ?? [];
                             </a>
 
                         </td>
+                    @endif
 
                         @if(request()->is('admin*'))
 

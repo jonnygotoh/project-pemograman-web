@@ -206,6 +206,34 @@
     </div>
 </section>
 
+{{-- SECTION VERIFIKASI SEMINAR --}}
+<section id="seminar" class="section data-section admin-section">
+    <div class="section-heading js-reveal admin-heading">
+        <span class="delay-1" id="left">Seminar</span>
+        <h2 class="delay-2">Verifikasi Seminar Sertifikat</h2>
+        <div class="heading-line"></div>
+    </div>
+    <div class="view-panel">
+        
+        <div class="admin-table-container">
+
+            <table class="table" id="SeminarVerifikasi">
+                <thead>
+                    <tr>
+                        <th class="sortable" data-column="no">No <span class="sort-icon">⇅</span></th>
+                        <th class="sortable" data-column="user_id">User ID <span class="sort-icon">⇅</span></th>
+                        <th class="sortable" data-column="tipe">Tipe <span class="sort-icon">⇅</span></th>
+                        <th class="sortable" data-column="tipe">Sertifikat <span class="sort-icon">⇅</span></th>
+                    </tr>
+                       
+                </thead>
+                </tbody>
+            </table>
+    </div>
+    
+    </div>
+</section>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
 <script>
