@@ -79,6 +79,8 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     Route::delete('/sertifikasi/delete/{id}', [AdminController::class, 'sertifikasiDelete'])->name('admin.sertifikasi.delete');
     
     Route::post('/verifikasi-pembayaran/{id}', [AdminController::class, 'verifikasiPembayaran'])->name('admin.verifikasi.pembayaran');
+
+    
 });
 
 //menampilkan detail sertifikasi-seminar
@@ -96,3 +98,10 @@ Route::get('/upload-payment/{sertifikasi_id}', [MainController::class, 'showUplo
 Route::post('/profile/verifikasi-token-seminar', [App\Http\Controllers\MainController::class, 'verifikasiTokenSeminar'])
     ->name('verifikasi.token.seminar');
 
+Route::get('/sertifmaker', function () {
+    return view('admin.sertifmaker');
+})->name('sertifmaker');
+
+Route::post('/sertifikat/generate',
+    [AdminController::class,'generateCertificate']
+)->name('sertifikat.generate');

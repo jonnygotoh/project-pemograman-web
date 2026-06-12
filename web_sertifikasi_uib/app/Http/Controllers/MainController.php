@@ -153,4 +153,6 @@ class MainController extends Controller
         
         return back()->with('success', 'Berhasil! Sertifikat Anda sudah terverifikasi.');
     }
-}
+
+    
+    }

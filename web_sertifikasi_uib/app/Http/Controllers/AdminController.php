@@ -117,7 +117,19 @@ class AdminController extends Controller
         Seminar::find($id)->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil dihapus!');
     }
-    
+
+    public function generateCertificate(Request $request)
+    {
+    return view('admin.sertifikat-preview', [
+        'no_sertifikat' => $request->no_sertifikat,
+        'nama'          => $request->nama,
+        'npm'           => $request->npm,
+        'peran'         => $request->peran,
+        'kegiatan'      => $request->kegiatan,
+        'tanggal'       => $request->tanggal,
+    ]);
+    }
+        
     public function updateSertifikatSeminar(Request $request, $id)
     {
         $request->validate([
@@ -184,6 +196,7 @@ class AdminController extends Controller
         Sertifikasi::findOrFail($id)->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil dihapus!');
     }
+
     // --- Verifikasi Pembayaran Method ---
     public function verifikasiPembayaran(Request $request, $id)
     {
@@ -227,5 +240,9 @@ class AdminController extends Controller
         });
 
         return redirect()->route('admin.dashboard')->with('success', 'Status dan skor berhasil diperbarui!');
-    }
+    }   
+
+    
 }
+
+
