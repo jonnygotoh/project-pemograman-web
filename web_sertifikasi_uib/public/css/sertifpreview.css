@@ -189,3 +189,60 @@
             display:block;
             margin-bottom:5px;
         }
+
+          .btn-download{
+            background-color:#28a745;
+            color:white;
+        }
+
+        .btn-download:hover{
+            background-color:#218838;
+            transform:translateY(-2px);
+            box-shadow:0 4px 12px rgba(40,167,69,0.3);
+        }
+
+        .btn-print{
+            background-color:#007bff;
+            color:white;
+        }
+
+        .btn-print:hover{
+            background-color:#0056b3;
+            transform:translateY(-2px);
+            box-shadow:0 4px 12px rgba(0,86,179,0.3);
+        }
+
+        .btn-back{
+            background-color:#6c757d;
+            color:white;
+        }
+
+        .btn-back:hover{
+            background-color:#5a6268;
+        }
+
+@media print {
+
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    body{
+        background:none !important;
+    }
+
+    .certificate-container{
+        background-image:url('../images/templatesertif.png') !important;
+        background-size:cover !important;
+        background-repeat:no-repeat !important;
+        background-position:center !important;
+    }
+
+    .actions,
+    .header,
+    .info-box,
+    .confirmation-notice{
+        display:none !important;
+    }
+}

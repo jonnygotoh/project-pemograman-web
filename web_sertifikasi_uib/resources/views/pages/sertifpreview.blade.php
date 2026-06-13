@@ -66,8 +66,14 @@
         <a href="{{ route('admin.sertif.edit', ['pendaftaran_id' => $pendaftaran_id]) }}" class="btn btn-edit">✎ Edit Data</a>
         <a href="{{ route('admin.dashboard') }}" class="btn btn-cancel">✕ Batal</a>
     </div>
+    
     @endif
 </div>
-
+    @if(!request()->is('admin*'))
+    <div class="actions">
+        <button class="btn btn-print" onclick="window.print()">🖨️ Cetak/Simpan PDF</button>
+        <a href="{{ route('profile') }}" class="btn btn-back">← Kembali ke Profil</a>
+    </div>
+    @endif
 </body>
 </html>
