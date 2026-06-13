@@ -289,7 +289,7 @@
                 </div>
                 <div class="info-row">
                     <strong>Tanggal Seminar:</strong>
-                    <span>{{ \Carbon\Carbon::parse($tanggal_seminar)->format('d F Y') }}</span>
+                    <span>{{ \Carbon\Carbon::parse($tanggal_seminar)->format('d/m/Y') }}</span>
                 </div>
             </div>
 
@@ -357,7 +357,7 @@
                     <ul style="margin-left:20px; margin-top:5px;">
                         <li>Nomor sertifikat harus unik untuk setiap peserta</li>
                         <li>Kolom "Kegiatan" berisi nama/deskripsi event yang diikuti</li>
-                        <li>Format tanggal: Kota, dd Bulan Tahun (contoh: Batam, 29 Mei 2026)</li>
+                        <li>Format tanggal: Kota, dd Bulan Tahun (contoh: 29/06/2026)</li>
                         <li>Data dapat diubah kapan saja sebelum dikonfirmasi</li>
                     </ul>
                 </div>

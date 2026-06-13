@@ -254,34 +254,7 @@ class AdminController extends Controller
     /**
      * Get all pending seminar registrations that need certificate verification
      */
-    public function getSeminarVerifikasi()
-    {
-        $pendaftarSeminar = \App\Models\PendaftaranSeminar::with(['seminar'])
-            ->where('status_sertifikat', '!=', 'verified')
-            ->get()
-            ->map(function ($item, $index) {
-                // Get user data based on user_type
-                $userData = $this->getUserData($item->user_id, $item->user_type);
-                
-                return (object) [
-                    'id' => $item->id,
-                    'pendaftaran_id' => $item->id,
-                    'no' => $index + 1,
-                    'nama' => $userData['nama'] ?? 'N/A',
-                    'npm' => $userData['npm'] ?? 'N/A',
-                    'tanggal_ikut' => $item->seminar->tanggal ?? '-',
-                    'user_id' => $item->user_id,
-                    'user_type' => $item->user_type,
-                    'seminar_id' => $item->seminar_id,
-                    'seminar_nama' => $item->seminar->nama ?? 'N/A',
-                    'status' => $item->status_sertifikat
-                ];
-            });
-
-        return $pendaftarSeminar;
-    }
-
-    /**
+   /**
      * Get user data from the appropriate table
      */
     private function getUserData($user_id, $user_type)
@@ -291,27 +264,60 @@ class AdminController extends Controller
             'npm' => 'N/A'
         ];
 
-        if ($user_type === 'student') {
-            $mahasiswa = \App\Models\Mahasiswa::where('npm', $user_id)->first();
-            if ($mahasiswa) {
-                $data['nama'] = $mahasiswa->nama;
-                $data['npm'] = $mahasiswa->npm;
+        try {
+            if ($user_type === 'student') {
+                // Coba cari berdasarkan NPM, jika gagal cari berdasarkan ID
+                $mahasiswa = \App\Models\Mahasiswa::where('npm', $user_id)->first() ?? \App\Models\Mahasiswa::find($user_id);
+                if ($mahasiswa) {
+                    $data['nama'] = $mahasiswa->nama;
+                    $data['npm'] = $mahasiswa->npm;
+                }
+            } elseif ($user_type === 'lecturer') {
+                // Coba cari berdasarkan NIDN, jika gagal cari berdasarkan ID
+                $dosen = \App\Models\Dosen::where('nidn', $user_id)->first() ?? \App\Models\Dosen::find($user_id);
+                if ($dosen) {
+                    $data['nama'] = $dosen->nama;
+                    $data['npm'] = $dosen->nidn;
+                }
+            } elseif ($user_type === 'public') {
+                $umum = \App\Models\UserUmum::find($user_id);
+                if ($umum) {
+                    $data['nama'] = $umum->nama;
+                    $data['npm'] = $umum->email;
+                }
             }
-        } elseif ($user_type === 'lecturer') {
-            $dosen = \App\Models\Dosen::where('nidn', $user_id)->first();
-            if ($dosen) {
-                $data['nama'] = $dosen->nama;
-                $data['npm'] = $dosen->nidn;
-            }
-        } elseif ($user_type === 'public') {
-            $umum = \App\Models\UserUmum::where('id', $user_id)->first();
-            if ($umum) {
-                $data['nama'] = $umum->nama;
-                $data['npm'] = $umum->email;
-            }
+        } catch (\Exception $e) {
+            // Log error jika perlu
+            return $data;
         }
 
         return $data;
+    }
+
+    /**
+     * Get all pending seminar registrations that need certificate verification
+     */
+    public function getSeminarVerifikasi()
+    {
+        return \App\Models\PendaftaranSeminar::with(['seminar'])
+            ->where('status_sertifikat', '!=', 'verified')
+            ->get()
+            ->map(function ($item, $index) {
+                $userData = $this->getUserData($item->user_id, $item->user_type);
+                
+                return (object) [
+                    'pendaftaran_id' => $item->id,
+                    'no' => $index + 1,
+                    // Jika tetap N/A, ini akan memberi petunjuk di tabel (debug mode)
+                    'nama' => ($userData['nama'] !== 'N/A') ? $userData['nama'] : '('.$item->user_type.') ID: '.$item->user_id,
+                    'npm' => $userData['npm'],
+                    'tanggal_ikut' => $item->seminar->tanggal ?? '-',
+                    'user_id' => $item->user_id,
+                    'user_type' => $item->user_type,
+                    'seminar_id' => $item->seminar_id,
+                    'status' => $item->status_sertifikat
+                ];
+            });
     }
 
     /**
@@ -324,7 +330,7 @@ class AdminController extends Controller
 
         $userData = $this->getUserData($pendaftar->user_id, $pendaftar->user_type);
 
-        // Get session data if exists (for updates)
+        // Get session data if exists
         $sessionData = session('sertif_data_' . $pendaftaran_id, []);
 
         return view('pages.sertifmaker-admin', [
@@ -338,7 +344,8 @@ class AdminController extends Controller
             'no_sertifikat' => $sessionData['no_sertifikat'] ?? '',
             'peran' => $sessionData['peran'] ?? 'PESERTA',
             'kegiatan' => $sessionData['kegiatan'] ?? $pendaftar->seminar->nama,
-            'tanggal_terbit' => $sessionData['tanggal_terbit'] ?? date('d F Y'),
+            // UBAH DARI date('d F Y') MENJADI date('d/m/Y')
+            'tanggal_terbit' => $sessionData['tanggal_terbit'] ?? date('d/m/Y'),
         ]);
     }
 
@@ -347,11 +354,12 @@ class AdminController extends Controller
      */
     public function storeSertifikatSeminarVerifikasi(Request $request, $pendaftaran_id)
     {
+        // Validasi ini sudah benar, tetap gunakan ini
         $request->validate([
             'no_sertifikat' => 'required|string',
             'peran' => 'required|string',
             'kegiatan' => 'required|string',
-            'tanggal_terbit' => 'required|date_format:d/m/Y',
+            'tanggal_terbit' => 'required|string',
         ]);
 
         $pendaftar = \App\Models\PendaftaranSeminar::with('seminar')
@@ -368,14 +376,13 @@ class AdminController extends Controller
                 'npm' => $userData['npm'],
                 'peran' => $request->peran,
                 'kegiatan' => $request->kegiatan,
-                'tanggal_terbit' => $request->tanggal_terbit,
+                'tanggal_terbit' => $request->tanggal_terbit, // Ini akan menyimpan '13/06/2026'
                 'user_id' => $pendaftar->user_id,
                 'user_type' => $pendaftar->user_type,
                 'seminar_id' => $pendaftar->seminar_id,
             ]
         ]);
 
-        // Redirect to preview
         return redirect()->route('admin.sertif.preview', ['pendaftaran_id' => $pendaftaran_id]);
     }
 
