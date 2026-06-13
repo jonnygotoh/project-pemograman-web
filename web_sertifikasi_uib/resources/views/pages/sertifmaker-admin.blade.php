@@ -340,7 +340,7 @@
                         id="tanggal_terbit" 
                         name="tanggal_terbit" 
                         value="{{ $tanggal_terbit }}"
-                        placeholder="dd/mm/yyyy atau 'Batam, 29 Mei 2026'"
+                        placeholder="dd/mm/yyyy atau 29/06/2026"
                         required
                         oninput="updatePreview()"
                     >

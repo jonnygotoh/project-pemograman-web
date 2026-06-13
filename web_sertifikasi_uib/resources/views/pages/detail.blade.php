@@ -29,7 +29,9 @@
                 @if(($event['category'] ?? '') == 'sertifikasi')
                     @php
                         $sudahDaftarSertif = \App\Models\PembayaranSertifikasi::where('sertifikasi_id', $event['id'])
-                            ->where('user_id', $user['id'] ?? null)->exists();
+                            ->where('user_id', $user['id'] ?? null)
+                            ->where('user_type', $user['role'] ?? null)
+                            ->exists();
                     @endphp
 
                     @if($sudahDaftarSertif)
@@ -44,7 +46,9 @@
                 @else
                     @php
                         $sudahDaftarSeminar = \App\Models\PendaftaranSeminar::where('seminar_id', $event['id'])
-                            ->where('user_id', $user['id'] ?? null)->exists();
+                            ->where('user_id', $user['id'] ?? null)
+                            ->where('user_type', $user['role'] ?? null)
+                            ->exists();
                     @endphp
 
                     @if($sudahDaftarSeminar)
