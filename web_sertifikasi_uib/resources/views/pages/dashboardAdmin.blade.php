@@ -207,10 +207,11 @@
 </section>
 
 {{-- SECTION VERIFIKASI SEMINAR --}}
-<section id="seminar" class="section data-section admin-section">
+<section id="verifikasi-seminar" class="section data-section admin-section">
     <div class="section-heading js-reveal admin-heading">
         <span class="delay-1" id="left">Seminar</span>
-        <h2 class="delay-2">Verifikasi Seminar Sertifikat</h2>
+        <h2 class="delay-2">Verifikasi Sertifikat Seminar</h2>
+        <p class="admin-subtitle">Kelola dan verifikasi sertifikat peserta seminar yang telah mendaftar.</p>
         <div class="heading-line"></div>
     </div>
     <div class="view-panel">
@@ -221,16 +222,31 @@
                 <thead>
                     <tr>
                         <th class="sortable" data-column="no">No <span class="sort-icon">⇅</span></th>
-                        <th class="sortable" data-column="user_id">User ID <span class="sort-icon">⇅</span></th>
-                        <th class="sortable" data-column="tipe">Tipe <span class="sort-icon">⇅</span></th>
-                        <th class="sortable" data-column="tipe">Sertifikat <span class="sort-icon">⇅</span></th>
+                        <th class="sortable" data-column="nama">Nama <span class="sort-icon">⇅</span></th>
+                        <th class="sortable" data-column="npm">NPM <span class="sort-icon">⇅</span></th>
+                        <th class="sortable" data-column="tanggal">Tanggal Ikut <span class="sort-icon">⇅</span></th>
+                        <th>Aksi</th>
                     </tr>
-                       
                 </thead>
+                <tbody>
+                    @forelse($seminarVerifikasi as $item)
+                    <tr data-no="{{ $item->no }}" data-nama="{{ $item->nama }}" data-npm="{{ $item->npm }}" data-tanggal="{{ $item->tanggal_ikut }}">
+                        <td>{{ $item->no }}</td>
+                        <td><b>{{ $item->nama }}</b></td>
+                        <td>{{ $item->npm }}</td>
+                        <td>{{ $item->tanggal_ikut }}</td>
+                        <td>
+                            <a href="{{ route('admin.sertif.edit', ['pendaftaran_id' => $item->pendaftaran_id]) }}" class="btn-sm btn-primary" title="Edit dan buat sertifikat">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="5" style="text-align: center;">Tidak ada pendaftaran seminar yang perlu diverifikasi.</td></tr>
+                    @endforelse
                 </tbody>
             </table>
-    </div>
-    
+        </div>
     </div>
 </section>
 
@@ -400,22 +416,22 @@
         }
     });
 
-    // Sortable Table untuk Pembayaran
+    // Sortable Table untuk Pembayaran dan Verifikasi Seminar
     document.addEventListener('DOMContentLoaded', function() {
         const sortableHeaders = document.querySelectorAll('.table thead th.sortable');
         
         sortableHeaders.forEach(header => {
             header.addEventListener('click', function() {
                 const column = this.getAttribute('data-column');
-                const table = document.getElementById('pembayaranTable');
+                const table = this.closest('table');
                 const tbody = table.querySelector('tbody');
                 const rows = Array.from(tbody.querySelectorAll('tr'));
                 
                 // Determine sort direction
                 let isAscending = !this.classList.contains('asc');
                 
-                // Remove active class dari semua headers
-                sortableHeaders.forEach(h => {
+                // Remove active class dari semua headers di table ini
+                table.querySelectorAll('th.sortable').forEach(h => {
                     h.classList.remove('asc', 'desc');
                     h.querySelector('.sort-icon').textContent = '⇅';
                 });
@@ -430,14 +446,23 @@
                     let bValue = '';
                     
                     if (column === 'no') {
-                        aValue = parseInt(a.getAttribute('data-no'));
-                        bValue = parseInt(b.getAttribute('data-no'));
+                        aValue = parseInt(a.getAttribute('data-no') || 0);
+                        bValue = parseInt(b.getAttribute('data-no') || 0);
                     } else if (column === 'user_id') {
-                        aValue = parseInt(a.getAttribute('data-user-id'));
-                        bValue = parseInt(b.getAttribute('data-user-id'));
+                        aValue = parseInt(a.getAttribute('data-user-id') || 0);
+                        bValue = parseInt(b.getAttribute('data-user-id') || 0);
                     } else if (column === 'tipe') {
-                        aValue = a.getAttribute('data-tipe').toLowerCase();
-                        bValue = b.getAttribute('data-tipe').toLowerCase();
+                        aValue = a.getAttribute('data-tipe')?.toLowerCase() || '';
+                        bValue = b.getAttribute('data-tipe')?.toLowerCase() || '';
+                    } else if (column === 'nama') {
+                        aValue = a.getAttribute('data-nama')?.toLowerCase() || '';
+                        bValue = b.getAttribute('data-nama')?.toLowerCase() || '';
+                    } else if (column === 'npm') {
+                        aValue = a.getAttribute('data-npm')?.toLowerCase() || '';
+                        bValue = b.getAttribute('data-npm')?.toLowerCase() || '';
+                    } else if (column === 'tanggal') {
+                        aValue = a.getAttribute('data-tanggal') || '';
+                        bValue = b.getAttribute('data-tanggal') || '';
                     }
                     
                     // Compare

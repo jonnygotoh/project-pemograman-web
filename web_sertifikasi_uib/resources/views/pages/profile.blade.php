@@ -66,8 +66,10 @@
                             @endif
                         </td>
                         <td>
-                            @if($s->status_sertifikat == 'verified')
-                                <a href="{{ asset('storage/' . $s->sertifikat_path) }}" target="_blank" class="btn-sm btn-primary">Lihat Sertifikat</a>
+                            @if($s->status_sertifikat == 'verified' && $s->sertif_no)
+                                <a href="{{ route('profile.sertifikat.preview', $s->id) }}" class="btn-sm btn-primary">Lihat Sertifikat</a>
+                            @elseif($s->status_sertifikat == 'verified')
+                                <a href="{{ route('profile.sertifikat.preview', $s->id) }}" class="btn-sm btn-primary">Lihat Sertifikat</a>
                             @else
                                 <button type="button" onclick="openTokenModal({{ $s->id }})" class="btn-sm btn-info">Isi Token</button>
                             @endif

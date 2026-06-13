@@ -8,6 +8,10 @@ use App\Models\PembayaranSertifikasi;
 use App\Models\SertifikasiMahasiswa;
 use App\Models\SertifikasiDosen;
 use App\Models\SertifikasiUserUmum;
+use App\Models\PendaftaranSeminar;
+use App\Models\Mahasiswa;
+use App\Models\Dosen;
+use App\Models\UserUmum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -41,6 +45,7 @@ class AdminController extends Controller
             'certificationCalendar' => $this->generateCalendar($month, $year, 'sertifikasi'),
 
             'pembayaranMenunggu' => $pembayaranMenunggu,
+            'seminarVerifikasi' => $this->getSeminarVerifikasi(),
         ]);
     }
 
@@ -240,8 +245,191 @@ class AdminController extends Controller
         });
 
         return redirect()->route('admin.dashboard')->with('success', 'Status dan skor berhasil diperbarui!');
-    }   
+    }
 
+    // =====================
+    // VERIFIKASI SEMINAR
+    // =====================
+
+    /**
+     * Get all pending seminar registrations that need certificate verification
+     */
+    public function getSeminarVerifikasi()
+    {
+        $pendaftarSeminar = \App\Models\PendaftaranSeminar::with(['seminar'])
+            ->where('status_sertifikat', '!=', 'verified')
+            ->get()
+            ->map(function ($item, $index) {
+                // Get user data based on user_type
+                $userData = $this->getUserData($item->user_id, $item->user_type);
+                
+                return (object) [
+                    'id' => $item->id,
+                    'pendaftaran_id' => $item->id,
+                    'no' => $index + 1,
+                    'nama' => $userData['nama'] ?? 'N/A',
+                    'npm' => $userData['npm'] ?? 'N/A',
+                    'tanggal_ikut' => $item->seminar->tanggal ?? '-',
+                    'user_id' => $item->user_id,
+                    'user_type' => $item->user_type,
+                    'seminar_id' => $item->seminar_id,
+                    'seminar_nama' => $item->seminar->nama ?? 'N/A',
+                    'status' => $item->status_sertifikat
+                ];
+            });
+
+        return $pendaftarSeminar;
+    }
+
+    /**
+     * Get user data from the appropriate table
+     */
+    private function getUserData($user_id, $user_type)
+    {
+        $data = [
+            'nama' => 'N/A',
+            'npm' => 'N/A'
+        ];
+
+        if ($user_type === 'student') {
+            $mahasiswa = \App\Models\Mahasiswa::where('npm', $user_id)->first();
+            if ($mahasiswa) {
+                $data['nama'] = $mahasiswa->nama;
+                $data['npm'] = $mahasiswa->npm;
+            }
+        } elseif ($user_type === 'lecturer') {
+            $dosen = \App\Models\Dosen::where('nidn', $user_id)->first();
+            if ($dosen) {
+                $data['nama'] = $dosen->nama;
+                $data['npm'] = $dosen->nidn;
+            }
+        } elseif ($user_type === 'public') {
+            $umum = \App\Models\UserUmum::where('id', $user_id)->first();
+            if ($umum) {
+                $data['nama'] = $umum->nama;
+                $data['npm'] = $umum->email;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Show sertifmaker form for editing seminar certificate
+     */
+    public function editSertifikatSeminarVerifikasi($pendaftaran_id)
+    {
+        $pendaftar = \App\Models\PendaftaranSeminar::with('seminar')
+            ->findOrFail($pendaftaran_id);
+
+        $userData = $this->getUserData($pendaftar->user_id, $pendaftar->user_type);
+
+        // Get session data if exists (for updates)
+        $sessionData = session('sertif_data_' . $pendaftaran_id, []);
+
+        return view('pages.sertifmaker-admin', [
+            'pendaftaran_id' => $pendaftaran_id,
+            'user_id' => $pendaftar->user_id,
+            'user_type' => $pendaftar->user_type,
+            'nama' => $userData['nama'],
+            'npm' => $userData['npm'],
+            'seminar_nama' => $pendaftar->seminar->nama,
+            'tanggal_seminar' => $pendaftar->seminar->tanggal,
+            'no_sertifikat' => $sessionData['no_sertifikat'] ?? '',
+            'peran' => $sessionData['peran'] ?? 'PESERTA',
+            'kegiatan' => $sessionData['kegiatan'] ?? $pendaftar->seminar->nama,
+            'tanggal_terbit' => $sessionData['tanggal_terbit'] ?? date('d F Y'),
+        ]);
+    }
+
+    /**
+     * Store sertifikat data to session and show preview
+     */
+    public function storeSertifikatSeminarVerifikasi(Request $request, $pendaftaran_id)
+    {
+        $request->validate([
+            'no_sertifikat' => 'required|string',
+            'peran' => 'required|string',
+            'kegiatan' => 'required|string',
+            'tanggal_terbit' => 'required|date_format:d/m/Y',
+        ]);
+
+        $pendaftar = \App\Models\PendaftaranSeminar::with('seminar')
+            ->findOrFail($pendaftaran_id);
+
+        $userData = $this->getUserData($pendaftar->user_id, $pendaftar->user_type);
+
+        // Save to session
+        session([
+            'sertif_data_' . $pendaftaran_id => [
+                'pendaftaran_id' => $pendaftaran_id,
+                'no_sertifikat' => $request->no_sertifikat,
+                'nama' => $userData['nama'],
+                'npm' => $userData['npm'],
+                'peran' => $request->peran,
+                'kegiatan' => $request->kegiatan,
+                'tanggal_terbit' => $request->tanggal_terbit,
+                'user_id' => $pendaftar->user_id,
+                'user_type' => $pendaftar->user_type,
+                'seminar_id' => $pendaftar->seminar_id,
+            ]
+        ]);
+
+        // Redirect to preview
+        return redirect()->route('admin.sertif.preview', ['pendaftaran_id' => $pendaftaran_id]);
+    }
+
+    /**
+     * Show certificate preview
+     */
+    public function previewSertifikatSeminarVerifikasi($pendaftaran_id)
+    {
+        $sessionData = session('sertif_data_' . $pendaftaran_id);
+
+        if (!$sessionData) {
+            return redirect()->route('admin.dashboard')->with('error', 'Data sertifikat tidak ditemukan.');
+        }
+
+        return view('pages.sertifpreview-admin', [
+            'no_sertifikat' => $sessionData['no_sertifikat'],
+            'nama' => $sessionData['nama'],
+            'npm' => $sessionData['npm'],
+            'peran' => $sessionData['peran'],
+            'kegiatan' => $sessionData['kegiatan'],
+            'tanggal_terbit' => $sessionData['tanggal_terbit'],
+            'pendaftaran_id' => $pendaftaran_id,
+        ]);
+    }
+
+    /**
+     * Confirm and save certificate verification
+     */
+    public function confirmSertifikatSeminarVerifikasi(Request $request, $pendaftaran_id)
+    {
+        $sessionData = session('sertif_data_' . $pendaftaran_id);
+
+        if (!$sessionData) {
+            return redirect()->route('admin.dashboard')->with('error', 'Data sertifikat tidak ditemukan.');
+        }
+
+        $pendaftar = \App\Models\PendaftaranSeminar::findOrFail($pendaftaran_id);
+
+        // Update database with verification info
+        $pendaftar->update([
+            'status_sertifikat' => 'verified',
+            'sertif_no' => $sessionData['no_sertifikat'],
+            'sertif_nama' => $sessionData['nama'],
+            'sertif_npm' => $sessionData['npm'],
+            'sertif_peran' => $sessionData['peran'],
+            'sertif_kegiatan' => $sessionData['kegiatan'],
+            'sertif_tanggal' => $sessionData['tanggal_terbit'],
+        ]);
+
+        // Clear session
+        session()->forget('sertif_data_' . $pendaftaran_id);
+
+        return redirect()->route('admin.dashboard')->with('success', 'Sertifikat seminar berhasil disimpan dan akan ditampilkan ke peserta!');
+    }
     
 }
 

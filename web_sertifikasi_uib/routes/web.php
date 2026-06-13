@@ -80,6 +80,11 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     
     Route::post('/verifikasi-pembayaran/{id}', [AdminController::class, 'verifikasiPembayaran'])->name('admin.verifikasi.pembayaran');
 
+    // VERIFIKASI SEMINAR - SERTIFIKAT
+    Route::get('/sertif/edit/{pendaftaran_id}', [AdminController::class, 'editSertifikatSeminarVerifikasi'])->name('admin.sertif.edit');
+    Route::post('/sertif/store/{pendaftaran_id}', [AdminController::class, 'storeSertifikatSeminarVerifikasi'])->name('admin.sertif.store');
+    Route::get('/sertif/preview/{pendaftaran_id}', [AdminController::class, 'previewSertifikatSeminarVerifikasi'])->name('admin.sertif.preview');
+    Route::post('/sertif/confirm/{pendaftaran_id}', [AdminController::class, 'confirmSertifikatSeminarVerifikasi'])->name('admin.sertif.confirm');
     
 });
 
@@ -97,6 +102,9 @@ Route::get('/upload-payment/{sertifikasi_id}', [MainController::class, 'showUplo
 
 Route::post('/profile/verifikasi-token-seminar', [App\Http\Controllers\MainController::class, 'verifikasiTokenSeminar'])
     ->name('verifikasi.token.seminar');
+
+Route::get('/profile/sertifikat-preview/{pendaftaran_id}', [App\Http\Controllers\MainController::class, 'showSertifikatPreview'])
+    ->name('profile.sertifikat.preview');
 
 Route::get('/sertifmaker', function () {
     return view('admin.sertifmaker');

@@ -154,5 +154,42 @@ class MainController extends Controller
         return back()->with('success', 'Berhasil! Sertifikat Anda sudah terverifikasi.');
     }
 
-    
+    /**
+     * Show sertifikat preview untuk user
+     */
+    public function showSertifikatPreview($pendaftaran_id)
+    {
+        // Check if user is logged in
+        if (!session()->has('auth_user')) {
+            return redirect()->route('login.choose')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $authUser = session('auth_user');
+        $pendaftar = \App\Models\PendaftaranSeminar::findOrFail($pendaftaran_id);
+
+        // Verify ownership - user can only view their own certificate
+        if ($pendaftar->user_id != $authUser['id'] || $pendaftar->user_type != $authUser['role']) {
+            return back()->with('error', 'Anda tidak memiliki akses ke sertifikat ini.');
+        }
+
+        // Check if certificate is verified/ready
+        if ($pendaftar->status_sertifikat !== 'verified') {
+            return back()->with('error', 'Sertifikat belum tersedia untuk ditampilkan.');
+        }
+
+        // If certificate data doesn't exist, show error
+        if (!$pendaftar->sertif_no) {
+            return back()->with('error', 'Data sertifikat belum lengkap.');
+        }
+
+        return view('pages.sertifikat-user', [
+            'no_sertifikat' => $pendaftar->sertif_no,
+            'nama' => $pendaftar->sertif_nama ?? $authUser['name'],
+            'npm' => $pendaftar->sertif_npm ?? $authUser['id'],
+            'peran' => $pendaftar->sertif_peran ?? 'PESERTA',
+            'kegiatan' => $pendaftar->sertif_kegiatan ?? $pendaftar->seminar->nama,
+            'tanggal_terbit' => $pendaftar->sertif_tanggal ?? date('d F Y'),
+        ]);
     }
+    
+}
