@@ -386,10 +386,7 @@ class AdminController extends Controller
         return redirect()->route('admin.sertif.preview', ['pendaftaran_id' => $pendaftaran_id]);
     }
 
-    /**
-     * Show certificate preview
-     */
-    public function previewSertifikatSeminarVerifikasi($pendaftaran_id)
+        public function previewSertifikatSeminarVerifikasi($pendaftaran_id)
     {
         $sessionData = session('sertif_data_' . $pendaftaran_id);
 
@@ -409,7 +406,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Confirm and save certificate verification
+     * Show certificate preview
      */
     public function confirmSertifikatSeminarVerifikasi(Request $request, $pendaftaran_id)
     {
@@ -421,9 +418,9 @@ class AdminController extends Controller
 
         $pendaftar = \App\Models\PendaftaranSeminar::findOrFail($pendaftaran_id);
 
-        // Update database with verification info
+        // UBAH BARIS INI: dari 'verified' menjadi 'ready_to_redeem'
         $pendaftar->update([
-            'status_sertifikat' => 'verified',
+            'status_sertifikat' => 'ready_to_redeem', 
             'sertif_no' => $sessionData['no_sertifikat'],
             'sertif_nama' => $sessionData['nama'],
             'sertif_npm' => $sessionData['npm'],
@@ -432,10 +429,9 @@ class AdminController extends Controller
             'sertif_tanggal' => $sessionData['tanggal_terbit'],
         ]);
 
-        // Clear session
         session()->forget('sertif_data_' . $pendaftaran_id);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Sertifikat seminar berhasil disimpan dan akan ditampilkan ke peserta!');
+        return redirect()->route('admin.dashboard')->with('success', 'Sertifikat berhasil disiapkan. Peserta harus memasukkan token untuk mengaksesnya.');
     }
     
 }

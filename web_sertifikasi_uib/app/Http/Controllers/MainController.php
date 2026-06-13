@@ -129,26 +129,27 @@ class MainController extends Controller
             'pendaftaran_id' => 'required'
         ]);
         
-        // 1. Ambil data pendaftaran beserta relasi seminarnya
-        // Kita harus memuat relasi 'seminar' agar bisa akses token_event dari seeder
         $pendaftar = \App\Models\PendaftaranSeminar::with('seminar')->find($request->pendaftaran_id);
 
         if (!$pendaftar) {
             return back()->with('error', 'Data pendaftaran tidak ditemukan.');
         }
 
-        // 2. Cek apakah seminar memiliki data (untuk keamanan)
         if (!$pendaftar->seminar) {
             return back()->with('error', 'Data seminar tidak ditemukan.');
         }
 
-        // 3. Bandingkan token input user dengan token_event dari SEEDER (tabel seminar)
-        // Kita menggunakan trim() untuk menghilangkan spasi yang tidak sengaja terinput
+        // 1. Validasi Token
         if (trim($request->token) !== trim($pendaftar->seminar->token_event)) {
             return back()->with('error', 'Token salah! Silakan periksa kembali token event Anda.');
         }
 
-        // 4. Jika cocok, update status
+        // 2. WAJIB: Cek status, hanya boleh diproses jika statusnya 'ready_to_redeem'
+        if ($pendaftar->status_sertifikat !== 'ready_to_redeem') {
+            return back()->with('error', 'Sertifikat belum tersedia atau sudah diklaim.');
+        }
+
+        // 3. Update status menjadi 'verified' agar sertifikat bisa diakses
         $pendaftar->update(['status_sertifikat' => 'verified']);
         
         return back()->with('success', 'Berhasil! Sertifikat Anda sudah terverifikasi.');
@@ -159,7 +160,6 @@ class MainController extends Controller
      */
     public function showSertifikatPreview($pendaftaran_id)
     {
-        // Check if user is logged in
         if (!session()->has('auth_user')) {
             return redirect()->route('login.choose')->with('error', 'Silakan login terlebih dahulu.');
         }
@@ -167,17 +167,20 @@ class MainController extends Controller
         $authUser = session('auth_user');
         $pendaftar = \App\Models\PendaftaranSeminar::findOrFail($pendaftaran_id);
 
-        // Verify ownership - user can only view their own certificate
         if ($pendaftar->user_id != $authUser['id'] || $pendaftar->user_type != $authUser['role']) {
             return back()->with('error', 'Anda tidak memiliki akses ke sertifikat ini.');
         }
 
-        // Check if certificate is verified/ready
+        // WAJIB: Jika status masih 'ready_to_redeem', jangan izinkan akses
+        if ($pendaftar->status_sertifikat === 'ready_to_redeem') {
+            return back()->with('error', 'Silakan masukkan Token Event terlebih dahulu di dashboard untuk melihat sertifikat.');
+        }
+
+        // Cek jika status bukan verified
         if ($pendaftar->status_sertifikat !== 'verified') {
             return back()->with('error', 'Sertifikat belum tersedia untuk ditampilkan.');
         }
 
-        // If certificate data doesn't exist, show error
         if (!$pendaftar->sertif_no) {
             return back()->with('error', 'Data sertifikat belum lengkap.');
         }
