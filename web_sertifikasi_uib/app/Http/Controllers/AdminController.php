@@ -394,7 +394,7 @@ class AdminController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'Data sertifikat tidak ditemukan.');
         }
 
-        return view('pages.sertifpreview-admin', [
+        return view('pages.sertifpreview', [
             'no_sertifikat' => $sessionData['no_sertifikat'],
             'nama' => $sessionData['nama'],
             'npm' => $sessionData['npm'],

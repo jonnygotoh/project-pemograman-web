@@ -158,6 +158,7 @@ class MainController extends Controller
     /**
      * Show sertifikat preview untuk user
      */
+    
     public function showSertifikatPreview($pendaftaran_id)
     {
         if (!session()->has('auth_user')) {
@@ -185,7 +186,7 @@ class MainController extends Controller
             return back()->with('error', 'Data sertifikat belum lengkap.');
         }
 
-        return view('pages.sertifikat-user', [
+            return view('pages.sertifpreview', [
             'no_sertifikat' => $pendaftar->sertif_no,
             'nama' => $pendaftar->sertif_nama ?? $authUser['name'],
             'npm' => $pendaftar->sertif_npm ?? $authUser['id'],

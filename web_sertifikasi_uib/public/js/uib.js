@@ -548,6 +548,7 @@ function initTablePagination(){
     });
 }
 
+
 function confirmDaftar(url, roleLabel) {
     Swal.fire({
         title: 'sertifikasi.uib.ac.id says',
@@ -563,6 +564,35 @@ function confirmDaftar(url, roleLabel) {
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = url;
+        }
+    });
+}
+
+function confirmDaftarSeminar() {
+    Swal.fire({
+        title: 'sertifikasi.uib.ac.id says',
+        text: 'Apakah anda yakin ingin mendaftar seminar ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const f = document.getElementById('form-seminar');
+
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Pendaftaran seminar sedang diproses.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                if (f) {
+                    f.submit();
+                }
+            });
         }
     });
 }

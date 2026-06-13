@@ -69,13 +69,4 @@
         </div>
     </div>
 </section>
-<script>
-    function confirmDaftarSeminar() {
-        var ok = confirm('Anda yakin ingin mendaftar seminar ini?');
-        if (ok) {
-            var f = document.getElementById('form-seminar');
-            if (f) f.submit();
-        }
-    }
-</script>
 @endsection

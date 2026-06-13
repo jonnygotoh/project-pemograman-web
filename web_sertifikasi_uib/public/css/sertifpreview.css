@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preview Sertifikat - Admin Verification</title>
-
-    <style>
-        *{
+    *{
             box-sizing:border-box;
             margin:0;
             padding:0;
@@ -42,7 +34,7 @@
             position:relative;
             width:100%;
             aspect-ratio:1.414/1;
-            background-image:url('{{ asset('images/templatesertif.png') }}');
+            background-image: url('../images/templatesertif.png');
             background-size:cover;
             background-position:center;
             background-repeat:no-repeat;
@@ -61,43 +53,43 @@
         }
 
         .text-no{
-            top:22%;
+            top:29%;
             width:80%;
-            font-size:12px;
+            font-size:25px;
             font-family:'Times New Roman', serif;
         }
 
         .text-nama{
-            top:30%;
+            top:37%;
             width:85%;
-            font-size:20px;
+            font-size:33px;
             font-weight:bold;
             font-family:'Arial Black', Impact, sans-serif;
         }
 
         .text-npm{
-            top:38%;
+            top:46%;
             width:70%;
-            font-size:11px;
+            font-size:24px;
             font-style:italic;
         }
 
         .text-peran{
-            top:44%;
+            top:54%;
             width:75%;
-            font-size:14px;
+            font-size:27px;
         }
 
         .text-kegiatan{
-            top:52%;
+            top:72%;
             width:85%;
-            font-size:11px;
+            font-size:26x;
         }
 
         .text-tanggal{
-            top:58%;
+            top:62%;
             width:75%;
-            font-size:10px;
+            font-size:23px;
         }
 
         .actions{
@@ -197,68 +189,3 @@
             display:block;
             margin-bottom:5px;
         }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="header">
-        <h1>Preview Sertifikat Peserta Seminar</h1>
-        <p>Verifikasi dan konfirmasi sertifikat sebelum dipublikasikan kepada peserta</p>
-    </div>
-
-    <div class="info-box">
-        <div class="info-grid">
-            <div class="info-item">
-                <strong>Nama Peserta</strong>
-                <span>{{ $nama }}</span>
-            </div>
-            <div class="info-item">
-                <strong>NPM/ID Peserta</strong>
-                <span>{{ $npm }}</span>
-            </div>
-            <div class="info-item">
-                <strong>Nomor Sertifikat</strong>
-                <span>{{ $no_sertifikat }}</span>
-            </div>
-            <div class="info-item">
-                <strong>Peran</strong>
-                <span>{{ $peran }}</span>
-            </div>
-            <div class="info-item">
-                <strong>Kegiatan</strong>
-                <span>{{ $kegiatan }}</span>
-            </div>
-            <div class="info-item">
-                <strong>Tanggal Terbit</strong>
-                <span>{{ $tanggal_terbit }}</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="confirmation-notice">
-        <strong>⚠️ Perhatian:</strong>
-        Setelah Anda mengklik tombol "Konfirmasi & Simpan", data sertifikat akan disimpan ke database dan dapat diakses oleh peserta dari halaman profilnya.
-    </div>
-
-    <div class="certificate-container">
-        <div class="cert-text text-no">{{ $no_sertifikat }}</div>
-        <div class="cert-text text-nama">{{ $nama }}</div>
-        <div class="cert-text text-npm">{{ $npm }}</div>
-        <div class="cert-text text-peran">{{ $peran }}</div>
-        <div class="cert-text text-kegiatan">{{ $kegiatan }}</div>
-        <div class="cert-text text-tanggal">{{ $tanggal_terbit }}</div>
-    </div>
-
-    <div class="actions">
-        <form action="{{ route('admin.sertif.confirm', ['pendaftaran_id' => $pendaftaran_id]) }}" method="POST" style="display:inline;">
-            @csrf
-            <button type="submit" class="btn btn-confirm">✓ Konfirmasi & Simpan</button>
-        </form>
-        <a href="{{ route('admin.sertif.edit', ['pendaftaran_id' => $pendaftaran_id]) }}" class="btn btn-edit">✎ Edit Data</a>
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-cancel">✕ Batal</a>
-    </div>
-</div>
-
-</body>
-</html>
