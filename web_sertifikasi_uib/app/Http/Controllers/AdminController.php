@@ -95,25 +95,16 @@ class AdminController extends Controller
             'periode' => 'required',
             'tanggal' => 'required|date',
             'waktu' => 'required',
-            'token_event' => 'required|unique:seminar,token_event' // Input dari form
+            'tempat' => 'nullable',
+            'token_event' => 'required|unique:seminar,token_event'
         ]);
         Seminar::create($data);
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil ditambah!');
     }
 
-    public function seminarUpdate(Request $request, $id)
-    {
+    public function seminarUpdate(Request $request, $id) {
         $seminar = Seminar::findOrFail($id);
-
-        // Tambahkan 'token_event' di dalam array 'only'
-        $seminar->update($request->only([
-            'nama', 
-            'periode', 
-            'tanggal', 
-            'waktu', 
-            'token_event' // <--- INI KUNCI AGAR DATA TERSIMPAN
-        ]));
-
+        $seminar->update($request->only(['nama', 'periode', 'tanggal', 'waktu', 'tempat', 'token_event']));
         return redirect()->route('admin.dashboard')->with('success', 'Data Seminar berhasil diubah!');
     }
 
@@ -168,31 +159,27 @@ class AdminController extends Controller
         return view('crud.sertifikasi', compact('item'));
     }
     
-    public function sertifikasiStore(Request $request)
-    {
-
+    public function sertifikasiStore(Request $request) {
         $validated = $request->validate([
             'nama' => 'required',
             'batch' => 'nullable',
             'periode' => 'required',
             'waktu' => 'required|date',
+            'jam' => 'required',
+            'tempat' => 'required',
             'biaya_mahasiswa' => 'required|numeric',
             'biaya_dosen' => 'required|numeric',
             'biaya_umum' => 'required|numeric',
         ]);
 
         $validated['jumlah_pendaftar'] = 0;
-
         Sertifikasi::create($validated);
-
-        return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil ditambahkan!');
+        return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil ditambah!');
     }
 
-    public function sertifikasiUpdate(Request $request, $id)
-    {
+    public function sertifikasiUpdate(Request $request, $id) {
         $sertif = Sertifikasi::findOrFail($id);
-        $sertif->update($request->all());
-
+        $sertif->update($request->except(['_token', '_method']));
         return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil diubah!');
     }
 

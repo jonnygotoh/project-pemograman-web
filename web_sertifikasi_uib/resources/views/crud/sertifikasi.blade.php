@@ -30,6 +30,17 @@
                     <input type="date" name="waktu" value="{{ isset($item) ? \Carbon\Carbon::parse($item->waktu)->format('Y-m-d') : '' }}" required class="form-control">
                 </label>
             </div>
+
+            <div class="form-group">
+                <label>Jam 
+                    <input type="text" name="jam" value="{{ $item->jam ?? '' }}" required class="form-control">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Tempat 
+                    <input type="text" name="tempat" value="{{ $item->tempat ?? '' }}" required class="form-control">
+                </label>
+            </div>
             
             <div class="form-group">
                 <label>Biaya Mahasiswa (Rp) 

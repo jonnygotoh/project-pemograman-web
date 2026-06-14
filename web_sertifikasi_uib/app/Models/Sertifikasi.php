@@ -13,6 +13,8 @@ class Sertifikasi extends Model
         'batch',
         'periode',
         'waktu',
+        'jam',
+        'tempat',
         'biaya_mahasiswa',
         'biaya_dosen',
         'biaya_umum',

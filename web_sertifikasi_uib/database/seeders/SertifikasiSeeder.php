@@ -15,6 +15,8 @@ class SertifikasiSeeder extends Seeder
             [
                 'periode' => 'Juni 2026',
                 'waktu' => '2026-06-10',
+                'jam' => '09:00 WIB',  
+                'tempat' => 'Lab Jaringan',
                 'poster' => 'cisco.png',
                 'biaya_mahasiswa' => 200000,
                 'biaya_dosen' => 300000,
@@ -27,6 +29,8 @@ class SertifikasiSeeder extends Seeder
             [
                 'periode' => 'Juni 2026',
                 'waktu' => '2026-06-25',
+                'jam' => '10:00 WIB',    
+                'tempat' => 'Lab Cloud',
                 'poster' => 'aws.png',
                 'biaya_mahasiswa' => 300000,
                 'biaya_dosen' => 400000,

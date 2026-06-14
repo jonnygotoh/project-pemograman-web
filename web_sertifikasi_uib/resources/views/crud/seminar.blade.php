@@ -34,6 +34,12 @@
                 </label>
             </div>
 
+            <div class="form-group">
+                <label>Tempat 
+                    <input type="text" name="tempat" value="{{ $item->tempat ?? '' }}" required class="form-control">
+                </label>
+            </div>
+
              <div class="form-group">
                 <label>Token Event (Kode Akses)
                     <input type="text" name="token_event" value="{{ $item->token_event ?? '' }}" 

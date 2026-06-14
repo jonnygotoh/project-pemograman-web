@@ -19,7 +19,9 @@
 
         <div class="detail-info-box">
             <h4>KEGIATAN INI AKAN DILAKSANAKAN SECARA “{{ strtoupper($event['mode'] ?? 'OFFLINE') }}” PADA:</h4>
-            <p><i data-lucide="calendar-days"></i> <b>Hari/Tanggal:</b> {{ $event['date'] }}</p>
+            
+            <p><i data-lucide="calendar-days"></i> <b>Hari/Tanggal:</b> {{ \Carbon\Carbon::parse($event['date'])->format('d F Y') }}</p>
+            
             <p><i data-lucide="clock"></i> <b>Waktu:</b> {{ $event['time'] }}</p>
             <p><i data-lucide="map-pin"></i> <b>Tempat:</b> {{ $event['place'] }}</p>
 
