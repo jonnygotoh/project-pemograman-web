@@ -349,206 +349,86 @@ function openTokenModal(id) {
     document.getElementById('modal_seminar_id').value = id;
     document.getElementById('tokenModal').style.display = 'block';
 }
-
 /* ==================================================
-   TABLE PAGINATION
+   TABLE PAGINATION & SORTING
 ================================================== */
 
-document.addEventListener("DOMContentLoaded",()=>{initTablePagination();});
+document.addEventListener("DOMContentLoaded", () => {
+    initTablePagination();
+});
 
-function initTablePagination(){
-    document.querySelectorAll(".table-card").forEach(tableCard=>{
+function initTablePagination() {
+    document.querySelectorAll(".table-card").forEach(tableCard => {
 
-        const tbody=tableCard.querySelector(".paginated-body");
-        if(!tbody) return;
+        const tbody = tableCard.querySelector(".paginated-body");
+        if (!tbody) return;
 
-        const rows=tbody.querySelectorAll("tr");
-        if(!rows.length) return;
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+        if (!rows.length) return;
 
-        const pageNumbers=tableCard.querySelector(".page-numbers");
-        const prevBtn=tableCard.querySelector(".prev-btn");
-        const nextBtn=tableCard.querySelector(".next-btn");
-        const entriesInfo=tableCard.querySelector(".entries-info");
-        
-        const rowsPerPage=5;
-        const totalPages=99;
+        const pageNumbers = tableCard.querySelector(".page-numbers");
+        const prevBtn = tableCard.querySelector(".prev-btn");
+        const nextBtn = tableCard.querySelector(".next-btn");
+        const entriesInfo = tableCard.querySelector(".entries-info");
 
-        let currentPage=1;
+        const rowsPerPage = 5;
+        // Hitung total halaman secara dinamis
+        const totalPages = Math.ceil(rows.length / rowsPerPage);
 
-        function showPage(page){
+        let currentPage = 1;
 
-            currentPage=page;
+        function showPage(page) {
+            currentPage = page;
 
-            const start=(page-1)*rowsPerPage;
-            const end=start+rowsPerPage;
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
 
-            let visibleCount=0;
-
-            rows.forEach((row,index)=>{
-
-                const visible=
-                    index>=start &&
-                    index<end;
-
-                row.style.display=
-                    visible ? "" : "none";
-
-                if(visible) visibleCount++;
-
+            rows.forEach((row, index) => {
+                row.style.display = (index >= start && index < end) ? "" : "none";
             });
 
-            let emptyRow=
-                tbody.querySelector(".empty-page-row");
-
-            if(!visibleCount){
-
-                if(!emptyRow){
-
-                    const title=
-                        tableCard
-                        .querySelector("h2")
-                        ?.textContent
-                        ?.toLowerCase() || "data";
-
-                    emptyRow=
-                        document.createElement("tr");
-
-                    emptyRow.className=
-                        "empty-page-row";
-
-                    emptyRow.innerHTML=`
-                        <td colspan="999"
-                            style="
-                                text-align:center;
-                                padding:30px;
-                                color:#666;
-                                font-style:italic;
-                            ">
-                            Belum tersedia ${title}.
-                        </td>
-                    `;
-
-                    tbody.appendChild(emptyRow);
-                }
-
-        }else if(emptyRow){
-
-            emptyRow.remove();
-
-        }
-
-        const showingStart=
-            visibleCount
-                ? start+1
-                : 0;
-
-        const showingEnd=
-            Math.min(end,rows.length);
-
-        if(entriesInfo){
-
-            entriesInfo.textContent=
-                visibleCount
-                    ? `Showing ${showingStart} to ${showingEnd} entries of ${showingEnd} entries`
-                    : "Showing 0 entries";
-
-        }
-
-        renderPagination();
-        }
-
-        function addPageButton(page){
-
-            const btn=
-                document.createElement("button");
-
-            btn.textContent=page;
-
-            btn.className=
-                page===currentPage
-                    ? "page-btn active"
-                    : "page-btn";
-
-            btn.addEventListener("click",()=>{
-                showPage(page);
-            });
-
-            pageNumbers.appendChild(btn);
-        }
-
-        function addDots(){
-
-            const dots=
-                document.createElement("span");
-
-            dots.className=
-                "pagination-dots";
-
-            dots.textContent="...";
-
-            pageNumbers.appendChild(dots);
-        }
-
-        function renderPagination(){
-
-            pageNumbers.innerHTML="";
-
-            let start;
-            let end;
-
-            if(currentPage <= 4){
-
-                start = 1;
-                end = 4;
-
-            }else{
-
-                start = currentPage - 3;
-                end = currentPage;
-
+            // Update Teks "Showing X to Y of Z entries"
+            if (entriesInfo) {
+                const showingStart = (rows.length > 0) ? start + 1 : 0;
+                const showingEnd = Math.min(end, rows.length);
+                entriesInfo.textContent = `Showing ${showingStart} to ${showingEnd} of ${rows.length} entries`;
             }
 
-            for(let i=start;i<=end;i++){
-                addPageButton(i);
-            }
-
-            if(end < totalPages){
-
-                addDots();
-
-                addPageButton(totalPages);
-
-            }
-
-            prevBtn.disabled=
-                currentPage===1;
-
-            nextBtn.disabled=
-                currentPage===totalPages;
+            renderPagination();
         }
 
-        prevBtn.addEventListener("click",()=>{
+        function renderPagination() {
+            pageNumbers.innerHTML = "";
 
-            if(currentPage>1){
-                showPage(currentPage-1);
+            // Loop untuk membuat tombol angka halaman
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                btn.className = (i === currentPage) ? "page-btn active" : "page-btn";
+                btn.addEventListener("click", () => showPage(i));
+                pageNumbers.appendChild(btn);
             }
 
+            // Status tombol Prev/Next
+            prevBtn.disabled = (currentPage === 1);
+            nextBtn.disabled = (currentPage === totalPages || totalPages === 0);
+        }
+
+        // Event Listener Tombol Navigasi
+        prevBtn.addEventListener("click", () => {
+            if (currentPage > 1) showPage(currentPage - 1);
         });
 
-        nextBtn.addEventListener("click",()=>{
-
-            if(currentPage<totalPages){
-                showPage(currentPage+1);
-            }
-
+        nextBtn.addEventListener("click", () => {
+            if (currentPage < totalPages) showPage(currentPage + 1);
         });
 
+        // Inisialisasi halaman pertama
         showPage(1);
-
     });
 }
 
-
+// Fungsi untuk konfirmasi pendaftaran
 function confirmDaftar(url, roleLabel) {
     Swal.fire({
         title: 'sertifikasi.uib.ac.id says',
@@ -558,8 +438,7 @@ function confirmDaftar(url, roleLabel) {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         reverseButtons: true,
-        // Gunakan ini sebagai pengganti customClass agar tidak bentrok dengan CSS Anda
-        confirmButtonColor: '#3085d6', 
+        confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -568,7 +447,7 @@ function confirmDaftar(url, roleLabel) {
     });
 }
 
-function confirmDaftarSeminar() {
+function confirmDaftarSeminar(formId = 'form-seminar') {
     Swal.fire({
         title: 'sertifikasi.uib.ac.id says',
         text: 'Apakah anda yakin ingin mendaftar seminar ini?',
@@ -581,18 +460,10 @@ function confirmDaftarSeminar() {
         cancelButtonColor: '#d33'
     }).then((result) => {
         if (result.isConfirmed) {
-            const f = document.getElementById('form-seminar');
-
-            Swal.fire({
-                title: 'Berhasil!',
-                text: 'Pendaftaran seminar sedang diproses.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                if (f) {
-                    f.submit();
-                }
-            });
+            const f = document.getElementById(formId);
+            if (f) {
+                f.submit(); // Langsung submit, biarkan Laravel yang memberi pesan sukses
+            }
         }
     });
 }

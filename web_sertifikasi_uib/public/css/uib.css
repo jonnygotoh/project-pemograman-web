@@ -2359,6 +2359,17 @@ th {
     .search-box { width: 100%; }
 }
 
+    .table-pagination {
+        display: flex;
+        flex-wrap: wrap; 
+        gap: 10px;
+    }
+
+    .entries-info {
+        width: 100%; 
+        text-align: center;
+        position: relative;
+    }
 
 /* untuk admin */
     .thumbnail-wrapper {
@@ -2607,55 +2618,55 @@ th {
         }
     }
 
-.table-pagination{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:12px;
-    margin-top: 40px;
-    position:relative;
-}
+    .table-pagination{
+        display:flex;
+        justify-content:right;
+        gap:12px;
+        margin-top: 40px;
+        position:relative;
+    }
 
 
-.page-numbers{
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
+    .page-numbers{
+        display:flex;
+        align-items:center;
+        gap:8px;
+    }
 
-.page-btn{
-    min-width:36px;
-    height:36px;
-    padding:0 12px;
-    border:1px solid #ddd;
-    border-radius:6px;
-    background:white;
-    cursor:pointer;
-    transition:.2s;
-}
+    .page-btn{
+        min-width:36px;
+        height:36px;
+        padding:0 12px;
+        border:1px solid #ddd;
+        border-radius:6px;
+        background:white;
+        cursor:pointer;
+        transition:.2s;
+    }
 
-.page-btn:hover{
-    background:#f5f5f5;
-}
+    .page-btn:hover{
+        background:#f5f5f5;
+    }
 
-.page-btn.active{
-    background:#003399;
-    color:white;
-    border-color:#003399;
-}
+    .page-btn.active{
+        background:#003399;
+        color:white;
+        border-color:#003399;
+    }
 
-.page-btn:disabled{
-    opacity:.5;
-    cursor:not-allowed;
-}
+    .page-btn:disabled{
+        opacity:.5;
+        cursor:not-allowed;
+    }
 
-.entries-info{
-    position:absolute;
-    left:0;
-    top:50%;
-    transform:translateY(-50%);
-    font-size:14px;
-    color:#666;
-    margin:0;
-    white-space:nowrap;
-}
+    .entries-info{
+        display:flex;
+        justify-content:left;
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        font-size:14px;
+        color:#666;
+        margin:0;
+        white-space:nowrap;
+    }

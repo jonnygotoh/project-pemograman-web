@@ -76,7 +76,7 @@
         @include('pages.partials.table', [
             'pageTitle' => 'Seminar',
             'type' => 'seminar',
-            'columns' => ['No', 'Nama', 'Periode', 'Tanggal', 'Waktu', 'Pendaftar'],
+            'columns' => ['No', 'Nama', 'Periode', 'Tanggal', 'Waktu', 'Jumlah Pendaftar'],
             'rows' => $seminarRows
         ])
     </div>

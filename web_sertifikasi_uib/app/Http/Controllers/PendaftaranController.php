@@ -41,8 +41,6 @@ class PendaftaranController extends Controller
             'status_sertifikat' => 'menunggu',
         ]);
 
-        // Increment jumlah_pendaftar di tabel seminar
-        Seminar::where('id', $request->seminar_id)->increment('jumlah_pendaftar');
 
         return back()->with('success', 'Pendaftaran seminar berhasil.');
     }
