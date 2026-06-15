@@ -88,5 +88,26 @@
             </a>
         </div>
     </form>
+    @if(isset($item))
+        <form id="delete-seminar-form"
+              action="{{ route('admin.seminar.delete', $item->id) }}"
+              method="POST">
+            @csrf
+            @method('DELETE')
+
+            <button type="button"
+                    class="btn-primary"
+                    style="width: 100%; margin-top: 10px;"
+                    onclick="confirmAddRemove({
+                        formId:'delete-seminar-form',
+                        text:'Apakah anda yakin ingin menghapus seminar ini?',
+                        confirmText:'Hapus',
+                        icon:'warning',
+                        confirmColor:'#d33'
+                    })">
+                Hapus Data Seminar
+            </button>
+        </form>
+    @endif
 </section>
 @endsection
