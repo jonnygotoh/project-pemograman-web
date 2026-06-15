@@ -8,108 +8,112 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PendaftaranController;
 
-Route::get('/', [MainController::class, 'home'])->name('home');
+Route::middleware(['web'])->group(function () {
 
-Route::get('/mahasiswa', [MainController::class, 'mahasiswa'])
-    ->name('listmahasiswa');
+    Route::get('/', [MainController::class, 'home'])->name('home');
 
-Route::get('/calendar/{type}', [MainController::class, 'calendar']);
+    Route::get('/mahasiswa', [MainController::class, 'mahasiswa'])
+        ->name('listmahasiswa');
 
-Route::get('login', [AuthController::class, 'login'])
-    ->name('login.choose');
+    Route::get('/calendar/{type}', [MainController::class, 'calendar']);
 
-Route::get('login/mahasiswa', [AuthController::class, 'showLoginForm'])
-    ->defaults('type', 'student')
-    ->name('login.student');
+    Route::get('login', [AuthController::class, 'login'])
+        ->name('login.choose');
 
-Route::get('login/dosen', [AuthController::class, 'showLoginForm'])
-    ->defaults('type', 'lecturer')
-    ->name('login.lecturer');
+    Route::get('login/mahasiswa', [AuthController::class, 'showLoginForm'])
+        ->defaults('type', 'student')
+        ->name('login.student');
 
-Route::get('login/umum', [AuthController::class, 'showLoginForm'])
-    ->defaults('type', 'public')
-    ->name('login.public');
+    Route::get('login/dosen', [AuthController::class, 'showLoginForm'])
+        ->defaults('type', 'lecturer')
+        ->name('login.lecturer');
 
-Route::get('register/umum', [AuthController::class, 'showRegisterForm'])->name('register.public');
+    Route::get('login/umum', [AuthController::class, 'showLoginForm'])
+        ->defaults('type', 'public')
+        ->name('login.public');
 
-Route::post('register/process', [AuthController::class, 'registerPublic'])->name('register.process');
+    Route::get('register/umum', [AuthController::class, 'showRegisterForm'])->name('register.public');
 
-Route::post('login/process', [AuthController::class, 'authenticate'])
-    ->name('login.process');
+    Route::post('register/process', [AuthController::class, 'registerPublic'])->name('register.process');
 
-Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
+    Route::post('login/process', [AuthController::class, 'authenticate'])
+        ->name('login.process');
 
-Route::post('/forgot-password', [AuthController::class, 'checkEmail'])->name('password.check');
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
 
-Route::get('/reset-password/{email}', [AuthController::class, 'showResetForm'])->name('password.reset.form');
+    Route::post('/forgot-password', [AuthController::class, 'checkEmail'])->name('password.check');
 
-Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.reset.process');
+    Route::get('/reset-password/{email}', [AuthController::class, 'showResetForm'])->name('password.reset.form');
 
-Route::get('/logout', [AuthController::class, 'logout'])
-    ->name('logout');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.reset.process');
 
-Route::get('/profile', [AuthController::class, 'profile'])
-    ->name('profile');
+    Route::get('/logout', [AuthController::class, 'logout'])
+        ->name('logout');
 
-Route::get('/admin', [AuthController::class, 'showLoginAdmin'])->name('login.admin');
-Route::post('/admin', [AuthController::class, 'loginAdmin'])->name('login.admin.process');
+    Route::get('/profile', [AuthController::class, 'profile'])
+        ->name('profile');
 
-Route::get('/logout/admin', [AuthController::class, 'logoutAdmin'])->name('logout.admin');
+    Route::get('/admin', [AuthController::class, 'showLoginAdmin'])->name('login.admin');
+    Route::post('/admin', [AuthController::class, 'loginAdmin'])->name('login.admin.process');
 
-Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
+    Route::get('/logout/admin', [AuthController::class, 'logoutAdmin'])->name('logout.admin');
 
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
 
-    // SEMINAR
-    Route::get('/seminar/create', [AdminController::class, 'seminarCreate'])->name('admin.seminar.create');
-    // Penambahan ->name() di bawah ini:
-    Route::get('/seminar/edit/{id}', [AdminController::class, 'seminarEdit'])->name('admin.seminar.edit');
-    Route::post('/seminar/store', [AdminController::class, 'seminarStore'])->name('admin.seminar.store');
-    Route::put('/seminar/update/{id}', [AdminController::class, 'seminarUpdate'])->name('admin.seminar.update');
-    Route::delete('/seminar/delete/{id}', [AdminController::class, 'seminarDelete'])->name('admin.seminar.delete');
-    Route::post('/seminar/upload-sertifikat/{id}', [AdminController::class, 'updateSertifikatSeminar'])
-    ->name('admin.seminar.uploadSertifikat');
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-    // SERTIFIKASI
-    Route::get('/sertifikasi/create', [AdminController::class, 'sertifikasiCreate'])->name('admin.sertifikasi.create');
-    // Penambahan ->name() di bawah ini:
-    Route::get('/sertifikasi/edit/{id}', [AdminController::class, 'sertifikasiEdit'])->name('admin.sertifikasi.edit');
-    Route::post('/sertifikasi/store', [AdminController::class, 'sertifikasiStore'])->name('admin.sertifikasi.store');
-    Route::put('/sertifikasi/update/{id}', [AdminController::class, 'sertifikasiUpdate'])->name('admin.sertifikasi.update');
-    Route::delete('/sertifikasi/delete/{id}', [AdminController::class, 'sertifikasiDelete'])->name('admin.sertifikasi.delete');
-    
-    Route::post('/verifikasi-pembayaran/{id}', [AdminController::class, 'verifikasiPembayaran'])->name('admin.verifikasi.pembayaran');
+        // SEMINAR
+        Route::get('/seminar/create', [AdminController::class, 'seminarCreate'])->name('admin.seminar.create');
+        // Penambahan ->name() di bawah ini:
+        Route::get('/seminar/edit/{id}', [AdminController::class, 'seminarEdit'])->name('admin.seminar.edit');
+        Route::post('/seminar/store', [AdminController::class, 'seminarStore'])->name('admin.seminar.store');
+        Route::put('/seminar/update/{id}', [AdminController::class, 'seminarUpdate'])->name('admin.seminar.update');
+        Route::delete('/seminar/delete/{id}', [AdminController::class, 'seminarDelete'])->name('admin.seminar.delete');
+        Route::post('/seminar/upload-sertifikat/{id}', [AdminController::class, 'updateSertifikatSeminar'])
+        ->name('admin.seminar.uploadSertifikat');
 
-    // VERIFIKASI SEMINAR - SERTIFIKAT
-    Route::get('/sertif/edit/{pendaftaran_id}', [AdminController::class, 'editSertifikatSeminarVerifikasi'])->name('admin.sertif.edit');
-    Route::post('/sertif/store/{pendaftaran_id}', [AdminController::class, 'storeSertifikatSeminarVerifikasi'])->name('admin.sertif.store');
-    Route::get('/sertif/preview/{pendaftaran_id}', [AdminController::class, 'previewSertifikatSeminarVerifikasi'])->name('admin.sertif.preview');
-    Route::post('/sertif/confirm/{pendaftaran_id}', [AdminController::class, 'confirmSertifikatSeminarVerifikasi'])->name('admin.sertif.confirm');
-    
+        // SERTIFIKASI
+        Route::get('/sertifikasi/create', [AdminController::class, 'sertifikasiCreate'])->name('admin.sertifikasi.create');
+        // Penambahan ->name() di bawah ini:
+        Route::get('/sertifikasi/edit/{id}', [AdminController::class, 'sertifikasiEdit'])->name('admin.sertifikasi.edit');
+        Route::post('/sertifikasi/store', [AdminController::class, 'sertifikasiStore'])->name('admin.sertifikasi.store');
+        Route::put('/sertifikasi/update/{id}', [AdminController::class, 'sertifikasiUpdate'])->name('admin.sertifikasi.update');
+        Route::delete('/sertifikasi/delete/{id}', [AdminController::class, 'sertifikasiDelete'])->name('admin.sertifikasi.delete');
+        
+        Route::post('/verifikasi-pembayaran/{id}', [AdminController::class, 'verifikasiPembayaran'])->name('admin.verifikasi.pembayaran');
+
+        // VERIFIKASI SEMINAR - SERTIFIKAT
+        Route::get('/sertif/edit/{pendaftaran_id}', [AdminController::class, 'editSertifikatSeminarVerifikasi'])->name('admin.sertif.edit');
+        Route::post('/sertif/store/{pendaftaran_id}', [AdminController::class, 'storeSertifikatSeminarVerifikasi'])->name('admin.sertif.store');
+        Route::get('/sertif/preview/{pendaftaran_id}', [AdminController::class, 'previewSertifikatSeminarVerifikasi'])->name('admin.sertif.preview');
+        Route::post('/sertif/confirm/{pendaftaran_id}', [AdminController::class, 'confirmSertifikatSeminarVerifikasi'])->name('admin.sertif.confirm');
+        
+    });
+
+    //menampilkan detail sertifikasi-seminar
+    Route::get('/detailseminar/{id}', [MainController::class, 'showSeminar'])->name('seminar.show');
+    Route::get('/detailsertifikasi/{id}', [MainController::class, 'showSertifikasi'])->name('sertifikasi.show');
+    // pembayaran
+    Route::post('/pembayaran-sertifikasi', [PembayaranController::class, 'store'])->name('pendaftaran.store');
+    // pendaftaran seminar (tersendiri dari pembayaran)
+    Route::post('/pendaftaran-seminar', [PendaftaranController::class, 'store'])->name('pendaftaran.seminar.store');
+    Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy'])->name('pembayaran.destroy');
+    Route::get('/bukti-bayar/{filename}', [PembayaranController::class, 'viewBuktiBayar'])->name('bukti.view');
+
+    Route::get('/upload-payment/{sertifikasi_id}', [MainController::class, 'showUploadPage'])->name('upload.payment');
+
+    Route::post('/profile/verifikasi-token-seminar', [App\Http\Controllers\MainController::class, 'verifikasiTokenSeminar'])
+        ->name('verifikasi.token.seminar');
+
+    Route::get('/profile/sertifikat-preview/{pendaftaran_id}', [App\Http\Controllers\MainController::class, 'showSertifikatPreview'])
+        ->name('profile.sertifikat.preview');
+
+    Route::get('/sertifmaker', function () {
+        return view('admin.sertifmaker');
+    })->name('sertifmaker');
+
+    Route::post('/sertifikat/generate',
+        [AdminController::class,'generateCertificate']
+    )->name('sertifikat.generate');
+
 });
-
-//menampilkan detail sertifikasi-seminar
-Route::get('/detailseminar/{id}', [MainController::class, 'showSeminar'])->name('seminar.show');
-Route::get('/detailsertifikasi/{id}', [MainController::class, 'showSertifikasi'])->name('sertifikasi.show');
-// pembayaran
-Route::post('/pembayaran-sertifikasi', [PembayaranController::class, 'store'])->name('pendaftaran.store');
-// pendaftaran seminar (tersendiri dari pembayaran)
-Route::post('/pendaftaran-seminar', [PendaftaranController::class, 'store'])->name('pendaftaran.seminar.store');
-Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy'])->name('pembayaran.destroy');
-Route::get('/bukti-bayar/{filename}', [PembayaranController::class, 'viewBuktiBayar'])->name('bukti.view');
-
-Route::get('/upload-payment/{sertifikasi_id}', [MainController::class, 'showUploadPage'])->name('upload.payment');
-
-Route::post('/profile/verifikasi-token-seminar', [App\Http\Controllers\MainController::class, 'verifikasiTokenSeminar'])
-    ->name('verifikasi.token.seminar');
-
-Route::get('/profile/sertifikat-preview/{pendaftaran_id}', [App\Http\Controllers\MainController::class, 'showSertifikatPreview'])
-    ->name('profile.sertifikat.preview');
-
-Route::get('/sertifmaker', function () {
-    return view('admin.sertifmaker');
-})->name('sertifmaker');
-
-Route::post('/sertifikat/generate',
-    [AdminController::class,'generateCertificate']
-)->name('sertifikat.generate');
