@@ -37,7 +37,7 @@
         </div>
 
         <div class="table-control">
-            <label>Show <select><option>10</option></select> entries</label>
+            <label>Show <select><option>10</option><option>25</option></select> entries</label>
             <div class="search-box"><i data-lucide="search"></i><input placeholder="Search data..."></div>
         </div>
 
@@ -127,7 +127,7 @@
                         @if($p->status == 'menunggu')
                             <form action="{{ route('pembayaran.destroy', $p->id) }}" method="POST" onsubmit="return confirm('Yakin ingin membatalkan?')">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="btn-sm btn-primary">Batalkan</button>
+                                <button type="submit" class="btn-sm btn-primary" style="background:#D9534F;color:#FFFFFF;border:none;padding:10px 18px;border-radius:8px;font-weight:600;" >Batalkan</button>
                             </form>
                         @endif
                     </td>
@@ -148,10 +148,10 @@
             <input type="hidden" name="pendaftaran_id" id="modal_seminar_id">
             
             <h5>Masukkan Token</h5>
-            <input type="text" name="token" class="form-control" placeholder="Masukkan token dari admin" required>
+            <input type="text" name="token" class="form-control" placeholder="Masukkan token dari admin" maxlength="10" style="width: 230px;" required>
             
             <div style="margin-top:15px; text-align:right;">
-                <button type="button" onclick="document.getElementById('tokenModal').style.display='none'" class="btn-sm btn-secondary">Batal</button>
+                <button type="button" onclick="document.getElementById('tokenModal').style.display='none'" class="btn-primary"  style="background: #dc3545;">Batal</button>
                 <button type="submit" class="btn-sm btn-primary">Verifikasi</button>
             </div>
         </form>

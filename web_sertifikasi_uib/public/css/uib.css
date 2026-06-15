@@ -2422,22 +2422,6 @@ th {
         opacity: 1;
     }
 
-    .table thead th.sortable.asc .sort-icon::before {
-        content: '▲';
-    }
-
-    .table thead th.sortable.asc .sort-icon {
-        content: '▲';
-    }
-
-    .table thead th.sortable.desc .sort-icon::before {
-        content: '▼';
-    }
-
-    .table thead th.sortable.desc .sort-icon {
-        content: '▼';
-    }
-
     /* Modal Styles */
     .image-modal {
         position: fixed;
@@ -2670,3 +2654,10 @@ th {
         margin:0;
         white-space:nowrap;
     }
+    /* th tak bisa di select */
+    th {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

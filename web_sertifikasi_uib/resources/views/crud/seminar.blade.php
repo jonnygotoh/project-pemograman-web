@@ -5,7 +5,9 @@
 <section class="admin-form-page">
     <h2>{{ isset($item) ? 'Edit Seminar' : 'Tambah Seminar Baru' }}</h2>
 
-    <form action="{{ isset($item) ? route('admin.seminar.update', $item->id) : route('admin.seminar.store') }}" method="POST">
+    <form id="seminar-form"
+          action="{{ isset($item) ? route('admin.seminar.update', $item->id) : route('admin.seminar.store') }}"
+          method="POST">
         @csrf
         @if(isset($item)) @method('PUT') @endif
         
@@ -40,29 +42,55 @@
                 </label>
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label>Token Event (Kode Akses)
                     <input type="text" name="token_event" value="{{ $item->token_event ?? '' }}" 
                         class="form-control" placeholder="Contoh: SEMINAR2026-XYZ" required>
                 </label>
             </div>
             
-        </div> 
+        </div>
 
         <div class="Adash" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px; width: 100%;">
-            <button type="submit" class="btn-primary" style="width: 100%;">Simpan Data</button>
-            <a href="{{ route('admin.dashboard') }}" class="btn-primary" style="text-align: center; text-decoration: none; width: 100%; padding: 10px;">Batal</a>
-        </div>    
+            <button type="button"
+                    class="btn-primary"
+                    style="width: 100%;"
+                    onclick="confirmAddRemove({
+                        formId:'seminar-form',
+                        text:'Apakah anda yakin ingin menyimpan data seminar ini?',
+                        confirmText:'Simpan'
+                    })">
+                Simpan Data
+            </button>
+
+            <a href="{{ route('admin.dashboard') }}"
+               class="btn-primary"
+               style="text-align: center; text-decoration: none; width: 100%; padding: 10px; background: #666;">
+                Batal
+            </a>
+        </div>
     </form>
 
-        @if(isset($item))
-            <form action="{{ route('admin.seminar.delete', $item->id) }}" 
-                method="POST" 
-                onsubmit="return confirm('Apakah Anda yakin ingin menghapus seminar ini?');">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn-primary" style="width: 100%; Margin-top: 10px;">Hapus Data Seminar</button>
-            </form>
-        @endif
+    @if(isset($item))
+        <form id="delete-seminar-form"
+              action="{{ route('admin.seminar.delete', $item->id) }}"
+              method="POST">
+            @csrf
+            @method('DELETE')
+
+            <button type="button"
+                    class="btn-primary"
+                    style="width: 100%; margin-top: 10px;"
+                    onclick="confirmAddRemove({
+                        formId:'delete-seminar-form',
+                        text:'Apakah anda yakin ingin menghapus seminar ini?',
+                        confirmText:'Hapus',
+                        icon:'warning',
+                        confirmColor:'#d33'
+                    })">
+                Hapus Data Seminar
+            </button>
+        </form>
+    @endif
 </section>
 @endsection

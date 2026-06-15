@@ -17,14 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { rootMargin: '0px 0px -60px 0px', threshold: 0.1 });
 
     // Observer untuk navigasi scroll tracking
-    const navObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !isClickScroll) {
-                setActiveNav(`#${entry.target.id}`);
-            }
-        });
-    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0.1 });
-
+   const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !isClickScroll) {
+            setActiveNav(`#${entry.target.id}`);
+        }
+    });
+}, {
+    threshold: 0.3
+});
     // Terapkan pemantauan ke semua elemen section
     document.querySelectorAll('section[id]').forEach(sec => {
         animationObserver.observe(sec);
@@ -464,6 +465,32 @@ function confirmDaftarSeminar(formId = 'form-seminar') {
             if (f) {
                 f.submit(); // Langsung submit, biarkan Laravel yang memberi pesan sukses
             }
+        }
+    });
+}
+
+function confirmAddRemove({
+    formId,
+    text,
+    confirmText = 'OK',
+    cancelText = 'Batal',
+    icon = 'question',
+    confirmColor = '#001A72',
+    cancelColor = '#6c757d'
+}) {
+    Swal.fire({
+        title: 'sertifikasi.uib.ac.id says',
+        text: text,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonText: confirmText,
+        cancelButtonText: cancelText,
+        reverseButtons: true,
+        confirmButtonColor: confirmColor,
+        cancelButtonColor: cancelColor
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById(formId)?.submit();
         }
     });
 }

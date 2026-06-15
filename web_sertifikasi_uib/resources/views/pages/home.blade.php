@@ -24,6 +24,8 @@
         <span class="delay-1">Sertifikasi</span>
         <h2 class="delay-2">Daftar Sertifikasi</h2>
         <div class="heading-line"></div>
+        <div class="card-grid"></div>
+
     </div>
 
     <div class="view-toggle">
