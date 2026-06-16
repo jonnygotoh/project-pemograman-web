@@ -15,7 +15,7 @@
             <h3><i data-lucide="receipt-text"></i> Informasi Pembayaran</h3>
             
             <label>Bukti Bayar
-                <input name="bukti_bayar" type="file" required accept="image/*">
+                <input name="bukti_bayar" type="file" required accept=".jpg,.jpeg,.png">
             </label>
             <small>Maks. ukuran file 2 MB (jpeg, jpg, png)</small>
             

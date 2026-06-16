@@ -24,7 +24,7 @@ public function store(Request $request)
 
             // B. LOGIKA SERTIFIKASI
             $request->validate([
-                'bukti_bayar' => 'required|image|max:2048',
+                'bukti_bayar' => 'required|mimes:jpg,jpeg,png|max:2048',
                 'sertifikasi_id' => 'required'
             ]);
 
@@ -46,8 +46,8 @@ public function store(Request $request)
             }
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Menangkap error validasi (misal: file bukan gambar atau terlalu besar)
-            return redirect()->back()->with('error', 'Validasi gagal: Pastikan file berupa gambar (jpg/png) dan ukuran maksimal 2MB.');
+            // Menangkap error validasi (misal: file bukan jpg/jpeg/png atau terlalu besar)
+            return redirect()->back()->with('error', 'Format file tidak didukung. Hanya file JPG, JPEG, atau PNG dengan ukuran maksimal 2MB yang diperbolehkan.');
         } catch (\Exception $e) {
             // Menangkap error lainnya
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());

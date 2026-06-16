@@ -69,6 +69,7 @@ class AdminController extends Controller
                 'id' => $s->id,
                 'no' => $index + 1,
                 'nama' => $s->nama,
+                'batch' => $s->batch ?? '-',
                 'periode' => $s->periode,
                 'waktu' => $s->waktu ? Carbon::parse($s->waktu)->format('d M Y') : '-',
                 'biaya' => "Mhs: Rp" . number_format($s->biaya_mahasiswa, 0, ',', '.') . " | Dosen: Rp" . number_format($s->biaya_dosen, 0, ',', '.') . " | Umum: Rp" . number_format($s->biaya_umum, 0, ',', '.'),
@@ -167,9 +168,9 @@ class AdminController extends Controller
             'waktu' => 'required|date',
             'jam' => 'required',
             'tempat' => 'required',
-            'biaya_mahasiswa' => 'required|numeric',
-            'biaya_dosen' => 'required|numeric',
-            'biaya_umum' => 'required|numeric',
+            'biaya_mahasiswa' => 'required|numeric|max:10000000',
+            'biaya_dosen' => 'required|numeric|max:10000000',
+            'biaya_umum' => 'required|numeric|max:10000000',
         ]);
 
         $validated['jumlah_pendaftar'] = 0;
@@ -178,8 +179,20 @@ class AdminController extends Controller
     }
 
     public function sertifikasiUpdate(Request $request, $id) {
+        $validated = $request->validate([
+            'nama' => 'required',
+            'batch' => 'nullable',
+            'periode' => 'required',
+            'waktu' => 'required|date',
+            'jam' => 'required',
+            'tempat' => 'required',
+            'biaya_mahasiswa' => 'required|numeric|max:10000000',
+            'biaya_dosen' => 'required|numeric|max:10000000',
+            'biaya_umum' => 'required|numeric|max:10000000',
+        ]);
+        
         $sertif = Sertifikasi::findOrFail($id);
-        $sertif->update($request->except(['_token', '_method']));
+        $sertif->update($validated);
         return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil diubah!');
     }
 

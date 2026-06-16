@@ -201,6 +201,7 @@ function initSortableTables() {
         headers.forEach((th, index) => {
             if (th.dataset.sortable === 'true') {
                 th.classList.add('sortable');
+                th.style.cursor = 'pointer';
                 th.addEventListener('click', () => sortTableByColumn(table, index));
             }
         });
@@ -218,14 +219,21 @@ function sortTableByColumn(table, columnIndex) {
     const currentOrder = th.dataset.sortDirection === 'asc' ? 'desc' : 'asc';
     headers.forEach(header => {
         header.dataset.sortDirection = '';
-        header.classList.remove('asc', 'desc');
+        header.classList.remove('asc', 'desc', 'sort-active');
         const icon = header.querySelector('.sort-icon');
-        if (icon) icon.textContent = '↕';
+        if (icon) icon.textContent = '⇅';
+        if (icon) icon.style.color = '#999';
     });
+    
     th.dataset.sortDirection = currentOrder;
     th.classList.add(currentOrder);
+    th.classList.add('sort-active');
     const activeIcon = th.querySelector('.sort-icon');
-    if (activeIcon) activeIcon.textContent = currentOrder === 'asc' ? '▲' : '▼';
+    if (activeIcon) {
+        activeIcon.textContent = currentOrder === 'asc' ? '▲' : '▼';
+        activeIcon.style.color = '#007bff';
+        activeIcon.style.fontWeight = 'bold';
+    }
 
     const rows = Array.from(tbody.querySelectorAll('tr'));
     const sortedRows = rows.sort((a, b) => {
@@ -371,15 +379,29 @@ function initTablePagination() {
         const prevBtn = tableCard.querySelector(".prev-btn");
         const nextBtn = tableCard.querySelector(".next-btn");
         const entriesInfo = tableCard.querySelector(".entries-info");
+        const entriesDropdown = tableCard.querySelector(".entries-dropdown");
 
-        const rowsPerPage = 5;
+        let rowsPerPage = entriesDropdown ? parseInt(entriesDropdown.value) : 25;
+        
+        // Handle entries dropdown change
+        if (entriesDropdown) {
+            entriesDropdown.addEventListener('change', (e) => {
+                rowsPerPage = parseInt(e.target.value);
+                currentPage = 1;
+                showPage(1);
+            });
+        }
+
         // Hitung total halaman secara dinamis
-        const totalPages = Math.ceil(rows.length / rowsPerPage);
+        let totalPages = Math.ceil(rows.length / rowsPerPage);
 
         let currentPage = 1;
 
         function showPage(page) {
             currentPage = page;
+            
+            // Recalculate totalPages berdasarkan rowsPerPage yang sekarang
+            totalPages = Math.ceil(rows.length / rowsPerPage);
 
             const start = (page - 1) * rowsPerPage;
             const end = start + rowsPerPage;

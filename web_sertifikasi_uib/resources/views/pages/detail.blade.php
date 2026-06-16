@@ -36,7 +36,9 @@
                             ->exists();
                     @endphp
 
-                    @if($sudahDaftarSertif)
+                    @if($user['role'] === 'admin')
+                        <button class="btn-primary" disabled style="opacity:0.6; cursor:not-allowed;">ADMIN TIDAK BISA DAFTAR</button>
+                    @elseif($sudahDaftarSertif)
                         <button class="btn-primary" disabled style="opacity:0.6; cursor:not-allowed;">SUDAH TERDAFTAR</button>
                     @else
                         <a href="javascript:void(0)" class="btn-primary" 
@@ -53,7 +55,9 @@
                             ->exists();
                     @endphp
 
-                    @if($sudahDaftarSeminar)
+                    @if($user['role'] === 'admin')
+                        <button class="btn-primary" disabled style="opacity:0.6; cursor:not-allowed;">ADMIN TIDAK BISA DAFTAR</button>
+                    @elseif($sudahDaftarSeminar)
                         <button class="btn-primary" disabled style="opacity:0.6; cursor:not-allowed;">SUDAH TERDAFTAR</button>
                     @else
                         <a href="javascript:void(0)" class="btn-primary" onclick="confirmDaftarSeminar()">

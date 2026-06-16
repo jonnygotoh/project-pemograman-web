@@ -14,8 +14,18 @@
 
         <div class="search-box">
             <i data-lucide="search"></i>
-            <input placeholder="Search {{ $type }}...">
+            <input placeholder="Search {{ $type }}..." class="table-search-input">
         </div>
+    </div>
+
+    <div class="table-control" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 20px;">
+        <label style="display: flex; align-items: center; gap: 5px;">Show 
+            <select class="entries-dropdown" style="padding: 5px 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+            </select> 
+            entries
+        </label>
     </div>
 
     <div class="responsive-table">
@@ -23,9 +33,9 @@
             <thead>
                 <tr>
                     @foreach($columns as $col)
-                        <th data-sortable="true">
+                        <th data-sortable="true" class="sortable-header">
                             <span class="sort-label">{{ $col }}</span>
-                            <span class="sort-icon">↕</span>
+                            <span class="sort-icon">⇅</span>
                         </th>
                     @endforeach
 
@@ -70,6 +80,8 @@
                             <td onclick="event.stopPropagation();">
                                 @if(!$user)
                                     <a href="{{ route('login.choose') }}" class="btn-primary">Login</a>
+                                @elseif($user['role'] === 'admin')
+                                    <button class="btn-primary" disabled style="opacity:0.6; cursor:not-allowed;">Admin Tidak Bisa Daftar</button>
                                 @elseif($terdaftar)
                                     <button class="btn-primary" disabled style="opacity:0.6; cursor:not-allowed;">Sudah Daftar</button>
                                 @else
@@ -97,10 +109,12 @@
         </table>
     </div>
 
-    <div class="table-pagination">
-        <div class="entries-info">Showing 1 of 5 to 5 entries</div>
-        <button class="page-btn prev-btn">Prev</button>
-        <div class="page-numbers"></div>
-        <button class="page-btn next-btn">Next</button>
+    <div class="table-pagination" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
+        <div class="entries-info" style="font-size: 14px; color: #666;">Showing 1 to 25 of 0 entries</div>
+        <div class="pagination-controls" style="display: flex; gap: 10px; align-items: center;">
+            <button class="page-btn prev-btn" style="font-weight: bold; border: 2px solid #007bff; padding: 8px 15px;">Prev</button>
+            <div class="page-numbers" style="display: flex; gap: 5px;"></div>
+            <button class="page-btn next-btn" style="font-weight: bold; border: 2px solid #007bff; padding: 8px 15px;">Next</button>
+        </div>
     </div>
 </div>

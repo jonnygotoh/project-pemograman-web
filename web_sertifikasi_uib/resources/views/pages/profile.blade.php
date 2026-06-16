@@ -46,11 +46,11 @@
         <table>
             <thead>
                 <tr>
-                    <th data-sortable="true">No <span>↕</span></th>
-                    <th data-sortable="true">Nama Seminar <span>↕</span></th>
-                    <th data-sortable="true">Tanggal <span>↕</span></th>
-                    <th data-sortable="true">Waktu <span>↕</span></th>
-                    <th data-sortable="true">Status <span>↕</span></th>
+                    <th data-sortable="true">No <span class="sort-icon">⇅</span></th>
+                    <th data-sortable="true">Nama Seminar <span class="sort-icon">⇅</span></th>
+                    <th data-sortable="true">Tanggal <span class="sort-icon">⇅</span></th>
+                    <th data-sortable="true">Waktu <span class="sort-icon">⇅</span></th>
+                    <th data-sortable="true">Status <span class="sort-icon">⇅</span></th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -94,11 +94,11 @@
         <table>
             <thead>
                 <tr>
-                    <th data-sortable="true">No <span>↕</span></th>
-                    <th data-sortable="true">Nama Sertifikasi <span>↕</span></th>
-                    <th data-sortable="true">Skor <span>↕</span></th>
-                    <th data-sortable="true">Status <span>↕</span></th>
-                    <th data-sortable="true">Catatan <span>↕</span></th>
+                    <th data-sortable="true">No <span class="sort-icon">⇅</span></th>
+                    <th data-sortable="true">Nama Sertifikasi <span class="sort-icon">⇅</span></th>
+                    <th data-sortable="true">Skor <span class="sort-icon">⇅</span></th>
+                    <th data-sortable="true">Status <span class="sort-icon">⇅</span></th>
+                    <th data-sortable="true">Catatan <span class="sort-icon">⇅</span></th>
                     <th>Aksi</th>
                 </tr>
             </thead>
