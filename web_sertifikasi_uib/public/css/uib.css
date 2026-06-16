@@ -1034,7 +1034,9 @@ input,
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f5;
 }
 
 .table-title h2 {
@@ -1620,6 +1622,22 @@ th {
     padding: 0 12px;
     outline: 0;
     color: var(--navy);
+}
+
+.form-section input[type="file"],
+input[type="file"].form-control {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+}
+
+.form-section input[type="file"]::file-selector-button {
+    padding: 4px 8px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 12px;
 }
 
 .form-section textarea {
@@ -2361,14 +2379,25 @@ th {
 
     .table-pagination {
         display: flex;
-        flex-wrap: wrap; 
-        gap: 10px;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        gap: 20px;
     }
 
     .entries-info {
-        width: 100%; 
-        text-align: center;
-        position: relative;
+        font-size: 14px;
+        color: #666;
+        flex-shrink: 0;
+    }
+
+    .pagination-controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
     }
 
 /* untuk admin */

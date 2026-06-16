@@ -44,7 +44,7 @@
                     @endif
 
                     @if(request()->is('admin*'))
-                        <th>Actions</th>
+                        <th>Aksi</th>
                     @endif
                 </tr>
             </thead>
@@ -100,7 +100,7 @@
 
                         @if(request()->is('admin*'))
                             <td onclick="event.stopPropagation();">
-                                <a href="{{ route('admin.'.$type.'.edit', $id) }}">Edit</a>
+                                <a href="{{ route('admin.'.$type.'.edit', $id) }}" class="btn btn-sm btn-primary" style="display: inline-block; padding: 6px 12px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; font-weight: 500;">Edit</a>
                             </td>
                         @endif
                     </tr>

@@ -161,40 +161,55 @@ class AdminController extends Controller
     }
     
     public function sertifikasiStore(Request $request) {
-        $validated = $request->validate([
-            'nama' => 'required',
-            'batch' => 'nullable',
-            'periode' => 'required',
-            'waktu' => 'required|date',
-            'jam' => 'required',
-            'tempat' => 'required',
-            'biaya_mahasiswa' => 'required|numeric|max:10000000',
-            'biaya_dosen' => 'required|numeric|max:10000000',
-            'biaya_umum' => 'required|numeric|max:10000000',
-        ]);
+    $validated = $request->validate([
+        'nama' => 'required',
+        'batch' => 'nullable',
+        'periode' => 'required',
+        'waktu' => 'required|date',
+        'jam' => 'required',
+        'tempat' => 'required',
+        'biaya_mahasiswa' => 'required',
+        'biaya_dosen' => 'required',
+        'biaya_umum' => 'required',
+    ]);
 
-        $validated['jumlah_pendaftar'] = 0;
-        Sertifikasi::create($validated);
-        return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil ditambah!');
-    }
+    // Bersihkan format ribuan
+    $validated['biaya_mahasiswa'] = (int) str_replace('.', '', $request->biaya_mahasiswa);
+    $validated['biaya_dosen'] = (int) str_replace('.', '', $request->biaya_dosen);
+    $validated['biaya_umum'] = (int) str_replace('.', '', $request->biaya_umum);
+
+    $validated['jumlah_pendaftar'] = 0;
+
+    Sertifikasi::create($validated);
+
+    return redirect()->route('admin.dashboard')
+        ->with('success', 'Data Sertifikasi berhasil ditambah!');
+}
 
     public function sertifikasiUpdate(Request $request, $id) {
-        $validated = $request->validate([
-            'nama' => 'required',
-            'batch' => 'nullable',
-            'periode' => 'required',
-            'waktu' => 'required|date',
-            'jam' => 'required',
-            'tempat' => 'required',
-            'biaya_mahasiswa' => 'required|numeric|max:10000000',
-            'biaya_dosen' => 'required|numeric|max:10000000',
-            'biaya_umum' => 'required|numeric|max:10000000',
-        ]);
-        
-        $sertif = Sertifikasi::findOrFail($id);
-        $sertif->update($validated);
-        return redirect()->route('admin.dashboard')->with('success', 'Data Sertifikasi berhasil diubah!');
-    }
+    $validated = $request->validate([
+        'nama' => 'required',
+        'batch' => 'nullable',
+        'periode' => 'required',
+        'waktu' => 'required|date',
+        'jam' => 'required',
+        'tempat' => 'required',
+        'biaya_mahasiswa' => 'required',
+        'biaya_dosen' => 'required',
+        'biaya_umum' => 'required',
+    ]);
+
+    // Bersihkan format ribuan
+    $validated['biaya_mahasiswa'] = (int) str_replace('.', '', $request->biaya_mahasiswa);
+    $validated['biaya_dosen'] = (int) str_replace('.', '', $request->biaya_dosen);
+    $validated['biaya_umum'] = (int) str_replace('.', '', $request->biaya_umum);
+
+    $sertif = Sertifikasi::findOrFail($id);
+    $sertif->update($validated);
+
+    return redirect()->route('admin.dashboard')
+        ->with('success', 'Data Sertifikasi berhasil diubah!');
+}
 
     public function sertifikasiDelete($id)
     {

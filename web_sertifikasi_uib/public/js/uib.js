@@ -516,3 +516,73 @@ function confirmAddRemove({
         }
     });
 }
+
+/* ==================================================
+   SEARCH FUNCTIONALITY
+================================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initTableSearch();
+});
+
+function initTableSearch() {
+    document.querySelectorAll('.table-card').forEach(tableCard => {
+        const searchInput = tableCard.querySelector('.table-search-input');
+        if (!searchInput) return;
+
+        const tbody = tableCard.querySelector('.paginated-body');
+        if (!tbody) return;
+
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = tbody.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+
+            // Re-initialize pagination after search
+            initTablePagination();
+        });
+    });
+}
+
+/* ==================================================
+   CURRENCY FORMATTING
+================================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initCurrencyFormatting();
+});
+
+function initCurrencyFormatting() {
+    // Format semua input dengan name yang mengandung 'biaya'
+    document.querySelectorAll('input[name*="biaya"]').forEach(input => {
+        // Format on input
+        input.addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, '');
+            this.dataset.rawValue = value;
+            
+            if (value) {
+                let formattedValue = parseInt(value).toLocaleString('id-ID');
+                this.value = formattedValue;
+            }
+        });
+
+        // Unmask sebelum submit
+        const form = input.closest('form');
+        if (form) {
+            form.addEventListener('submit', function() {
+                const biayaInputs = this.querySelectorAll('input[name*="biaya"]');
+                biayaInputs.forEach(input => {
+                    if (input.dataset.rawValue) {
+                        input.value = input.dataset.rawValue;
+                    } else {
+                        input.value = input.value.replace(/\D/g, '');
+                    }
+                });
+            });
+        }
+    });
+}

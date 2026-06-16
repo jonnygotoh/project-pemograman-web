@@ -70,6 +70,7 @@ class MainController extends Controller
                 'id' => $sertif->id,
                 'no' => $index + 1,
                 'nama' => $sertif->nama,
+                'batch' => $sertif->batch ?? '-',
                 'periode' => $sertif->periode,
                 'waktu' => $sertif->waktu ? Carbon::parse($sertif->waktu)->format('d M Y') : '-',
                 'biaya' => "Mhs: Rp" . number_format($sertif->biaya_mahasiswa, 0, ',', '.') . 

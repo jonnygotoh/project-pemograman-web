@@ -46,7 +46,7 @@
         @include('pages.partials.table', [
              'pageTitle' => 'Sertifikasi',
             'type' => 'sertifikasi',
-            'columns' => ['No', 'Nama Sertifikasi', 'Periode Pendaftaran', 'Tanggal Pelatihan', 'Tanggal Ujian', 'Biaya Pendaftaran', 'Jumlah Pendaftar'],
+            'columns' => ['No', 'Nama Sertifikasi', 'Batch', 'Periode Pendaftaran', 'Tanggal Pelatihan', 'Biaya Pendaftaran', 'Jumlah Pendaftar'],
             'rows' => $certificationRows
         ])
     </div>

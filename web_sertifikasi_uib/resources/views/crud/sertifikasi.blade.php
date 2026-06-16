@@ -52,55 +52,53 @@
 
             <div class="form-group">
                 <label>Biaya Mahasiswa (Rp)
-                    <input type="number" name="biaya_mahasiswa" value="{{ $item->biaya_mahasiswa ?? 0 }}" required class="form-control" max="10000000" min="0">
+                    <input type="text" name="biaya_mahasiswa" value="{{ $item->biaya_mahasiswa ?? 0 }}" required class="form-control" max="10000000" min="0">
                 </label>
             </div>
 
             <div class="form-group">
                 <label>Biaya Dosen (Rp)
-                    <input type="number" name="biaya_dosen" value="{{ $item->biaya_dosen ?? 0 }}" required class="form-control" max="10000000" min="0">
+                    <input type="text" name="biaya_dosen" value="{{ $item->biaya_dosen ?? 0 }}" required class="form-control" max="10000000" min="0">
                 </label>
             </div>
 
             <div class="form-group" style="grid-column: span 2;">
                 <label>Biaya Umum (Rp)
-                    <input type="number" name="biaya_umum" value="{{ $item->biaya_umum ?? 0 }}" required class="form-control" max="10000000" min="0">
+                    <input type="text" name="biaya_umum" value="{{ $item->biaya_umum ?? 0 }}" required class="form-control" max="10000000" min="0">
                 </label>
             </div>
         </div>
 
-        <div class="Adash" style="display: flex; flex-direction: row; gap: 10px; margin-top: 20px; width: 100%; justify-content: space-between;">
-            <div style="display: flex; gap: 10px; flex: 1;">
+        <div class="Adash" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px; width: 100%; max-width: 300px;">
+            <button type="button"
+                    class="btn-primary"
+                    style="width: 100%; background: #007bff; color: white; padding: 10px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer;"
+                    onclick="confirmAddRemove({
+                        formId:'sertifikasi-form',
+                        text:'Apakah anda yakin ingin menyimpan data sertifikasi ini?',
+                        confirmText:'Simpan'
+                    })">
+                Simpan
+            </button>
+
+            @if(isset($item))
                 <button type="button"
                         class="btn-primary"
-                        style="flex: 1; background: #007bff; color: white;"
+                        style="width: 100%; background: #d33; color: white; padding: 10px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer;"
                         onclick="confirmAddRemove({
-                            formId:'sertifikasi-form',
-                            text:'Apakah anda yakin ingin menyimpan data sertifikasi ini?',
-                            confirmText:'Simpan'
+                            formId:'delete-seminar-form',
+                            text:'Apakah anda yakin ingin menghapus sertifikasi ini?',
+                            confirmText:'Hapus',
+                            icon:'warning',
+                            confirmColor:'#d33'
                         })">
-                    Simpan Data
+                    Hapus
                 </button>
-
-                @if(isset($item))
-                    <button type="button"
-                            class="btn-primary"
-                            style="flex: 0.7; background: #d33; color: white;"
-                            onclick="confirmAddRemove({
-                                formId:'delete-seminar-form',
-                                text:'Apakah anda yakin ingin menghapus sertifikasi ini?',
-                                confirmText:'Hapus',
-                                icon:'warning',
-                                confirmColor:'#d33'
-                            })">
-                        Hapus
-                    </button>
-                @endif
-            </div>
+            @endif
 
             <a href="{{ route('admin.dashboard') }}"
                class="btn-primary"
-               style="text-align: center; text-decoration: none; padding: 10px 20px; background: #666; color: white; border-radius: 4px; align-self: center;">
+               style="text-align: center; text-decoration: none; padding: 10px; background: #666; color: white; border-radius: 4px; font-weight: 600;">
                 Batal
             </a>
         </div>

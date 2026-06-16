@@ -13,6 +13,7 @@ class SertifikasiSeeder extends Seeder
         Sertifikasi::updateORCreate(
             ['nama' => 'Sertifikasi Cisco CCNA'],
             [
+                'batch' => 'Batch 1',
                 'periode' => 'Juni 2026',
                 'waktu' => '2026-06-10',
                 'jam' => '09:00 WIB',  
@@ -27,6 +28,7 @@ class SertifikasiSeeder extends Seeder
         Sertifikasi::updateORCreate(
             ['nama' => 'Sertifikasi AWS Cloud'],
             [
+                'batch' => 'Batch 1',
                 'periode' => 'Juni 2026',
                 'waktu' => '2026-06-25',
                 'jam' => '10:00 WIB',    
