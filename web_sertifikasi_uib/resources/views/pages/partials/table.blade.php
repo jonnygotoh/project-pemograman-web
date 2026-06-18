@@ -14,7 +14,7 @@
 
         <div class="search-box">
             <i data-lucide="search"></i>
-            <input placeholder="Search {{ $type }}..." class="table-search-input">
+            <input placeholder="Search data..." class="table-search-input">
         </div>
     </div>
 

@@ -451,6 +451,70 @@ function initTablePagination() {
     });
 }
 
+function setupTable(tableCard) {
+    const tbody = tableCard.querySelector('.paginated-body');
+    const searchInput = tableCard.querySelector('.table-search-input');
+    const entriesDropdown = tableCard.querySelector('.entries-dropdown');
+    const allRows = Array.from(tbody.querySelectorAll('tr'));
+    
+    // Simpan referensi ke tombol
+    const prevBtn = tableCard.querySelector('.prev-btn');
+    const nextBtn = tableCard.querySelector('.next-btn');
+    let currentPage = 1;
+
+    function render() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rowsPerPage = parseInt(entriesDropdown.value);
+
+        // 1. Filter data
+        const filteredRows = allRows.filter(row => 
+            row.textContent.toLowerCase().includes(searchTerm)
+        );
+
+        // 2. Hitung total halaman
+        const totalPages = Math.ceil(filteredRows.length / rowsPerPage) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        // 3. Tampilkan data dengan cara yang lebih stabil
+        // Sembunyikan semua baris
+        allRows.forEach(row => row.style.display = 'none');
+        
+        // Tampilkan hanya baris yang sesuai halaman dan filter
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        
+        filteredRows.slice(start, end).forEach(row => {
+            row.style.display = ''; // Browser akan mengembalikan ke 'table-row' secara otomatis
+        });
+
+        // 4. Update UI
+        const info = tableCard.querySelector('.entries-info');
+        info.textContent = filteredRows.length > 0 
+            ? `Showing ${start + 1} to ${Math.min(end, filteredRows.length)} of ${filteredRows.length} entries`
+            : "Showing 0 to 0 of 0 entries";
+            
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage >= totalPages;
+    }
+
+    // Gunakan event 'input' agar lebih smooth
+    searchInput.addEventListener('input', () => {
+        currentPage = 1; // Reset ke halaman 1
+        render();
+    });
+
+    entriesDropdown.addEventListener('change', () => {
+        currentPage = 1;
+        render();
+    });
+
+    prevBtn.addEventListener('click', () => { currentPage--; render(); });
+    nextBtn.addEventListener('click', () => { currentPage++; render(); });
+
+    render();
+}
+
 // Fungsi untuk konfirmasi pendaftaran
 function confirmDaftar(url, roleLabel) {
     Swal.fire({
@@ -517,72 +581,74 @@ function confirmAddRemove({
     });
 }
 
-/* ==================================================
-   SEARCH FUNCTIONALITY
-================================================== */
-
 document.addEventListener('DOMContentLoaded', () => {
     initTableSearch();
 });
 
-function initTableSearch() {
+document.addEventListener('DOMContentLoaded', () => {
+    // Jalankan sistem satu pintu
     document.querySelectorAll('.table-card').forEach(tableCard => {
-        const searchInput = tableCard.querySelector('.table-search-input');
-        if (!searchInput) return;
-
         const tbody = tableCard.querySelector('.paginated-body');
         if (!tbody) return;
+        
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const searchInput = tableCard.querySelector('.table-search-input');
+        const entriesDropdown = tableCard.querySelector('.entries-dropdown');
+        const prevBtn = tableCard.querySelector('.prev-btn');
+        const nextBtn = tableCard.querySelector('.next-btn');
+        const pageNumbers = tableCard.querySelector('.page-numbers');
+        const info = tableCard.querySelector('.entries-info');
 
-        searchInput.addEventListener('keyup', function() {
-            const searchTerm = this.value.toLowerCase();
-            const rows = tbody.querySelectorAll('tr');
+        let currentPage = 1;
 
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
+        const refreshTable = (page = 1) => {
+            currentPage = page;
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : "";
+            const rowsPerPage = entriesDropdown ? parseInt(entriesDropdown.value) : 10;
 
-            // Re-initialize pagination after search
-            initTablePagination();
-        });
-    });
-}
+            // 1. FILTER: Cari data
+            const filteredRows = rows.filter(row => 
+                row.textContent.toLowerCase().includes(searchTerm)
+            );
 
-/* ==================================================
-   CURRENCY FORMATTING
-================================================== */
+            // 2. PAGINASI: Tentukan halaman
+            const totalPages = Math.ceil(filteredRows.length / rowsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
 
-document.addEventListener('DOMContentLoaded', () => {
-    initCurrencyFormatting();
-});
+            // 3. Tampilkan/Sembunyikan
+            rows.forEach(r => r.style.display = 'none');
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            filteredRows.slice(start, end).forEach(r => r.style.display = '');
 
-function initCurrencyFormatting() {
-    // Format semua input dengan name yang mengandung 'biaya'
-    document.querySelectorAll('input[name*="biaya"]').forEach(input => {
-        // Format on input
-        input.addEventListener('input', function() {
-            let value = this.value.replace(/\D/g, '');
-            this.dataset.rawValue = value;
-            
-            if (value) {
-                let formattedValue = parseInt(value).toLocaleString('id-ID');
-                this.value = formattedValue;
+            // 4. Update Info Text
+            const showingStart = filteredRows.length > 0 ? (currentPage - 1) * rowsPerPage + 1 : 0;
+            const showingEnd = Math.min(currentPage * rowsPerPage, filteredRows.length);
+            if (info) info.textContent = `Showing ${showingStart} to ${showingEnd} of ${filteredRows.length} entries`;
+
+            // 5. Render Tombol Angka
+            if (pageNumbers) {
+                pageNumbers.innerHTML = "";
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement("button");
+                    btn.textContent = i;
+                    btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                    btn.onclick = () => refreshTable(i);
+                    pageNumbers.appendChild(btn);
+                }
             }
-        });
 
-        // Unmask sebelum submit
-        const form = input.closest('form');
-        if (form) {
-            form.addEventListener('submit', function() {
-                const biayaInputs = this.querySelectorAll('input[name*="biaya"]');
-                biayaInputs.forEach(input => {
-                    if (input.dataset.rawValue) {
-                        input.value = input.dataset.rawValue;
-                    } else {
-                        input.value = input.value.replace(/\D/g, '');
-                    }
-                });
-            });
-        }
+            if (prevBtn) prevBtn.disabled = (currentPage === 1);
+            if (nextBtn) nextBtn.disabled = (currentPage >= totalPages);
+        };
+
+        // Event Listeners (hanya satu kali pasang)
+        if (searchInput) searchInput.addEventListener('input', () => refreshTable(1));
+        if (entriesDropdown) entriesDropdown.addEventListener('change', () => refreshTable(1));
+        if (prevBtn) prevBtn.addEventListener('click', () => refreshTable(currentPage - 1));
+        if (nextBtn) nextBtn.addEventListener('click', () => refreshTable(currentPage + 1));
+        
+        refreshTable(1);
     });
-}
+});

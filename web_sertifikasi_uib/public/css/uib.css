@@ -2357,6 +2357,9 @@ input[type="file"].form-control {
         min-width: 0 !important;
     }
 
+    .paginated-body tr {
+        display: table-row;
+}
     
     .admin-table-container {
         width: 100% !important;
