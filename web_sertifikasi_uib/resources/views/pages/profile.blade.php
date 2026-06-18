@@ -96,9 +96,10 @@
                 <tr>
                     <th data-sortable="true">No <span class="sort-icon">⇅</span></th>
                     <th data-sortable="true">Nama Sertifikasi <span class="sort-icon">⇅</span></th>
+                    <th data-sortable="true">Tanggal<span class="sort-icon">⇅</span></th>
                     <th data-sortable="true">Skor <span class="sort-icon">⇅</span></th>
                     <th data-sortable="true">Status <span class="sort-icon">⇅</span></th>
-                    <th data-sortable="true">Catatan <span class="sort-icon">⇅</span></th>
+                    <th data-sortable="true">Keterangan <span class="sort-icon">⇅</span></th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -111,6 +112,13 @@
                             <b>{{ $p->sertifikasi->nama ?? '-' }}</b>
                         </a>
                     </td>
+
+                    <td>
+                        {{ $p->sertifikasi && $p->sertifikasi->waktu 
+                           ? \Carbon\Carbon::parse($p->sertifikasi->waktu)->format('d M Y') 
+                           : '-' }}
+                    </td>
+
                     <td>{{ $p->skor ?? '-' }}</td>
                     <td>
                         @php $skor = $p->skor; @endphp
