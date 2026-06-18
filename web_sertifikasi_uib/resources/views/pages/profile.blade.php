@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div class="registered-card">
+    <div class="registered-card table-card">
         <div class="section-title">
             <div><i data-lucide="menu"></i></div>
             <span><h2>Daftar</h2><p>Data Seminar & Sertifikasi</p></span>
@@ -37,8 +37,11 @@
         </div>
 
         <div class="table-control">
-            <label>Show <select><option>10</option><option>25</option></select> entries</label>
-            <div class="search-box"><i data-lucide="search"></i><input placeholder="Search data..."></div>
+            <label>Show <select class="entries-dropdown"><option>10</option><option>25</option></select> entries</label>
+            <div class="search-box">
+                <i data-lucide="search"></i>
+                <input type="text" class="table-search-input" placeholder="Search data...">
+            </div>
         </div>
 
         {{-- PANEL 1: SEMINAR --}}
@@ -54,7 +57,7 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="paginated-body">
                 @forelse($seminars as $i => $s)
                 <tr>
                     <td>{{ $i + 1 }}</td>
@@ -88,14 +91,6 @@
             </tbody>
         </table>
     </div>
-        <div class="table-pagination">
-            <div class="entries-info"></div>
-            <div class="pagination-controls">
-                <button class="page-btn prev-btn">Prev</button>
-                <div class="page-numbers"></div>
-                <button class="page-btn next-dfn next-btn">Next</button>
-            </div>
-        </div>
 
         {{-- PANEL 2: SERTIFIKASI --}}
         <div id="profile-sertifikasi-panel" class="responsive-table hidden">
@@ -111,7 +106,7 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="paginated-body">
                 @forelse($pembayarans as $i => $p)
                 <tr>
                     <td>{{ $i + 1 }}</td>
@@ -153,15 +148,6 @@
                 @endforelse
             </tbody>
         </table>
-        <div class="table-pagination">
-            <div class="entries-info"></div>
-                <div class="pagination-controls">
-                    <button class="page-btn prev-btn">Prev</button>
-                    <div class="page-numbers"></div>
-                    <button class="page-btn next-btn">Next</button>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 
