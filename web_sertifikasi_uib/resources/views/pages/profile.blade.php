@@ -88,6 +88,14 @@
             </tbody>
         </table>
     </div>
+        <div class="table-pagination">
+            <div class="entries-info"></div>
+            <div class="pagination-controls">
+                <button class="page-btn prev-btn">Prev</button>
+                <div class="page-numbers"></div>
+                <button class="page-btn next-dfn next-btn">Next</button>
+            </div>
+        </div>
 
         {{-- PANEL 2: SERTIFIKASI --}}
         <div id="profile-sertifikasi-panel" class="responsive-table hidden">
@@ -145,7 +153,15 @@
                 @endforelse
             </tbody>
         </table>
-    </div>
+        <div class="table-pagination">
+            <div class="entries-info"></div>
+                <div class="pagination-controls">
+                    <button class="page-btn prev-btn">Prev</button>
+                    <div class="page-numbers"></div>
+                    <button class="page-btn next-btn">Next</button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
