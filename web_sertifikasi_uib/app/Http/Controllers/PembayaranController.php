@@ -9,49 +9,55 @@ use Illuminate\Support\Facades\Storage;
 
 class PembayaranController extends Controller
 {
-public function store(Request $request)
+    public function store(Request $request)
     {
-        try {
-            // A. LOGIKA SEMINAR
-            if ($request->has('seminar_id')) {
-                \App\Models\PendaftaranSeminar::create([
-                    'seminar_id' => $request->seminar_id,
-                    'user_id'    => session('auth_user')['id'],
-                    'user_type'  => session('auth_user')['role'],
-                ]);
-                return redirect()->route('profile')->with('success', 'Berhasil mendaftar Seminar!');
-            }
-
-            // B. LOGIKA SERTIFIKASI
-            $request->validate([
-                'bukti_bayar' => 'required|mimes:jpg,jpeg,png|max:2048',
-                'sertifikasi_id' => 'required'
+        // A. LOGIKA SEMINAR
+        if ($request->has('seminar_id')) {
+            \App\Models\PendaftaranSeminar::create([
+                'seminar_id' => $request->seminar_id,
+                'user_id'    => session('auth_user')['id'],
+                'user_type'  => session('auth_user')['role'],
             ]);
-
-            $file = $request->file('bukti_bayar');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            
-            // Simpan file
-            if ($file->storeAs('bukti_bayar', $filename, 'public')) {
-                \App\Models\PembayaranSertifikasi::create([
-                    'user_id'        => session('auth_user')['id'],
-                    'user_type'      => session('auth_user')['role'],
-                    'sertifikasi_id' => $request->sertifikasi_id,
-                    'bukti_bayar'    => $filename,
-                    'status'         => 'menunggu',
-                ]);
-                return redirect()->route('profile')->with('success', 'Pendaftaran Sertifikasi berhasil! Menunggu verifikasi.');
-            } else {
-                throw new \Exception("Gagal mengunggah file.");
-            }
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Menangkap error validasi (misal: file bukan jpg/jpeg/png atau terlalu besar)
-            return redirect()->back()->with('error', 'Format file tidak didukung. Hanya file JPG, JPEG, atau PNG dengan ukuran maksimal 2MB yang diperbolehkan.');
-        } catch (\Exception $e) {
-            // Menangkap error lainnya
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->route('profile')->with('success', 'Berhasil mendaftar Seminar!');
         }
+
+        // B. LOGIKA SERTIFIKASI
+        // 1. Validasi ukuran file (Max 2MB)
+        $request->validate([
+            'bukti_bayar'    => 'required|file|max:2048',
+            'sertifikasi_id' => 'required'
+        ], [
+            'bukti_bayar.max' => 'Ukuran file terlalu besar! Maksimal 2MB.',
+        ]);
+
+        $file = $request->file('bukti_bayar');
+
+        // 2. CEK MIME TYPE ASLI (Mencegah video/dokumen)
+        $allowedMimes = ['image/jpeg', 'image/png', 'image/jpg'];
+        if (!in_array($file->getClientMimeType(), $allowedMimes)) {
+            return redirect()->back()->with('error', 'Format tidak didukung! Hanya JPG, JPEG, atau PNG yang diizinkan.');
+        }
+
+        // 3. CEK INTEGRITAS (Mencegah file video/lainnya yang namanya di-rename)
+        if (@getimagesize($file->getRealPath()) === false) {
+            return redirect()->back()->with('error', 'File yang diunggah bukan gambar yang valid!');
+        }
+
+        // 4. Proses Simpan
+        $filename = time() . '_' . $file->getClientOriginalName();
+        
+        if ($file->storeAs('bukti_bayar', $filename, 'public')) {
+            PembayaranSertifikasi::create([
+                'user_id'        => session('auth_user')['id'],
+                'user_type'      => session('auth_user')['role'],
+                'sertifikasi_id' => $request->sertifikasi_id,
+                'bukti_bayar'    => $filename,
+                'status'         => 'menunggu',
+            ]);
+            return redirect()->route('profile')->with('success', 'Pendaftaran berhasil! Menunggu verifikasi.');
+        }
+
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunggah file.');
     }
     
     public function destroy($id)

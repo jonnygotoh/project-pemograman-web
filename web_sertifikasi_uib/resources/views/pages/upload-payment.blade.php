@@ -28,6 +28,10 @@
             <button class="btn-dark" type="submit"><i data-lucide="upload"></i> Upload</button>
             <a class="btn-outline-danger" href="{{ url()->previous() }}"><i data-lucide="arrow-left"></i> Kembali</a>
         </div>
+
+        @if(session('error'))
+            <div class="alert alert-danger" style="color: red;">{{ session('error') }}</div>
+        @endif
     </form>
 </section>
 @endsection

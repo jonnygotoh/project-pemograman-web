@@ -2384,6 +2384,7 @@ input[type="file"].form-control {
         margin-top: 20px;
         padding-top: 15px;
         border-top: 1px solid #eee;
+        flex-wrap: wrap;
         gap: 20px;
     }
 
@@ -2675,9 +2676,7 @@ input[type="file"].form-control {
     .entries-info{
         display:flex;
         justify-content:left;
-        position:absolute;
         top:50%;
-        transform:translateY(-50%);
         font-size:14px;
         color:#666;
         margin:0;

@@ -109,12 +109,15 @@
         </table>
     </div>
 
-    <div class="table-pagination" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
-        <div class="entries-info" style="font-size: 14px; color: #666;">Showing 1 to 25 of 0 entries</div>
-        <div class="pagination-controls" style="display: flex; gap: 10px; align-items: center;">
-            <button class="page-btn prev-btn" style="font-weight: bold; border: 2px solid #007bff; padding: 8px 15px;">Prev</button>
-            <div class="page-numbers" style="display: flex; gap: 5px;"></div>
-            <button class="page-btn next-btn" style="font-weight: bold; border: 2px solid #007bff; padding: 8px 15px;">Next</button>
+    <div class="table-pagination">
+        <div class="entries-info">
+            Showing 1 to 25 of 0 entries
+        </div>
+
+        <div class="pagination-controls">
+            <button class="page-btn prev-btn">Prev</button>
+            <div class="page-numbers"></div>
+            <button class="page-btn next-btn">Next</button>
         </div>
     </div>
 </div>
