@@ -9,7 +9,6 @@
         <input type="hidden" name="sertifikasi_id" value="{{ $sertifikasi_id }}">
 
         <h1>Upload Bukti Transfer</h1>
-        <div class="title-line"></div>
 
         <section class="form-section">
             <h3><i data-lucide="receipt-text"></i> Informasi Pembayaran</h3>
