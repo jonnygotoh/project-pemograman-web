@@ -45,51 +45,52 @@
         </div>
 
         {{-- PANEL 1: SEMINAR --}}
-        <div id="profile-seminar-panel" class="responsive-table">
-        <table>
-            <thead>
-                <tr>
-                    <th data-sortable="true">No <span class="sort-icon">⇅</span></th>
-                    <th data-sortable="true">Nama Seminar <span class="sort-icon">⇅</span></th>
-                    <th data-sortable="true">Tanggal <span class="sort-icon">⇅</span></th>
-                    <th data-sortable="true">Waktu <span class="sort-icon">⇅</span></th>
-                    <th data-sortable="true">Status <span class="sort-icon">⇅</span></th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="paginated-body">
-                @forelse($seminars as $i => $s)
-                <tr>
-                    <td>{{ $i + 1 }}</td>
-                    <td>
-                        <a href="{{ route('seminar.show', $s->seminar->id ?? 0) }}" style="text-decoration:none; color:inherit;">
-                            <b>{{ $s->seminar->nama ?? 'N/A' }}</b>
-                        </a>
-                    </td>
-                    <td>{{ $s->seminar->tanggal ?? '-' }}</td>
-                    <td>{{ $s->seminar->waktu ?? '-' }}</td>
-                    <td>
-                        @if($s->status_sertifikat == 'verified')
-                            <span class="badge bg-success">Sertifikat Siap</span>
-                        @else
-                            <span class="badge bg-info">Terdaftar</span>
-                        @endif
-                    </td>
-                    <td>
-                        @if($s->status_sertifikat == 'verified' && $s->sertif_no)
-                            <a href="{{ route('profile.sertifikat.preview', $s->id) }}" class="btn-sm btn-primary">Lihat Sertifikat</a>
-                        @elseif($s->status_sertifikat == 'verified')
-                            <a href="{{ route('profile.sertifikat.preview', $s->id) }}" class="btn-sm btn-primary">Lihat Sertifikat</a>
-                        @else
-                            <button type="button" onclick="openTokenModal({{ $s->id }})" class="btn-sm btn-info">Isi Token</button>
-                        @endif
-                    </td>
-                </tr>
-                @empty
-                <tr><td colspan="6" style="text-align: center;">Belum ada pendaftaran seminar.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
+        
+    <div id="profile-seminar-panel" class="table-card responsive-table">
+    <table>
+        <thead>
+            <tr>
+                <th data-sortable="true">No <span class="sort-icon">⇅</span></th>
+                <th data-sortable="true">Nama Seminar <span class="sort-icon">⇅</span></th>
+                <th data-sortable="true">Tanggal <span class="sort-icon">⇅</span></th>
+                <th data-sortable="true">Waktu <span class="sort-icon">⇅</span></th>
+                <th data-sortable="true">Status <span class="sort-icon">⇅</span></th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody class="paginated-body">
+            @forelse($seminars as $i => $s)
+            <tr>
+                <td>{{ $i + 1 }}</td>
+                <td>
+                    <a href="{{ route('seminar.show', $s->seminar->id ?? 0) }}" style="text-decoration:none; color:inherit;">
+                        <b>{{ $s->seminar->nama ?? 'N/A' }}</b>
+                    </a>
+                </td>
+                <td>{{ $s->seminar->tanggal ?? '-' }}</td>
+                <td>{{ $s->seminar->waktu ?? '-' }}</td>
+                <td>
+                    @if($s->status_sertifikat == 'verified')
+                        <span class="badge bg-success">Sertifikat Siap</span>
+                    @else
+                        <span class="badge bg-info">Terdaftar</span>
+                    @endif
+                </td>
+                <td>
+                    @if($s->status_sertifikat == 'verified' && $s->sertif_no)
+                        <a href="{{ route('profile.sertifikat.preview', $s->id) }}" class="btn-sm btn-primary">Lihat Sertifikat</a>
+                    @elseif($s->status_sertifikat == 'verified')
+                        <a href="{{ route('profile.sertifikat.preview', $s->id) }}" class="btn-sm btn-primary">Lihat Sertifikat</a>
+                    @else
+                        <button type="button" onclick="openTokenModal({{ $s->id }})" class="btn-sm btn-info">Isi Token</button>
+                    @endif
+                </td>
+            </tr>
+            @empty
+            <tr><td colspan="6" style="text-align: center;">Belum ada pendaftaran seminar.</td></tr>
+            @endforelse
+        </tbody>
+    </table>
         <div class="table-pagination">
                 <div class="entries-info"></div>
                 <div class="pagination-controls">
@@ -100,9 +101,8 @@
             </div>
     </div>
 
-        {{-- PANEL 2: SERTIFIKASI --}}
-    <div class="table-card">    
-        <div id="profile-sertifikasi-panel" class="responsive-table hidden">
+        {{-- PANEL 2: SERTIFIKASI --}}    
+        <div id="profile-sertifikasi-panel" class="table-card responsive-table hidden">
         <table>
             <thead>
                 <tr>
@@ -165,7 +165,6 @@
                     <button class="page-btn next-btn">Next</button>
                 </div>
             </div>
-    </div>
     </div>
 </section>
 
