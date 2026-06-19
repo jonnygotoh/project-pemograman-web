@@ -90,9 +90,18 @@
                 @endforelse
             </tbody>
         </table>
+        <div class="table-pagination">
+                <div class="entries-info"></div>
+                <div class="pagination-controls">
+                    <button class="page-btn prev-btn">Prev</button>
+                    <div class="page-numbers"></div>
+                    <button class="page-btn next-btn">Next</button>
+                </div>
+            </div>
     </div>
 
         {{-- PANEL 2: SERTIFIKASI --}}
+    <div class="table-card">    
         <div id="profile-sertifikasi-panel" class="responsive-table hidden">
         <table>
             <thead>
@@ -148,6 +157,15 @@
                 @endforelse
             </tbody>
         </table>
+        <div class="table-pagination">
+                <div class="entries-info"></div>
+                <div class="pagination-controls">
+                    <button class="page-btn prev-btn">Prev</button>
+                    <div class="page-numbers"></div>
+                    <button class="page-btn next-btn">Next</button>
+                </div>
+            </div>
+    </div>
     </div>
 </section>
 

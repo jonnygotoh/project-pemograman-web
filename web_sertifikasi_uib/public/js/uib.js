@@ -340,6 +340,11 @@ function switchProfileTab(tab) {
             btn.classList.toggle('active', (tab === 'seminar' && index === 0) || (tab === 'sertifikasi' && index === 1));
         });
     }
+    setTimeout(() => {
+        if (typeof initUnifiedPagination === 'function') {
+            initUnifiedPagination();
+        }
+    }, 50);
 }
 
 // Menutup menu saat klik di luar area
