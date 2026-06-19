@@ -36,6 +36,9 @@
             <button onclick="switchProfileTab('sertifikasi')">Data Sertifikasi</button>
         </div>
 
+        {{-- PANEL 1: SEMINAR --}}
+        
+    <div id="profile-seminar-panel" class="table-card responsive-table">
         <div class="table-control">
             <label>Show <select class="entries-dropdown"><option>10</option><option>25</option></select> entries</label>
             <div class="search-box">
@@ -43,10 +46,6 @@
                 <input type="text" class="table-search-input" placeholder="Search data...">
             </div>
         </div>
-
-        {{-- PANEL 1: SEMINAR --}}
-        
-    <div id="profile-seminar-panel" class="table-card responsive-table">
     <table>
         <thead>
             <tr>
@@ -103,6 +102,13 @@
 
         {{-- PANEL 2: SERTIFIKASI --}}    
         <div id="profile-sertifikasi-panel" class="table-card responsive-table hidden">
+            <div class="table-control">
+            <label>Show <select class="entries-dropdown"><option>10</option><option>25</option></select> entries</label>
+            <div class="search-box">
+                <i data-lucide="search"></i>
+                <input type="text" class="table-search-input" placeholder="Search data...">
+            </div>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -153,7 +159,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="6" style="text-align: center;">Belum ada pendaftaran sertifikasi.</td></tr>
+                <tr><td colspan="7" style="text-align: center;">Belum ada pendaftaran sertifikasi.</td></tr>
                 @endforelse
             </tbody>
         </table>
