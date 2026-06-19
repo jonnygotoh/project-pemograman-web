@@ -181,7 +181,7 @@
             <input type="hidden" name="pendaftaran_id" id="modal_seminar_id">
             
             <h5>Masukkan Token</h5>
-            <input type="text" name="token" class="form-control" placeholder="Masukkan token dari admin" maxlength="10" style="width: 230px;" required>
+            <input type="text" name="token" class="form-control" placeholder="Masukkan token dari admin" maxlength="30" style="width: 230px;" required>
             
             <div style="margin-top:15px; text-align:right;">
                 <button type="button" onclick="document.getElementById('tokenModal').style.display='none'" class="btn-primary"  style="background: #dc3545;">Batal</button>
